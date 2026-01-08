@@ -1,0 +1,139 @@
+/* ---------------------------------------------------
+   ESTILOS GENERALES
+--------------------------------------------------- */
+
+body {
+    background: #0a0a0a;
+    color: #eaeaea;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Fondo Matrix (canvas) */
+canvas#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.25;
+}
+
+/* ---------------------------------------------------
+   NAVBAR
+--------------------------------------------------- */
+
+.navbar {
+    background: rgba(0, 0, 0, 0.85) !important;
+    backdrop-filter: blur(6px);
+}
+
+.navbar-brand {
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+}
+
+.nav-link {
+    transition: 0.2s;
+}
+
+.nav-link:hover {
+    color: #00ff9d !important;
+}
+
+/* ---------------------------------------------------
+   TARJETAS
+--------------------------------------------------- */
+
+.card {
+    background: #111;
+    border: 1px solid #222;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+}
+
+.card img {
+    border-bottom: 1px solid #222;
+}
+
+/* ---------------------------------------------------
+   BOTONES
+--------------------------------------------------- */
+
+.btn-primary,
+.btn-success,
+.btn-warning,
+.btn-danger,
+.btn-outline-primary {
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #00c97a;
+    border-color: #00c97a;
+}
+
+.btn-outline-primary:hover {
+    background: #00ff9d;
+    color: #000;
+}
+
+/* ---------------------------------------------------
+   TABLAS
+--------------------------------------------------- */
+
+.table-dark {
+    background: #111 !important;
+}
+
+.table-dark th {
+    background: #0f0f0f !important;
+}
+
+.table-dark td,
+.table-dark th {
+    border-color: #222 !important;
+}
+
+/* ---------------------------------------------------
+   FORMULARIOS
+--------------------------------------------------- */
+
+.form-control {
+    background: #0f0f0f;
+    border: 1px solid #222;
+    color: #eaeaea;
+}
+
+.form-control:focus {
+    border-color: #00ff9d;
+    box-shadow: 0 0 5px rgba(0, 255, 157, 0.4);
+}
+
+/* ---------------------------------------------------
+   FOOTER
+--------------------------------------------------- */
+
+footer {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(6px);
+}
+
+/* ---------------------------------------------------
+   UTILIDADES
+--------------------------------------------------- */
+
+.text-muted {
+    color: #b5b5b5 !important;
+}
+
+h1, h2, h3, h4, h5 {
+    color: #ffffff;
+}
