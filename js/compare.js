@@ -1,130 +1,182 @@
-// compare.js
-// Lógica del comparador de GPUs
+// compare.js — Comparación de múltiples GPUs
 
 document.addEventListener("DOMContentLoaded", () => {
-    const select1 = document.getElementById("gpu1");
-    const select2 = document.getElementById("gpu2");
-    const result = document.getElementById("compare-result");
-    const btn = document.getElementById("compare-btn");
+    const selector = document.getElementById("gpuSelector");
+    const addBtn = document.getElementById("addGpuBtn");
+    const clearBtn = document.getElementById("clearCompareBtn");
+    const selectedContainer = document.getElementById("selectedGpus");
+    const tableContainer = document.getElementById("compareTableContainer");
 
-    // Rellenar los selectores con todas las GPUs
+    let selectedGpus = [];
+
+    // Rellenar selector con todas las GPUs
     gpuData.forEach(gpu => {
-        const option1 = document.createElement("option");
-        option1.value = gpu.id;
-        option1.textContent = gpu.name;
-
-        const option2 = option1.cloneNode(true);
-
-        select1.appendChild(option1);
-        select2.appendChild(option2);
+        const option = document.createElement("option");
+        option.value = gpu.id;
+        option.textContent = gpu.name;
+        selector.appendChild(option);
     });
 
-    // Función para comparar dos GPUs
-    btn.addEventListener("click", () => {
-        const id1 = Number(select1.value);
-        const id2 = Number(select2.value);
+    // Añadir GPU a la comparación
+    addBtn.addEventListener("click", () => {
+        const id = selector.value;
 
-        if (!id1 || !id2) {
-            result.innerHTML = `
-                <div class="alert alert-warning text-center">
-                    Debes seleccionar dos GPUs para comparar.
-                </div>
-            `;
+        if (!id) {
+            alert("Selecciona una GPU primero");
             return;
         }
 
-        if (id1 === id2) {
-            result.innerHTML = `
-                <div class="alert alert-info text-center">
-                    Selecciona dos GPUs diferentes.
-                </div>
-            `;
+        if (selectedGpus.includes(id)) {
+            alert("Esta GPU ya está en la comparación");
             return;
         }
 
-        const gpu1 = getGpuById(id1);
-        const gpu2 = getGpuById(id2);
+        selectedGpus.push(id);
+        renderSelectedGpus();
+        renderCompareTable();
+    });
 
-        // Tabla comparativa
-        result.innerHTML = `
-            <div class="card shadow-sm p-4">
+    // Limpiar comparación
+    clearBtn.addEventListener("click", () => {
+        selectedGpus = [];
+        renderSelectedGpus();
+        renderCompareTable();
+    });
 
-                <h4 class="fw-bold text-center mb-4">Comparación</h4>
+    // Renderizar tarjetas de GPUs seleccionadas
+    function renderSelectedGpus() {
+        selectedContainer.innerHTML = "";
 
-                <div class="row text-center mb-4">
-                    <div class="col-md-6">
-                        <img src="${gpu1.image}" class="img-fluid rounded mb-2" style="max-height: 180px;">
-                        <h5 class="fw-bold">${gpu1.name}</h5>
-                    </div>
+        selectedGpus.forEach(id => {
+            const gpu = getGpuById(id);
 
-                    <div class="col-md-6">
-                        <img src="${gpu2.image}" class="img-fluid rounded mb-2" style="max-height: 180px;">
-                        <h5 class="fw-bold">${gpu2.name}</h5>
-                    </div>
-                </div>
+            const card = document.createElement("div");
+            card.className = "card p-2 text-center";
+            card.style.width = "180px";
 
-                <table class="table table-dark table-striped text-center">
-                    <thead>
-                        <tr>
-                            <th>Característica</th>
-                            <th>${gpu1.name}</th>
-                            <th>${gpu2.name}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>VRAM</td>
-                            <td>${gpu1.vram}</td>
-                            <td>${gpu2.vram}</td>
-                        </tr>
-                        <tr>
-                            <td>TDP</td>
-                            <td>${gpu1.tdp}W</td>
-                            <td>${gpu2.tdp}W</td>
-                        </tr>
-                        <tr>
-                            <td>Precio</td>
-                            <td>${gpu1.price}€</td>
-                            <td>${gpu2.price}€</td>
-                        </tr>
-                        <tr>
-                            <td>Rendimiento</td>
-                            <td>${gpu1.performance}</td>
-                            <td>${gpu2.performance}</td>
-                        </tr>
-                        <tr>
-                            <td>FPS 1080p</td>
-                            <td>${gpu1.fps["1080p"]}</td>
-                            <td>${gpu2.fps["1080p"]}</td>
-                        </tr>
-                        <tr>
-                            <td>FPS 1440p</td>
-                            <td>${gpu1.fps["1440p"]}</td>
-                            <td>${gpu2.fps["1440p"]}</td>
-                        </tr>
-                        <tr>
-                            <td>FPS 4K</td>
-                            <td>${gpu1.fps["4K"]}</td>
-                            <td>${gpu2.fps["4K"]}</td>
-                        </tr>
-                    </tbody>
-                </table>
+            card.innerHTML = `
+                <h6 class="mb-2">${gpu.name}</h6>
+                <button class="btn btn-danger btn-sm" onclick="removeGpu('${id}')">Quitar</button>
+            `;
 
-                <h4 class="fw-bold mt-4">Conclusión</h4>
-                <p class="mt-2" id="compare-conclusion"></p>
+            selectedContainer.appendChild(card);
+        });
+    }
 
-            </div>
+    // Quitar GPU de la comparación
+    window.removeGpu = function(id) {
+        selectedGpus = selectedGpus.filter(g => g !== id);
+        renderSelectedGpus();
+        renderCompareTable();
+    };
+
+    // Renderizar tabla comparativa
+    function renderCompareTable() {
+        if (selectedGpus.length === 0) {
+            tableContainer.innerHTML = `<p class="text-center mt-3">No hay GPUs seleccionadas.</p>`;
+            return;
+        }
+
+        let html = `
+            <table class="table table-dark table-striped text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>Característica</th>
         `;
 
-        // Generar conclusión automática
-        const conclusion = document.getElementById("compare-conclusion");
+        // Encabezados con nombres de GPUs
+        selectedGpus.forEach(id => {
+            const gpu = getGpuById(id);
+            html += `<th>${gpu.name}</th>`;
+        });
 
-        if (gpu1.performance > gpu2.performance) {
-            conclusion.textContent = `${gpu1.name} ofrece un rendimiento superior en general.`;
-        } else if (gpu2.performance > gpu1.performance) {
-            conclusion.textContent = `${gpu2.name} ofrece un rendimiento superior en general.`;
-        } else {
-            conclusion.textContent = "Ambas GPUs tienen un rendimiento muy similar.";
-        }
-    });
+        html += `
+                </tr>
+                </thead>
+                <tbody>
+        `;
+
+        // Imagen
+        html += `<tr><td><strong>Imagen</strong></td>`;
+        selectedGpus.forEach(id => {
+            const gpu = getGpuById(id);
+            html += `<td><img src="${gpu.image}" style="width:120px;"></td>`;
+        });
+        html += `</tr>`;
+
+        // VRAM
+        html += `<tr><td><strong>VRAM</strong></td>`;
+        selectedGpus.forEach(id => {
+            html += `<td>${getGpuById(id).vram}</td>`;
+        });
+        html += `</tr>`;
+
+        // Rendimiento
+        html += `<tr><td><strong>Rendimiento</strong></td>`;
+        selectedGpus.forEach(id => {
+            html += `<td>${getGpuById(id).performanceScore}/100</td>`;
+        });
+        html += `</tr>`;
+
+        // Precio
+        html += `<tr><td><strong>Precio</strong></td>`;
+        selectedGpus.forEach(id => {
+            html += `<td>${getGpuById(id).price}€</td>`;
+        });
+        html += `</tr>`;
+
+        // Consumo
+        html += `<tr><td><strong>Consumo</strong></td>`;
+        selectedGpus.forEach(id => {
+            html += `<td>${getGpuById(id).powerWatts}W</td>`;
+        });
+        html += `</tr>`;
+
+        // PSU recomendada
+        html += `<tr><td><strong>PSU recomendada</strong></td>`;
+        selectedGpus.forEach(id => {
+            html += `<td>${getGpuById(id).recommendedPsu}W</td>`;
+        });
+        html += `</tr>`;
+
+        // FPS por juego
+        html += `
+            <tr>
+                <td colspan="${selectedGpus.length + 1}" class="table-secondary text-dark">
+                    <strong>FPS por juego</strong>
+                </td>
+            </tr>
+        `;
+
+        games.forEach(game => {
+            html += `<tr><td><strong>${game.name}</strong></td>`;
+
+            selectedGpus.forEach(id => {
+                const gpu = getGpuById(id);
+                const fps = gpu.gamesFps[game.id];
+
+                if (fps) {
+                    html += `
+                        <td>
+                            1080p: ${fps["1080p"]} FPS<br>
+                            1440p: ${fps["1440p"]} FPS<br>
+                            4K: ${fps["4K"]} FPS
+                        </td>
+                    `;
+                } else {
+                    html += `<td>No disponible</td>`;
+                }
+            });
+
+            html += `</tr>`;
+        });
+
+        html += `
+                </tbody>
+            </table>
+        `;
+
+        tableContainer.innerHTML = html;
+    }
 });
+
