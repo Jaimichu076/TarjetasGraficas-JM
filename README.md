@@ -16,4 +16,7 @@ Incluye catálogo, fichas individuales, comparador, ranking, sistema de favorito
 
 ## 📁 Estructura del proyecto
 
+## 📜 Licencia
+
+Este proyecto está licenciado bajo la licencia [MIT](LICENSE).
 
