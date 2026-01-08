@@ -1,12 +1,14 @@
 /* ---------------------------------------------------
-   ESTILO GENERAL — Hacker Pro
+   ESTILO GENERAL — Hacker Moderno
 --------------------------------------------------- */
 
 body {
     background: #000;
-    color: #d0ffd0;
-    font-family: "Consolas", "Courier New", monospace;
-    letter-spacing: 0.4px;
+    color: #c8ffc8;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    overflow-x: hidden;
 }
 
 /* Fondo Matrix */
@@ -17,7 +19,7 @@ canvas#matrix {
     width: 100%;
     height: 100%;
     z-index: -1;
-    opacity: 0.22;
+    opacity: 0.2;
 }
 
 /* ---------------------------------------------------
@@ -25,18 +27,19 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .navbar {
-    background: rgba(0, 0, 0, 0.85) !important;
+    background-color: #000 !important;
     border-bottom: 1px solid #00ff66;
+    box-shadow: 0 0 10px rgba(0, 255, 100, 0.2);
 }
 
 .navbar-brand {
     color: #00ff66 !important;
     font-weight: bold;
-    text-shadow: 0 0 10px #00ff66;
+    text-shadow: 0 0 8px #00ff66;
 }
 
 .nav-link {
-    color: #b8ffb8 !important;
+    color: #c8ffc8 !important;
     transition: 0.2s;
 }
 
@@ -50,15 +53,15 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .card {
-    background: #050505;
+    background-color: #050505;
     border: 1px solid #00ff66;
     box-shadow: 0 0 12px rgba(0, 255, 100, 0.15);
-    transition: 0.25s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0 20px rgba(0, 255, 100, 0.35);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(0, 255, 100, 0.3);
 }
 
 .card img {
@@ -70,23 +73,21 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .btn-primary,
-.btn-outline-primary,
-.btn-danger,
-.btn-success {
+.btn-outline-primary {
     border-radius: 4px;
     font-weight: bold;
     letter-spacing: 0.5px;
 }
 
 .btn-primary {
-    background: #00ff66;
+    background-color: #00ff66;
     border-color: #00ff66;
     color: #000;
 }
 
 .btn-primary:hover {
-    background: #66ff99;
-    border-color: #66ff99;
+    background-color: #33ff99;
+    border-color: #33ff99;
 }
 
 .btn-outline-primary {
@@ -95,7 +96,7 @@ canvas#matrix {
 }
 
 .btn-outline-primary:hover {
-    background: #00ff66;
+    background-color: #00ff66;
     color: #000;
 }
 
@@ -104,17 +105,17 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .table-dark {
-    background: #050505 !important;
+    background-color: #050505 !important;
     border: 1px solid #00ff66;
 }
 
 .table-dark th {
-    background: #000 !important;
+    background-color: #000 !important;
     color: #00ff66 !important;
 }
 
 .table-dark td {
-    color: #d0ffd0 !important;
+    color: #c8ffc8 !important;
     border-color: #00ff66 !important;
 }
 
@@ -123,13 +124,13 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .form-control {
-    background: #000;
+    background-color: #000;
     border: 1px solid #00ff66;
-    color: #d0ffd0;
+    color: #c8ffc8;
 }
 
 .form-control:focus {
-    border-color: #66ff99;
+    border-color: #33ff99;
     box-shadow: 0 0 8px rgba(0, 255, 100, 0.4);
 }
 
@@ -138,9 +139,11 @@ canvas#matrix {
 --------------------------------------------------- */
 
 footer {
-    background: rgba(0, 0, 0, 0.85);
+    background-color: #000;
     border-top: 1px solid #00ff66;
-    color: #b8ffb8;
+    color: #c8ffc8;
+    text-align: center;
+    padding: 1rem;
 }
 
 /* ---------------------------------------------------
@@ -148,8 +151,9 @@ footer {
 --------------------------------------------------- */
 
 h1, h2, h3, h4, h5 {
-    color: #66ff99;
-    text-shadow: 0 0 8px #00ff66;
+    color: #00ff66;
+    text-shadow: 0 0 6px #00ff66;
 }
+
 
 
