@@ -1,4 +1,4 @@
-// matrix.js — Efecto clásico de caída de números y letras
+// matrix.js — Matrix Rain ORIGINAL (complejo, bonito y profesional)
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ctx = canvas.getContext("2d");
 
-    // Ajustar tamaño del canvas
+    // Ajustar tamaño
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -15,36 +15,59 @@ document.addEventListener("DOMContentLoaded", () => {
     resize();
     window.addEventListener("resize", resize);
 
-    // Caracteres: números + letras
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    // Caracteres Matrix clásicos
+    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const charArray = chars.split("");
 
     const fontSize = 18;
-    const columns = Math.floor(canvas.width / fontSize);
+    const columns = Math.floor(window.innerWidth / fontSize);
 
-    // Cada columna representa una "lluvia"
-    const drops = Array(columns).fill(1);
+    // Cada columna tiene:
+    // - y: posición vertical
+    // - speed: velocidad
+    // - trail: longitud de la estela
+    const drops = Array.from({ length: columns }, () => ({
+        y: Math.random() * -50,
+        speed: 2 + Math.random() * 4,
+        trail: 8 + Math.floor(Math.random() * 20)
+    }));
 
     function draw() {
         // Fondo con estela suave
-        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "#00ff66"; // Verde Matrix profesional
-        ctx.font = `${fontSize}px monospace`;
+        drops.forEach((drop, i) => {
+            // Dibujar la columna completa (cabeza + estela)
+            for (let j = 0; j < drop.trail; j++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                const yPos = (drop.y - j) * fontSize;
 
-        for (let i = 0; i < drops.length; i++) {
-            const char = charArray[Math.floor(Math.random() * charArray.length)];
+                if (yPos < 0) continue;
 
-            ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+                // Cabeza brillante
+                if (j === 0) {
+                    ctx.fillStyle = "#ccffcc";
+                } else {
+                    // Estela degradada
+                    const opacity = 1 - j / drop.trail;
+                    ctx.fillStyle = `rgba(0, 255, 100, ${opacity})`;
+                }
 
-            // Reiniciar columna cuando llega al final
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
+                ctx.font = `${fontSize}px monospace`;
+                ctx.fillText(text, i * fontSize, yPos);
             }
 
-            drops[i]++;
-        }
+            // Mover columna
+            drop.y += drop.speed;
+
+            // Reiniciar cuando sale de pantalla
+            if (drop.y * fontSize > canvas.height + drop.trail * fontSize) {
+                drop.y = Math.random() * -20;
+                drop.speed = 2 + Math.random() * 4;
+                drop.trail = 8 + Math.floor(Math.random() * 20);
+            }
+        });
 
         requestAnimationFrame(draw);
     }
