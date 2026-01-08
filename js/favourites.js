@@ -1,92 +1,55 @@
-// favorites.js
-// Maneja los favoritos del usuario usando localStorage
-
-// Obtener favoritos del usuario actual
-function getUserFavorites(email) {
-    const allFavs = JSON.parse(localStorage.getItem("favorites")) || {};
-    return allFavs[email] || [];
-}
-
-// Guardar favoritos del usuario actual
-function saveUserFavorites(email, favs) {
-    const allFavs = JSON.parse(localStorage.getItem("favorites")) || {};
-    allFavs[email] = favs;
-    localStorage.setItem("favorites", JSON.stringify(allFavs));
-}
+// favorites.js — Gestión de GPUs favoritas
 
 document.addEventListener("DOMContentLoaded", () => {
-    const user = getCurrentUser();
-    const msg = document.getElementById("fav-msg");
-    const list = document.getElementById("fav-list");
+    const container = document.getElementById("favoritesList");
 
-    // Si no hay sesión
-    if (!user) {
-        msg.innerHTML = `
-            <div class="alert alert-warning text-center">
-                Debes iniciar sesión para ver tus favoritos.
-                <br>
-                <a href="login.html" class="btn btn-primary mt-3">Iniciar sesión</a>
-            </div>
-        `;
-        return;
-    }
+    renderFavorites();
 
-    // Cargar favoritos del usuario
-    const favIds = getUserFavorites(user);
+    // Renderizar todas las GPUs favoritas
+    function renderFavorites() {
+        container.innerHTML = "";
 
-    if (favIds.length === 0) {
-        msg.innerHTML = `
-            <div class="alert alert-info text-center">
-                Aún no tienes GPUs en favoritos.
-                <br>
-                <a href="gpus.html" class="btn btn-secondary mt-3">Ver catálogo</a>
-            </div>
-        `;
-        return;
-    }
+        let favs = JSON.parse(localStorage.getItem("favorites")) || [];
 
-    // Mostrar cada GPU favorita
-    favIds.forEach(id => {
-        const gpu = getGpuById(id);
-        if (!gpu) return;
-
-        const card = document.createElement("div");
-        card.className = "col-md-4";
-
-        card.innerHTML = `
-            <div class="card shadow-sm h-100">
-                <img src="${gpu.image}" class="card-img-top" alt="${gpu.name}">
-                <div class="card-body">
-                    <h5 class="fw-bold">${gpu.name}</h5>
-                    <p class="text-muted small mb-2">${gpu.vram}</p>
-                    <p class="text-muted small mb-3">Precio aprox: ${gpu.price}€</p>
-
-                    <a href="gpu.html?id=${gpu.id}" class="btn btn-outline-primary w-100 mb-2">
-                        Ver detalles
-                    </a>
-
-                    <button class="btn btn-danger w-100 remove-fav" data-id="${gpu.id}">
-                        Quitar de favoritos
-                    </button>
-                </div>
-            </div>
-        `;
-
-        list.appendChild(card);
-    });
-
-    // Manejar eliminación de favoritos
-    document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("remove-fav")) {
-            const id = Number(e.target.dataset.id);
-
-            let favs = getUserFavorites(user);
-            favs = favs.filter(f => f !== id);
-
-            saveUserFavorites(user, favs);
-
-            // Recargar la página para actualizar la lista
-            location.reload();
+        if (favs.length === 0) {
+            container.innerHTML = `
+                <p class="text-center mt-4">No tienes GPUs en favoritos.</p>
+            `;
+            return;
         }
-    });
+
+        favs.forEach(id => {
+            const gpu = getGpuById(id);
+            if (!gpu) return;
+
+            const col = document.createElement("div");
+            col.className = "col-md-4";
+
+            col.innerHTML = `
+                <div class="card p-3 h-100 text-center">
+                    <img src="${gpu.image}" class="img-fluid mb-2" alt="${gpu.name}">
+                    <h4>${gpu.name}</h4>
+                    <p class="mb-1"><strong>VRAM:</strong> ${gpu.vram}</p>
+                    <p class="mb-1"><strong>Rendimiento:</strong> ${gpu.performanceScore}/100</p>
+                    <p class="mb-1"><strong>Precio:</strong> ${gpu.price}€</p>
+
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <a href="gpu.html?id=${gpu.id}" class="btn btn-primary">Ver</a>
+                        <button class="btn btn-danger" onclick="removeFavorite('${gpu.id}')">Eliminar</button>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(col);
+        });
+    }
+
+    // Eliminar GPU de favoritos
+    window.removeFavorite = function(id) {
+        let favs = JSON.parse(localStorage.getItem("favorites")) || [];
+        favs = favs.filter(g => g !== id);
+        localStorage.setItem("favorites", JSON.stringify(favs));
+        renderFavorites();
+    };
 });
+
