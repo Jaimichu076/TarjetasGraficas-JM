@@ -1,13 +1,20 @@
-// matrix.js — Caída lineal estilo Matrix clásico, adaptado a web
+// matrix.js — Fondo Matrix moderno y optimizado
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
-    canvas.id = "matrix";
-    document.body.appendChild(canvas);
-
     const ctx = canvas.getContext("2d");
 
-    // Ajustar tamaño del canvas
+    // Insertar canvas al fondo
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.zIndex = "-1";
+    canvas.style.pointerEvents = "none";
+    document.body.appendChild(canvas);
+
+    // Ajustar tamaño
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -15,43 +22,42 @@ document.addEventListener("DOMContentLoaded", () => {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Caracteres: solo números y letras
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const charArray = chars.split("");
-
+    // Caracteres estilo Matrix moderno
+    const chars = "01";
     const fontSize = 16;
-    const columns = Math.floor(canvas.width / fontSize);
+    const columns = Math.floor(window.innerWidth / fontSize);
 
-    // Cada columna tiene su posición vertical
-    const drops = Array(columns).fill(0);
+    // Posición de cada columna
+    const drops = Array(columns).fill(1);
 
-    function drawMatrix() {
-        // Fondo con estela suave
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    function draw() {
+        // Fondo semitransparente para efecto de estela suave
+        ctx.fillStyle = "rgba(15, 15, 15, 0.08)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "#00ff66";
-        ctx.font = `${fontSize}px monospace`;
+        ctx.fillStyle = "#00c47a"; // Verde moderno
+        ctx.font = fontSize + "px monospace";
 
         for (let i = 0; i < drops.length; i++) {
-            const char = charArray[Math.floor(Math.random() * charArray.length)];
+            const text = chars[Math.floor(Math.random() * chars.length)];
             const x = i * fontSize;
             const y = drops[i] * fontSize;
 
-            ctx.fillText(char, x, y);
+            ctx.fillText(text, x, y);
 
-            // Reiniciar columna aleatoriamente
+            // Reiniciar columna aleatoriamente para efecto natural
             if (y > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
-            } else {
-                drops[i]++;
             }
+
+            drops[i]++;
         }
 
-        requestAnimationFrame(drawMatrix);
+        requestAnimationFrame(draw);
     }
 
-    drawMatrix();
+    draw();
 });
+
 
 
