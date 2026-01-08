@@ -3,102 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar sesión | GPU Hub</title>
+    <title>GPU Hub — Iniciar sesión</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
-    <!-- Estilos propios -->
+    <!-- Estilos globales -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
+    <!-- Fondo Matrix -->
+    <script src="js/matrix.js" defer></script>
+
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">GPU Hub</a>
+    <nav class="navbar navbar-expand-lg navbar-dark px-3">
+        <a class="navbar-brand" href="index.html">GPU Hub</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Inicio</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="gpus.html">Tarjetas gráficas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="compare.html">Comparador</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="ranking.html">Ranking</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorites.html">Favoritos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="login.html">Iniciar sesión</a>
-                    </li>
-
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
+                <li class="nav-item"><a class="nav-link" href="compare.html">Comparar</a></li>
+                <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
+                <li class="nav-item"><a class="nav-link" href="forum.html">Foro</a></li>
+                <li class="nav-item"><a class="nav-link" href="profile.html">Perfil</a></li>
+                <li class="nav-item"><a class="nav-link active" href="login.html">Entrar</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- FORMULARIO DE LOGIN -->
-    <main class="container my-5" style="max-width: 500px;">
-        <div class="card shadow-sm">
-            <div class="card-body">
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container py-5" style="max-width: 500px;">
 
-                <h3 class="fw-bold text-center mb-4">Iniciar sesión</h3>
+        <h1 class="text-center mb-4">Iniciar sesión</h1>
 
-                <div id="login-msg"></div>
+        <div class="card p-4">
 
-                <form id="login-form">
-                    <div class="mb-3">
-                        <label class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" id="login-email" required>
-                    </div>
+            <div id="loginMessage" class="mb-3 text-center"></div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="login-password" required>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
-                </form>
-
-                <p class="text-center mt-3">
-                    ¿No tienes cuenta?
-                    <a href="register.html">Crear cuenta</a>
-                </p>
-
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input id="loginEmail" type="email" class="form-control" placeholder="tu@email.com">
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input id="loginPassword" type="password" class="form-control" placeholder="••••••••">
+            </div>
+
+            <button id="loginBtn" class="btn btn-primary w-100">Entrar</button>
+
+            <p class="text-center mt-3">
+                ¿No tienes cuenta?  
+                <a href="register.html">Regístrate aquí</a>
+            </p>
+
         </div>
+
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p class="mb-0">© 2026 GPU Hub — Proyecto académico</p>
+    <footer class="py-3 text-center">
+        GPU Hub © 2026 — Todos los derechos reservados
     </footer>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+
+    <script>
+        document.getElementById("loginBtn").addEventListener("click", () => {
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value.trim();
+            const msg = document.getElementById("loginMessage");
+
+            if (!email || !password) {
+                msg.innerHTML = `<span class="text-danger">Rellena todos los campos</span>`;
+                return;
+            }
+
+            const result = loginUser(email, password);
+
+            if (!result.success) {
+                msg.innerHTML = `<span class="text-danger">${result.message}</span>`;
+                return;
+            }
+
+            msg.innerHTML = `<span class="text-success">${result.message}</span>`;
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 800);
+        });
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script de autenticación -->
-    <script src="js/auth.js"></script>
-
-    <!-- Fondo Matrix -->
-    <script src="js/matrix.js"></script>
-
 </body>
 </html>
+
