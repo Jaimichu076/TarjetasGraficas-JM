@@ -1,4 +1,4 @@
-// matrix.js — Matrix Rain ORIGINAL (complejo, bonito y profesional)
+// matrix.js — Matrix Rain ORIGINAL (mejorado ligeramente)
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ctx = canvas.getContext("2d");
 
-    // Ajustar tamaño
+    // Ajustar tamaño del canvas
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -15,21 +15,18 @@ document.addEventListener("DOMContentLoaded", () => {
     resize();
     window.addEventListener("resize", resize);
 
-    // Caracteres Matrix clásicos
-    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // Caracteres clásicos: letras + números
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     const charArray = chars.split("");
 
     const fontSize = 18;
-    const columns = Math.floor(window.innerWidth / fontSize);
+    const columns = Math.floor(canvas.width / fontSize);
 
-    // Cada columna tiene:
-    // - y: posición vertical
-    // - speed: velocidad
-    // - trail: longitud de la estela
+    // Cada columna es una "lluvia"
     const drops = Array.from({ length: columns }, () => ({
         y: Math.random() * -50,
-        speed: 2 + Math.random() * 4,
-        trail: 8 + Math.floor(Math.random() * 20)
+        speed: 2 + Math.random() * 3,
+        trail: 12 + Math.floor(Math.random() * 18)
     }));
 
     function draw() {
@@ -38,9 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         drops.forEach((drop, i) => {
-            // Dibujar la columna completa (cabeza + estela)
+            // Dibujar cabeza + estela
             for (let j = 0; j < drop.trail; j++) {
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                const char = charArray[Math.floor(Math.random() * charArray.length)];
                 const yPos = (drop.y - j) * fontSize;
 
                 if (yPos < 0) continue;
@@ -51,11 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     // Estela degradada
                     const opacity = 1 - j / drop.trail;
-                    ctx.fillStyle = `rgba(0, 255, 100, ${opacity})`;
+                    ctx.fillStyle = `rgba(0, 255, 70, ${opacity})`;
                 }
 
                 ctx.font = `${fontSize}px monospace`;
-                ctx.fillText(text, i * fontSize, yPos);
+                ctx.fillText(char, i * fontSize, yPos);
             }
 
             // Mover columna
@@ -64,8 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Reiniciar cuando sale de pantalla
             if (drop.y * fontSize > canvas.height + drop.trail * fontSize) {
                 drop.y = Math.random() * -20;
-                drop.speed = 2 + Math.random() * 4;
-                drop.trail = 8 + Math.floor(Math.random() * 20);
+                drop.speed = 2 + Math.random() * 3;
+                drop.trail = 12 + Math.floor(Math.random() * 18);
             }
         });
 
@@ -74,3 +71,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     draw();
 });
+
