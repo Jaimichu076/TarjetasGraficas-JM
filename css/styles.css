@@ -1,12 +1,12 @@
 /* ---------------------------------------------------
-   ESTILO GENERAL — Hacker Mode Profesional
+   ESTILO GENERAL — Hacker Pro
 --------------------------------------------------- */
 
 body {
-    background: #050505;
-    color: #d8ffd8;
+    background: #000;
+    color: #d0ffd0;
     font-family: "Consolas", "Courier New", monospace;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.4px;
 }
 
 /* Fondo Matrix */
@@ -26,13 +26,13 @@ canvas#matrix {
 
 .navbar {
     background: rgba(0, 0, 0, 0.85) !important;
-    border-bottom: 1px solid #0f3;
+    border-bottom: 1px solid #00ff66;
 }
 
 .navbar-brand {
-    color: #0f0 !important;
+    color: #00ff66 !important;
     font-weight: bold;
-    text-shadow: 0 0 8px #0f0;
+    text-shadow: 0 0 10px #00ff66;
 }
 
 .nav-link {
@@ -41,8 +41,8 @@ canvas#matrix {
 }
 
 .nav-link:hover {
-    color: #00ff88 !important;
-    text-shadow: 0 0 6px #00ff88;
+    color: #00ff66 !important;
+    text-shadow: 0 0 6px #00ff66;
 }
 
 /* ---------------------------------------------------
@@ -50,19 +50,19 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .card {
-    background: #0a0a0a;
-    border: 1px solid #0f3;
-    box-shadow: 0 0 10px rgba(0, 255, 100, 0.1);
+    background: #050505;
+    border: 1px solid #00ff66;
+    box-shadow: 0 0 12px rgba(0, 255, 100, 0.15);
     transition: 0.25s;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 18px rgba(0, 255, 100, 0.25);
+    transform: translateY(-6px);
+    box-shadow: 0 0 20px rgba(0, 255, 100, 0.35);
 }
 
 .card img {
-    border-bottom: 1px solid #0f3;
+    border-bottom: 1px solid #00ff66;
 }
 
 /* ---------------------------------------------------
@@ -79,23 +79,23 @@ canvas#matrix {
 }
 
 .btn-primary {
-    background: #0f3;
-    border-color: #0f3;
+    background: #00ff66;
+    border-color: #00ff66;
     color: #000;
 }
 
 .btn-primary:hover {
-    background: #00ff88;
-    border-color: #00ff88;
+    background: #66ff99;
+    border-color: #66ff99;
 }
 
 .btn-outline-primary {
-    border-color: #0f3;
-    color: #0f3;
+    border-color: #00ff66;
+    color: #00ff66;
 }
 
 .btn-outline-primary:hover {
-    background: #0f3;
+    background: #00ff66;
     color: #000;
 }
 
@@ -104,18 +104,18 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .table-dark {
-    background: #0a0a0a !important;
-    border: 1px solid #0f3;
+    background: #050505 !important;
+    border: 1px solid #00ff66;
 }
 
 .table-dark th {
-    background: #050505 !important;
-    color: #0f0 !important;
+    background: #000 !important;
+    color: #00ff66 !important;
 }
 
 .table-dark td {
-    color: #c8ffc8 !important;
-    border-color: #0f3 !important;
+    color: #d0ffd0 !important;
+    border-color: #00ff66 !important;
 }
 
 /* ---------------------------------------------------
@@ -123,13 +123,13 @@ canvas#matrix {
 --------------------------------------------------- */
 
 .form-control {
-    background: #050505;
-    border: 1px solid #0f3;
-    color: #d8ffd8;
+    background: #000;
+    border: 1px solid #00ff66;
+    color: #d0ffd0;
 }
 
 .form-control:focus {
-    border-color: #00ff88;
+    border-color: #66ff99;
     box-shadow: 0 0 8px rgba(0, 255, 100, 0.4);
 }
 
@@ -139,7 +139,7 @@ canvas#matrix {
 
 footer {
     background: rgba(0, 0, 0, 0.85);
-    border-top: 1px solid #0f3;
+    border-top: 1px solid #00ff66;
     color: #b8ffb8;
 }
 
@@ -148,7 +148,8 @@ footer {
 --------------------------------------------------- */
 
 h1, h2, h3, h4, h5 {
-    color: #00ff88;
-    text-shadow: 0 0 6px #00ff88;
+    color: #66ff99;
+    text-shadow: 0 0 8px #00ff66;
 }
+
 
