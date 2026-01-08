@@ -3,90 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tarjetas gráficas | GPU Hub</title>
+    <title>GPU Hub — Catálogo</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 
-    <!-- Estilos propios -->
+    <!-- Estilos globales -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
+    <!-- Fondo Matrix -->
+    <script src="js/matrix.js" defer></script>
+
     <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="index.html">GPU Hub</a>
+    <nav class="navbar navbar-expand-lg navbar-dark px-3">
+        <a class="navbar-brand" href="index.html">GPU Hub</a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="mainNav">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.html">Inicio</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="gpus.html">Tarjetas gráficas</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="compare.html">Comparador</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="ranking.html">Ranking</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="favorites.html">Favoritos</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="login.html">Iniciar sesión</a>
-                    </li>
-
-                </ul>
-            </div>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
+                <li class="nav-item"><a class="nav-link" href="compare.html">Comparar</a></li>
+                <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
+                <li class="nav-item"><a class="nav-link" href="forum.html">Foro</a></li>
+                <li class="nav-item"><a class="nav-link" href="profile.html">Perfil</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Entrar</a></li>
+            </ul>
         </div>
     </nav>
 
-    <!-- CABECERA -->
-    <header class="py-4 text-white text-center bg-dark bg-opacity-75">
-        <div class="container">
-            <h1 class="fw-bold">Catálogo de tarjetas gráficas</h1>
-            <p class="text-white-50 mb-0">Explora todas las GPUs disponibles en nuestra base de datos.</p>
-        </div>
-    </header>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container py-5">
 
-    <!-- LISTADO DE GPUS -->
-    <main class="container my-5">
+        <h1 class="text-center mb-4">Catálogo de GPUs</h1>
 
-        <div class="row g-4" id="gpu-list">
-            <!-- Aquí se insertarán las tarjetas desde gpus.js -->
-        </div>
+        <!-- BUSCADOR INTELIGENTE -->
+        <section class="mb-4">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="form-control" 
+                placeholder="Busca por nombre, marca, VRAM, tags..."
+            >
+        </section>
+
+        <!-- FILTROS AVANZADOS -->
+        <section class="mb-4">
+            <div class="row g-3">
+
+                <div class="col-md-3">
+                    <label class="form-label">Marca</label>
+                    <select id="filterBrand" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="NVIDIA">NVIDIA</option>
+                        <option value="AMD">AMD</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">VRAM mínima</label>
+                    <select id="filterVram" class="form-select">
+                        <option value="">Todas</option>
+                        <option value="6">6 GB</option>
+                        <option value="8">8 GB</option>
+                        <option value="10">10 GB</option>
+                        <option value="12">12 GB</option>
+                        <option value="16">16 GB</option>
+                        <option value="20">20 GB</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Rendimiento mínimo</label>
+                    <select id="filterPerformance" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="60">60+</option>
+                        <option value="70">70+</option>
+                        <option value="80">80+</option>
+                        <option value="90">90+</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Ordenar por</label>
+                    <select id="sortBy" class="form-select">
+                        <option value="">Sin ordenar</option>
+                        <option value="priceAsc">Precio (menor a mayor)</option>
+                        <option value="priceDesc">Precio (mayor a menor)</option>
+                        <option value="perfAsc">Rendimiento (menor a mayor)</option>
+                        <option value="perfDesc">Rendimiento (mayor a menor)</option>
+                    </select>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- LISTADO DE GPUS -->
+        <section>
+            <div id="gpuList" class="row g-4"></div>
+        </section>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p class="mb-0">© 2026 GPU Hub — Proyecto académico</p>
+    <footer class="py-3 text-center">
+        GPU Hub © 2026 — Todos los derechos reservados
     </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/gpus.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Base de datos -->
-    <script src="js/data.js"></script>
-
-    <!-- Script de listado -->
-    <script src="js/gpus.js"></script>
-
-    <!-- Fondo Matrix -->
-    <script src="js/matrix.js"></script>
 
 </body>
 </html>
