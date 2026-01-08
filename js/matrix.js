@@ -1,4 +1,4 @@
-// matrix.js — Matrix Rain ORIGINAL (mejorado ligeramente)
+// matrix.js — Digital Stream Matrix (nuevo, distinto y funcional)
 
 document.addEventListener("DOMContentLoaded", () => {
     const canvas = document.createElement("canvas");
@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const ctx = canvas.getContext("2d");
 
-    // Ajustar tamaño del canvas
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -15,54 +14,49 @@ document.addEventListener("DOMContentLoaded", () => {
     resize();
     window.addEventListener("resize", resize);
 
-    // Caracteres clásicos: letras + números
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    // Caracteres
+    const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const charArray = chars.split("");
 
     const fontSize = 18;
     const columns = Math.floor(canvas.width / fontSize);
 
-    // Cada columna es una "lluvia"
-    const drops = Array.from({ length: columns }, () => ({
-        y: Math.random() * -50,
-        speed: 2 + Math.random() * 3,
-        trail: 12 + Math.floor(Math.random() * 18)
+    // Cada columna tiene un flujo ondulado
+    const streams = Array.from({ length: columns }, (_, i) => ({
+        x: i * fontSize,
+        y: Math.random() * canvas.height,
+        speed: 1.5 + Math.random() * 2.5,
+        waveOffset: Math.random() * 1000
     }));
 
     function draw() {
-        // Fondo con estela suave
-        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        // Fondo con desvanecimiento suave
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        drops.forEach((drop, i) => {
-            // Dibujar cabeza + estela
-            for (let j = 0; j < drop.trail; j++) {
-                const char = charArray[Math.floor(Math.random() * charArray.length)];
-                const yPos = (drop.y - j) * fontSize;
+        ctx.font = `${fontSize}px monospace`;
 
-                if (yPos < 0) continue;
+        streams.forEach(stream => {
+            // Movimiento ondulado horizontal
+            const wave = Math.sin((Date.now() + stream.waveOffset) * 0.002) * 10;
 
-                // Cabeza brillante
-                if (j === 0) {
-                    ctx.fillStyle = "#ccffcc";
-                } else {
-                    // Estela degradada
-                    const opacity = 1 - j / drop.trail;
-                    ctx.fillStyle = `rgba(0, 255, 70, ${opacity})`;
-                }
+            // Elegir carácter
+            const char = charArray[Math.floor(Math.random() * charArray.length)];
 
-                ctx.font = `${fontSize}px monospace`;
-                ctx.fillText(char, i * fontSize, yPos);
-            }
+            // Color verde Matrix
+            ctx.fillStyle = "#00ff66";
 
-            // Mover columna
-            drop.y += drop.speed;
+            // Dibujar carácter
+            ctx.fillText(char, stream.x + wave, stream.y);
+
+            // Mover hacia abajo
+            stream.y += stream.speed;
 
             // Reiniciar cuando sale de pantalla
-            if (drop.y * fontSize > canvas.height + drop.trail * fontSize) {
-                drop.y = Math.random() * -20;
-                drop.speed = 2 + Math.random() * 3;
-                drop.trail = 12 + Math.floor(Math.random() * 18);
+            if (stream.y > canvas.height) {
+                stream.y = -fontSize;
+                stream.speed = 1.5 + Math.random() * 2.5;
+                stream.waveOffset = Math.random() * 1000;
             }
         });
 
