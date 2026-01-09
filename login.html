@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GPU Hub — Iniciar sesión</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
 
     <!-- Estilos globales -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-
     <!-- Fondo Matrix -->
     <script src="js/matrix.js" defer></script>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark px-3">
-        <a class="navbar-brand" href="index.html">GPU Hub</a>
+        <a class="navbar-brand" href="index.html">GPU HUB</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navMenu"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
                 <li class="nav-item"><a class="nav-link" href="compare.html">Comparar</a></li>
                 <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
@@ -38,72 +46,71 @@
     </nav>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="container py-5" style="max-width: 500px;">
+    <main class="container py-5 fade-in" style="max-width: 600px;">
 
-        <h1 class="text-center mb-4">Iniciar sesión</h1>
+        <!-- TÍTULO -->
+        <div class="mb-4 text-center">
+            <h1 class="hacker-prefix mb-1">Iniciar sesión</h1>
+            <p class="section-subtitle">Accede a tu perfil local</p>
+        </div>
 
+        <!-- FORMULARIO -->
         <div class="card p-4">
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Usuario</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="username" 
+                        placeholder="Tu nombre de usuario"
+                        required
+                    />
+                </div>
 
-            <div id="loginMessage" class="mb-3 text-center"></div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="password" 
+                        placeholder="Tu contraseña"
+                        required
+                    />
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input id="loginEmail" type="email" class="form-control" placeholder="tu@email.com">
-            </div>
+                <div id="loginMessage" class="text-error mb-3" style="display: none;"></div>
 
-            <div class="mb-3">
-                <label class="form-label">Contraseña</label>
-                <input id="loginPassword" type="password" class="form-control" placeholder="••••••••">
-            </div>
+                <button type="submit" class="btn btn-primary w-100">
+                    Entrar
+                </button>
+            </form>
 
-            <button id="loginBtn" class="btn btn-primary w-100">Entrar</button>
+            <hr class="my-4" />
 
-            <p class="text-center mt-3">
-                ¿No tienes cuenta?  
-                <a href="register.html">Regístrate aquí</a>
+            <p class="text-muted-custom text-center mb-2">
+                ¿No tienes cuenta?
             </p>
-
+            <a href="register.html" class="btn btn-secondary w-100">
+                Registrarse
+            </a>
         </div>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="py-3 text-center">
+    <footer class="py-3">
         GPU Hub © 2026 — Todos los derechos reservados
     </footer>
 
     <!-- Scripts -->
     <script src="js/auth.js"></script>
 
-    <script>
-        document.getElementById("loginBtn").addEventListener("click", () => {
-            const email = document.getElementById("loginEmail").value.trim();
-            const password = document.getElementById("loginPassword").value.trim();
-            const msg = document.getElementById("loginMessage");
-
-            if (!email || !password) {
-                msg.innerHTML = `<span class="text-danger">Rellena todos los campos</span>`;
-                return;
-            }
-
-            const result = loginUser(email, password);
-
-            if (!result.success) {
-                msg.innerHTML = `<span class="text-danger">${result.message}</span>`;
-                return;
-            }
-
-            msg.innerHTML = `<span class="text-success">${result.message}</span>`;
-
-            setTimeout(() => {
-                window.location.href = "index.html";
-            }, 800);
-        });
-    </script>
-
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
 </body>
 </html>
+
 
