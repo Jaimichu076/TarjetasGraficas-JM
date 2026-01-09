@@ -46,79 +46,41 @@
     </nav>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="container py-5 fade-in">
+    <main class="container py-5 fade-in" style="max-width: 900px;">
 
         <!-- TÍTULO -->
-        <div class="mb-4">
-            <h1 class="hacker-prefix mb-1" id="gpuName">Cargando...</h1>
-            <p class="section-subtitle">Ficha técnica completa</p>
+        <div class="mb-4 text-center">
+            <h1 id="gpuTitle" class="hacker-prefix mb-1">Cargando...</h1>
+            <p class="section-subtitle">Ficha técnica completa de la GPU seleccionada</p>
         </div>
 
-        <!-- CONTENIDO GPU -->
-        <div class="row g-4">
+        <!-- TARJETA PRINCIPAL -->
+        <div class="card p-4 mb-4">
 
-            <!-- IMAGEN -->
-            <div class="col-md-5">
-                <div class="card p-3 text-center">
+            <div class="row g-4 align-items-center">
+
+                <!-- IMAGEN -->
+                <div class="col-12 col-md-5 text-center">
                     <img 
                         id="gpuImage" 
                         src="" 
-                        alt="Imagen GPU" 
-                        class="img-fluid gpu-image mb-3"
+                        alt="GPU" 
+                        class="img-fluid gpu-image"
+                        style="max-height: 260px;"
                     />
-                    <p class="gpu-meta mb-1">
-                        <strong>VRAM:</strong> <span id="gpuVram">-</span>
-                    </p>
-                    <p class="gpu-meta mb-1">
-                        <strong>Rendimiento:</strong> <span id="gpuScore">-</span>/100
-                    </p>
-                    <p class="gpu-meta mb-1">
-                        <strong>Consumo:</strong> <span id="gpuWatts">-</span> W
-                    </p>
-                    <p class="gpu-meta mb-1">
-                        <strong>PSU recomendada:</strong> <span id="gpuPsu">-</span> W
-                    </p>
                 </div>
-            </div>
 
-            <!-- ESPECIFICACIONES Y ACCIONES -->
-            <div class="col-md-7">
-                <div class="card p-4 h-100">
+                <!-- DATOS PRINCIPALES -->
+                <div class="col-12 col-md-7">
+                    <h2 id="gpuName" class="mb-3">Cargando...</h2>
 
-                    <h2 class="mb-3">Especificaciones</h2>
+                    <p class="gpu-meta mb-1"><strong>VRAM:</strong> <span id="gpuVram"></span></p>
+                    <p class="gpu-meta mb-1"><strong>Rendimiento:</strong> <span id="gpuPerformance"></span></p>
+                    <p class="gpu-meta mb-1"><strong>Consumo:</strong> <span id="gpuPower"></span></p>
+                    <p class="gpu-meta mb-3"><strong>PSU recomendada:</strong> <span id="gpuPsu"></span></p>
+                    <p class="gpu-meta mb-3"><strong>Precio aproximado:</strong> <span id="gpuPrice"></span></p>
 
-                    <table class="table table-dark table-striped mb-4">
-                        <tbody>
-                            <tr>
-                                <th>Nombre</th>
-                                <td id="specName">-</td>
-                            </tr>
-                            <tr>
-                                <th>VRAM</th>
-                                <td id="specVram">-</td>
-                            </tr>
-                            <tr>
-                                <th>Rendimiento</th>
-                                <td id="specScore">-</td>
-                            </tr>
-                            <tr>
-                                <th>Precio</th>
-                                <td id="specPrice">-</td>
-                            </tr>
-                            <tr>
-                                <th>Consumo</th>
-                                <td id="specWatts">-</td>
-                            </tr>
-                            <tr>
-                                <th>PSU recomendada</th>
-                                <td id="specPsu">-</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <h2 class="mb-3">Acciones</h2>
-
-                    <div class="d-flex flex-wrap gap-2">
+                    <div class="d-flex flex-wrap gap-2 mt-3">
                         <button id="addToFavoritesBtn" class="btn btn-primary flex-fill">
                             Añadir a favoritos
                         </button>
@@ -126,29 +88,25 @@
                         <button id="addToCompareBtn" class="btn btn-secondary flex-fill">
                             Añadir al comparador
                         </button>
-
-                        <a href="gpus.html" class="btn btn-danger flex-fill">
-                            Volver al catálogo
-                        </a>
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
 
-        <!-- FPS (opcional, si quieres añadirlos más adelante) -->
-        <div class="mt-5">
-            <h2 class="mb-3">Rendimiento en juegos (FPS)</h2>
-            <p class="gpu-meta mb-3">
-                Esta sección se puede completar más adelante si quieres añadir datos de FPS por juego.
-            </p>
-
-            <div class="card p-3">
-                <p class="text-muted-custom mb-0">
-                    No hay datos de FPS disponibles para esta GPU.
-                </p>
+        <!-- ESPECIFICACIONES EXTRA -->
+        <div class="card p-4 mb-4">
+            <h2 class="mb-3">Especificaciones adicionales</h2>
+            <div id="gpuExtraSpecs" class="text-muted-custom">
+                Cargando...
             </div>
+        </div>
+
+        <!-- BOTÓN VOLVER -->
+        <div class="text-center">
+            <button id="backToListBtn" class="btn btn-secondary">
+                Volver al catálogo
+            </button>
         </div>
 
     </main>
@@ -168,5 +126,6 @@
     </script>
 </body>
 </html>
+
 
 
