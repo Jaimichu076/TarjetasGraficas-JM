@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 drops[i] = 0;
             }
 
-            drops[i]++;
+            drops[i] += 0.75;
         }
 
         requestAnimationFrame(draw);
