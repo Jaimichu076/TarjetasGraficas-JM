@@ -1,4 +1,5 @@
 GPU Hub
+
 GPU Hub es una aplicación web front‑end que permite explorar, comparar y gestionar información sobre tarjetas gráficas. Incluye catálogo, buscador avanzado, comparador, sistema de favoritos, foro local y un pequeño sistema de usuarios. Todo funciona sin backend, utilizando únicamente localStorage.
 
 El proyecto está construido con HTML, CSS, JavaScript y Bootstrap, y utiliza un estilo visual inspirado en un tema “Matrix claro”.
