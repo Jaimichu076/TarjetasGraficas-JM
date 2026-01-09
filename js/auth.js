@@ -1,90 +1,159 @@
-// auth.js — Sistema de autenticación simple con localStorage
+// auth.js — Sistema de autenticación local para GPU Hub
+// Gestiona registro, login, logout y sesión usando localStorage.
+// No hay backend: todo es 100% local y privado en el navegador.
 
-// Obtener usuarios guardados
-function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-// Guardar usuarios
-function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
-}
+    // ============================
+    //   UTILIDADES GENERALES
+    // ============================
 
-// Guardar usuario actual
-function setCurrentUser(email) {
-    localStorage.setItem("currentUser", email);
-}
-
-// Obtener usuario actual
-function getCurrentUser() {
-    return localStorage.getItem("currentUser");
-}
-
-// Cerrar sesión
-function logout() {
-    localStorage.removeItem("currentUser");
-    window.location.href = "index.html";
-}
-
-// REGISTRO
-function registerUser(name, email, password) {
-    let users = getUsers();
-
-    // Comprobar si ya existe
-    if (users.some(u => u.email === email)) {
-        return { success: false, message: "Este email ya está registrado" };
+    function getUsers() {
+        const stored = localStorage.getItem("users");
+        if (!stored) return [];
+        try {
+            const parsed = JSON.parse(stored);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch {
+            return [];
+        }
     }
 
-    // Crear usuario
-    const newUser = {
-        name,
-        email,
-        password, // En un proyecto real se encriptaría
-        theme: "dark" // Tema por defecto
-    };
-
-    users.push(newUser);
-    saveUsers(users);
-
-    return { success: true, message: "Usuario registrado correctamente" };
-}
-
-// LOGIN
-function loginUser(email, password) {
-    const users = getUsers();
-
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (!user) {
-        return { success: false, message: "Email o contraseña incorrectos" };
+    function saveUsers(users) {
+        localStorage.setItem("users", JSON.stringify(users));
     }
 
-    setCurrentUser(email);
-    return { success: true, message: "Inicio de sesión correcto" };
-}
+    function setSession(username) {
+        localStorage.setItem("sessionUser", username);
+    }
 
-// Obtener datos del usuario actual
-function getCurrentUserData() {
-    const email = getCurrentUser();
-    if (!email) return null;
+    function clearSession() {
+        localStorage.removeItem("sessionUser");
+    }
 
-    const users = getUsers();
-    return users.find(u => u.email === email) || null;
-}
+    function getSessionUser() {
+        return localStorage.getItem("sessionUser");
+    }
 
-// Actualizar datos del usuario actual
-function updateCurrentUserData(newData) {
-    const email = getCurrentUser();
-    if (!email) return;
+    // ============================
+    //   LOGIN
+    // ============================
 
-    let users = getUsers();
-    let user = users.find(u => u.email === email);
+    const loginForm = document.getElementById("loginForm");
 
-    if (!user) return;
+    if (loginForm) {
+        loginForm.addEventListener("submit", (e) => {
+            e.preventDefault();
 
-    // Actualizar campos
-    Object.assign(user, newData);
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const message = document.getElementById("loginMessage");
 
-    saveUsers(users);
-}
+            const users = getUsers();
+            const user = users.find(u => u.username === username);
+
+            if (!user) {
+                message.textContent = "El usuario no existe.";
+                message.style.display = "block";
+                return;
+            }
+
+            if (user.password !== password) {
+                message.textContent = "Contraseña incorrecta.";
+                message.style.display = "block";
+                return;
+            }
+
+            // Login correcto
+            setSession(username);
+            window.location.href = "profile.html";
+        });
+    }
+
+    // ============================
+    //   REGISTRO
+    // ============================
+
+    const registerForm = document.getElementById("registerForm");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById("regUsername").value.trim();
+            const email = document.getElementById("regEmail").value.trim();
+            const password = document.getElementById("regPassword").value.trim();
+            const message = document.getElementById("registerMessage");
+
+            const users = getUsers();
+
+            if (users.some(u => u.username === username)) {
+                message.textContent = "Ese nombre de usuario ya está registrado.";
+                message.style.display = "block";
+                return;
+            }
+
+            if (users.some(u => u.email === email)) {
+                message.textContent = "Ese correo ya está registrado.";
+                message.style.display = "block";
+                return;
+            }
+
+            const newUser = {
+                username,
+                email,
+                password,
+                createdAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            saveUsers(users);
+
+            setSession(username);
+
+            window.location.href = "profile.html";
+        });
+    }
+
+    // ============================
+    //   PERFIL (CARGAR DATOS)
+    // ============================
+
+    const profileUsername = document.getElementById("profileUsername");
+    const profileEmail = document.getElementById("profileEmail");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (profileUsername && profileEmail) {
+        const sessionUser = getSessionUser();
+
+        if (!sessionUser) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        const users = getUsers();
+        const user = users.find(u => u.username === sessionUser);
+
+        if (!user) {
+            clearSession();
+            window.location.href = "login.html";
+            return;
+        }
+
+        profileUsername.textContent = user.username;
+        profileEmail.textContent = user.email;
+    }
+
+    // ============================
+    //   LOGOUT
+    // ============================
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            clearSession();
+            window.location.href = "login.html";
+        });
+    }
+
+});
 
