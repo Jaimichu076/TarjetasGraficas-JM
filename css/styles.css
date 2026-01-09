@@ -1,17 +1,29 @@
 /* ============================
-   TEMA OSCURO MODERNO GLOBAL
+   TEMA OSCURO HACKER BRILLANTE
    ============================ */
 
+:root {
+    --bg-main: #02040a;
+    --bg-card: #050814;
+    --accent-green: #00ff88;
+    --accent-cyan: #00e0ff;
+    --accent-magenta: #ff00c8;
+    --text-main: #e8f5ff;
+    --text-muted: #7b8a99;
+    --border-soft: rgba(0, 255, 136, 0.2);
+}
+
+/* Reset básico visual */
 body {
-    background-color: #0f0f0f;
-    color: #e6e6e6;
-    font-family: "Inter", "Roboto", sans-serif;
+    background: radial-gradient(circle at top, #061427 0, #02040a 40%, #000000 100%);
+    color: var(--text-main);
+    font-family: "Inter", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    letter-spacing: 0.02em;
 }
 
-/* Contenido principal */
 main {
     flex: 1;
 }
@@ -21,24 +33,61 @@ main {
    ============================ */
 
 .navbar {
-    background: rgba(20, 20, 20, 0.9);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: linear-gradient(90deg, #02040a 0%, #050814 40%, #02040a 100%);
+    border-bottom: 1px solid rgba(0, 255, 136, 0.35);
+    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
 }
 
 .navbar-brand {
-    font-weight: 700;
-    color: #00c47a !important;
+    font-weight: 800;
+    color: var(--accent-green) !important;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.navbar-brand::before {
+    content: "</";
+    color: var(--accent-cyan);
+}
+
+.navbar-brand::after {
+    content: ">";
+    color: var(--accent-magenta);
 }
 
 .nav-link {
-    color: #cccccc !important;
+    color: var(--text-muted) !important;
     transition: 0.2s;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.9rem;
 }
 
 .nav-link:hover,
 .nav-link.active {
-    color: #00c47a !important;
+    color: var(--accent-green) !important;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+}
+
+/* ============================
+   TITULOS Y TEXTOS
+   ============================ */
+
+h1, h2, h3, h4, h5 {
+    font-family: "JetBrains Mono", "Fira Code", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+h1 {
+    font-size: 1.9rem;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
 }
 
 /* ============================
@@ -46,50 +95,95 @@ main {
    ============================ */
 
 .card {
-    background: #1a1a1a;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 10px;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    background: radial-gradient(circle at top left, #071529 0, #050814 45%, #02040a 100%);
+    border: 1px solid rgba(0, 255, 136, 0.18);
+    border-radius: 12px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    background: radial-gradient(circle at top left, rgba(0, 255, 136, 0.25), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 18px rgba(0, 196, 122, 0.15);
+    transform: translateY(-4px) translateZ(0);
+    box-shadow: 0 0 22px rgba(0, 255, 136, 0.35);
+    border-color: rgba(0, 255, 136, 0.6);
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+/* Para tarjetas de GPU concretas */
+.gpu-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.gpu-meta {
+    font-size: 0.8rem;
+    color: var(--text-muted);
 }
 
 /* ============================
    BOTONES
    ============================ */
 
+.btn {
+    font-family: "JetBrains Mono", monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    border-width: 1px;
+}
+
 .btn-primary {
-    background-color: #00c47a;
-    border-color: #00c47a;
-    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
+    border-color: var(--accent-green);
+    color: #02040a;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
 }
 
 .btn-primary:hover {
-    background-color: #00a868;
-    border-color: #00a868;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 18px rgba(0, 224, 255, 0.85);
 }
 
 .btn-danger {
-    background-color: #d9534f;
-    border-color: #d9534f;
+    background: linear-gradient(135deg, #ff3366, #ff00c8);
+    border-color: #ff3366;
+    color: #02040a;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
 }
 
 .btn-danger:hover {
-    background-color: #c64541;
-    border-color: #c64541;
+    background: linear-gradient(135deg, #ff00c8, #ff3366);
+    border-color: #ff00c8;
 }
 
+/* Botón secundario más hacker */
 .btn-secondary {
-    background-color: #2d2d2d;
-    border-color: #2d2d2d;
+    background: #050814;
+    border-color: rgba(0, 255, 136, 0.4);
+    color: var(--accent-green);
 }
 
 .btn-secondary:hover {
-    background-color: #3a3a3a;
-    border-color: #3a3a3a;
+    background: #071329;
+    border-color: rgba(0, 255, 136, 0.8);
 }
 
 /* ============================
@@ -99,35 +193,44 @@ main {
 .form-control,
 .form-select,
 textarea {
-    background-color: #141414;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    color: #e6e6e6;
+    background-color: rgba(3, 8, 18, 0.9);
+    border: 1px solid rgba(0, 255, 136, 0.15);
+    color: var(--text-main);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
+}
+
+.form-control::placeholder,
+textarea::placeholder {
+    color: rgba(124, 151, 170, 0.7);
 }
 
 .form-control:focus,
 .form-select:focus,
 textarea:focus {
-    background-color: #1a1a1a;
-    border-color: #00c47a;
-    box-shadow: 0 0 0 0.2rem rgba(0, 196, 122, 0.25);
-    color: #fff;
+    background-color: #050814;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 0.18rem rgba(0, 224, 255, 0.35);
+    color: #ffffff;
 }
 
 /* ============================
-   TABLAS
+   TABLAS (comparador, FPS)
    ============================ */
 
 .table-dark {
-    background-color: #141414;
+    background-color: #050814;
+    color: var(--text-main);
 }
 
 .table-dark th,
 .table-dark td {
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 224, 255, 0.2);
+    font-size: 0.85rem;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #1a1a1a;
+    background-color: #040712;
 }
 
 /* ============================
@@ -135,13 +238,15 @@ textarea:focus {
    ============================ */
 
 .list-group-item {
-    background-color: #141414;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    color: #e6e6e6;
+    background-color: #050814;
+    border: 1px solid rgba(0, 224, 255, 0.2);
+    color: var(--text-main);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
 }
 
 .list-group-item:hover {
-    background-color: #1d1d1d;
+    background-color: #071529;
 }
 
 /* ============================
@@ -149,30 +254,35 @@ textarea:focus {
    ============================ */
 
 footer {
-    background: #111;
-    color: #888;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: #02040a;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(0, 255, 136, 0.3);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 /* ============================
-   EFECTOS Y DETALLES
+   LINKS Y DETALLES
    ============================ */
 
 a {
-    color: #00c47a;
+    color: var(--accent-cyan);
     text-decoration: none;
 }
 
 a:hover {
-    color: #00a868;
+    color: var(--accent-green);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
 }
 
 hr {
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(0, 255, 136, 0.2);
 }
 
 /* ============================
-   SCROLLBAR PERSONALIZADO
+   SCROLLBAR
    ============================ */
 
 ::-webkit-scrollbar {
@@ -180,16 +290,16 @@ hr {
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f0f0f;
+    background: #02040a;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #00c47a;
-    border-radius: 5px;
+    background: linear-gradient(var(--accent-green), var(--accent-cyan));
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #00a868;
+    background: linear-gradient(var(--accent-cyan), var(--accent-green));
 }
 
 /* ============================
@@ -197,14 +307,50 @@ hr {
    ============================ */
 
 .fade-in {
-    animation: fadeIn 0.4s ease forwards;
+    animation: fadeIn 0.35s ease forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
+    from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Pequeño efecto “cursor” hacker */
+.hacker-prefix::before {
+    content: "$ ";
+    color: var(--accent-green);
+}
+
+/* ============================
+   LAYOUT HOME (index)
+   ============================ */
+
+.hero-panel {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 255, 136, 0.35);
+    background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.16), rgba(5, 8, 20, 0.95));
+    box-shadow: 0 0 28px rgba(0, 255, 136, 0.28);
+}
+
+/* ============================
+   IMÁGENES GPU
+   ============================ */
+
+.gpu-image {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    background: radial-gradient(circle at center, rgba(0, 224, 255, 0.12), transparent 60%);
+    padding: 6px;
+}
+
+/* ============================
+   CONTENEDORES GENERALES
+   ============================ */
+
+.container {
+    position: relative;
+    z-index: 1; /* por encima del canvas matrix */
+}
 
 
 
