@@ -1,31 +1,57 @@
-/* ============================
-   TEMA OSCURO HACKER BRILLANTE
-   ============================ */
+/* =========================================
+   GPU HUB — ESTILO GLOBAL MATRIX CLARO
+   ========================================= */
 
+/* Paleta y variables principales */
 :root {
-    --bg-main: #02040a;
-    --bg-card: #050814;
-    --accent-green: #00ff88;
-    --accent-cyan: #00e0ff;
-    --accent-magenta: #ff00c8;
-    --text-main: #e8f5ff;
-    --text-muted: #7b8a99;
-    --border-soft: rgba(0, 255, 136, 0.2);
+    --bg-main: #080c12;              /* Fondo general, oscuro pero no negro absoluto */
+    --bg-main-2: #0f1722;            /* Fondos secundarios / tarjetas */
+    --bg-card: #101827;              /* Tarjetas */
+    --bg-elevated: #141c2b;
+
+    --accent-green: #00ff6a;         /* Verde Matrix brillante */
+    --accent-green-soft: #3dff9a;    /* Verde más suave */
+    --accent-cyan: #27e2ff;          /* Cian para detalles */
+    --accent-yellow: #f6ff6a;        /* Toque amarillo Matrix */
+
+    --text-main: #f1f5f9;            /* Texto principal claro */
+    --text-muted: #94a3b8;           /* Texto secundario */
+    --border-soft: rgba(148, 163, 184, 0.35);      /* Bordes suaves */
+    --border-neon: rgba(0, 255, 106, 0.55);        /* Bordes “neón” */
+
+    --shadow-soft: 0 0 20px rgba(15, 23, 42, 0.9);
+    --shadow-neon: 0 0 20px rgba(0, 255, 106, 0.5);
 }
 
-/* Reset básico visual */
+/* ============================
+   BASE GLOBAL
+   ============================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
-    background: radial-gradient(circle at top, #061427 0, #02040a 40%, #000000 100%);
+    margin: 0;
+    background: radial-gradient(circle at top, #111827 0, #020617 38%, #000000 100%);
     color: var(--text-main);
-    font-family: "Inter", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    letter-spacing: 0.02em;
 }
 
+/* Para que el contenido empuje al footer al fondo */
 main {
     flex: 1;
+}
+
+/* Contenedores por encima del fondo Matrix */
+.container, .container-fluid {
+    position: relative;
+    z-index: 1;
 }
 
 /* ============================
@@ -33,71 +59,93 @@ main {
    ============================ */
 
 .navbar {
-    background: linear-gradient(90deg, #02040a 0%, #050814 40%, #02040a 100%);
-    border-bottom: 1px solid rgba(0, 255, 136, 0.35);
-    box-shadow: 0 0 18px rgba(0, 255, 136, 0.2);
+    background: linear-gradient(90deg, rgba(8, 12, 18, 0.92), rgba(15, 23, 42, 0.96));
+    border-bottom: 1px solid var(--border-neon);
+    box-shadow: 0 0 18px rgba(0, 255, 106, 0.25);
 }
 
 .navbar-brand {
     font-weight: 800;
-    color: var(--accent-green) !important;
+    color: var(--accent-green-soft) !important;
     font-family: "JetBrains Mono", "Fira Code", monospace;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.18em;
+    font-size: 0.9rem;
 }
 
 .navbar-brand::before {
-    content: "</";
+    content: "[";
     color: var(--accent-cyan);
+    margin-right: 3px;
 }
 
 .navbar-brand::after {
-    content: ">";
-    color: var(--accent-magenta);
+    content: "]";
+    color: var(--accent-cyan);
+    margin-left: 3px;
 }
 
 .nav-link {
     color: var(--text-muted) !important;
-    transition: 0.2s;
+    transition: color 0.18s ease, text-shadow 0.18s ease;
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
 }
 
 .nav-link:hover,
 .nav-link.active {
     color: var(--accent-green) !important;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.7);
+    text-shadow: 0 0 10px rgba(0, 255, 106, 0.7);
 }
 
 /* ============================
-   TITULOS Y TEXTOS
+   TIPOGRAFÍA Y TITULOS
    ============================ */
 
 h1, h2, h3, h4, h5 {
     font-family: "JetBrains Mono", "Fira Code", monospace;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
+    color: var(--text-main);
 }
 
 h1 {
     font-size: 1.9rem;
 }
 
+h2 {
+    font-size: 1.5rem;
+}
+
 .section-subtitle {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    color: var(--accent-green-soft);
+    font-size: 0.8rem;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.22em;
+}
+
+/* Prefijo estilo terminal */
+.hacker-prefix::before {
+    content: "$ ";
+    color: var(--accent-green);
+}
+
+/* Texto apagado */
+.text-muted-custom {
+    color: var(--text-muted);
 }
 
 /* ============================
-   TARJETAS
+   TARJETAS / PANELS
    ============================ */
 
 .card {
-    background: radial-gradient(circle at top left, #071529 0, #050814 45%, #02040a 100%);
-    border: 1px solid rgba(0, 255, 136, 0.18);
+    background: radial-gradient(circle at top left, rgba(15, 118, 110, 0.15), var(--bg-card));
+    border: 1px solid var(--border-soft);
     border-radius: 12px;
+    box-shadow: var(--shadow-soft);
     transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     position: relative;
     overflow: hidden;
@@ -107,31 +155,47 @@ h1 {
     content: "";
     position: absolute;
     inset: -1px;
-    background: radial-gradient(circle at top left, rgba(0, 255, 136, 0.25), transparent 60%);
+    background: radial-gradient(circle at top left, rgba(0, 255, 106, 0.25), transparent 60%);
     opacity: 0;
     transition: opacity 0.2s ease;
     pointer-events: none;
 }
 
 .card:hover {
-    transform: translateY(-4px) translateZ(0);
-    box-shadow: 0 0 22px rgba(0, 255, 136, 0.35);
-    border-color: rgba(0, 255, 136, 0.6);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-neon);
+    border-color: var(--border-neon);
 }
 
 .card:hover::before {
     opacity: 1;
 }
 
-/* Para tarjetas de GPU concretas */
+/* Panel héroe para index */
+.hero-panel {
+    border-radius: 18px;
+    border: 1px solid var(--border-neon);
+    background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), rgba(15, 23, 42, 0.96));
+    box-shadow: 0 0 26px rgba(0, 255, 106, 0.35);
+}
+
+/* Tarjetas GPU específicas */
 .gpu-card-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
 }
 
 .gpu-meta {
     font-size: 0.8rem;
     color: var(--text-muted);
+}
+
+/* Imagen de GPU */
+.gpu-image {
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.4);
+    background: radial-gradient(circle at center, rgba(0, 255, 106, 0.18), transparent 60%);
+    padding: 4px;
 }
 
 /* ============================
@@ -141,7 +205,7 @@ h1 {
 .btn {
     font-family: "JetBrains Mono", monospace;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
     font-size: 0.75rem;
     border-radius: 999px;
     border-width: 1px;
@@ -150,68 +214,75 @@ h1 {
 .btn-primary {
     background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));
     border-color: var(--accent-green);
-    color: #02040a;
+    color: #020617;
     font-weight: 700;
-    box-shadow: 0 0 12px rgba(0, 255, 136, 0.6);
+    box-shadow: 0 0 14px rgba(0, 255, 106, 0.6);
 }
 
 .btn-primary:hover {
     background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 18px rgba(0, 224, 255, 0.85);
+    box-shadow: 0 0 18px rgba(39, 226, 255, 0.8);
 }
 
 .btn-danger {
-    background: linear-gradient(135deg, #ff3366, #ff00c8);
-    border-color: #ff3366;
-    color: #02040a;
+    background: linear-gradient(135deg, #fb7185, #fb2b74);
+    border-color: #fb7185;
+    color: #020617;
     font-weight: 700;
-    box-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
+    box-shadow: 0 0 14px rgba(248, 113, 113, 0.7);
 }
 
 .btn-danger:hover {
-    background: linear-gradient(135deg, #ff00c8, #ff3366);
-    border-color: #ff00c8;
+    background: linear-gradient(135deg, #fb2b74, #fb7185);
+    border-color: #fb2b74;
 }
 
-/* Botón secundario más hacker */
 .btn-secondary {
-    background: #050814;
-    border-color: rgba(0, 255, 136, 0.4);
-    color: var(--accent-green);
+    background: #020617;
+    border-color: var(--border-soft);
+    color: var(--text-main);
 }
 
 .btn-secondary:hover {
-    background: #071329;
-    border-color: rgba(0, 255, 136, 0.8);
+    background: #0f172a;
+    border-color: var(--accent-green-soft);
 }
 
 /* ============================
    FORMULARIOS
    ============================ */
 
+.form-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    font-family: "JetBrains Mono", monospace;
+}
+
 .form-control,
 .form-select,
 textarea {
-    background-color: rgba(3, 8, 18, 0.9);
-    border: 1px solid rgba(0, 255, 136, 0.15);
+    background-color: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-soft);
     color: var(--text-main);
-    font-family: "JetBrains Mono", monospace;
     font-size: 0.85rem;
+    font-family: "JetBrains Mono", monospace;
 }
 
 .form-control::placeholder,
 textarea::placeholder {
-    color: rgba(124, 151, 170, 0.7);
+    color: rgba(148, 163, 184, 0.8);
 }
 
 .form-control:focus,
 .form-select:focus,
 textarea:focus {
-    background-color: #050814;
+    background-color: #020617;
     border-color: var(--accent-cyan);
-    box-shadow: 0 0 0 0.18rem rgba(0, 224, 255, 0.35);
-    color: #ffffff;
+    box-shadow: 0 0 0 0.18rem rgba(39, 226, 255, 0.35);
+    color: #f9fafb;
 }
 
 /* ============================
@@ -219,18 +290,22 @@ textarea:focus {
    ============================ */
 
 .table-dark {
-    background-color: #050814;
+    background-color: #020617;
     color: var(--text-main);
 }
 
 .table-dark th,
 .table-dark td {
-    border-color: rgba(0, 224, 255, 0.2);
-    font-size: 0.85rem;
+    border-color: rgba(148, 163, 184, 0.45);
+    font-size: 0.8rem;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
-    background-color: #040712;
+    background-color: #020617;
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+    background-color: #0b1220;
 }
 
 /* ============================
@@ -238,15 +313,15 @@ textarea:focus {
    ============================ */
 
 .list-group-item {
-    background-color: #050814;
-    border: 1px solid rgba(0, 224, 255, 0.2);
+    background-color: #020617;
+    border: 1px solid rgba(148, 163, 184, 0.5);
     color: var(--text-main);
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .list-group-item:hover {
-    background-color: #071529;
+    background-color: #0f172a;
 }
 
 /* ============================
@@ -254,13 +329,14 @@ textarea:focus {
    ============================ */
 
 footer {
-    background: #02040a;
+    background: #020617;
     color: var(--text-muted);
-    border-top: 1px solid rgba(0, 255, 136, 0.3);
+    border-top: 1px solid var(--border-soft);
     font-family: "JetBrains Mono", monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
+    text-align: center;
 }
 
 /* ============================
@@ -274,11 +350,11 @@ a {
 
 a:hover {
     color: var(--accent-green);
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+    text-shadow: 0 0 10px rgba(0, 255, 106, 0.9);
 }
 
 hr {
-    border-color: rgba(0, 255, 136, 0.2);
+    border-color: rgba(148, 163, 184, 0.4);
 }
 
 /* ============================
@@ -290,7 +366,7 @@ hr {
 }
 
 ::-webkit-scrollbar-track {
-    background: #02040a;
+    background: #020617;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -311,46 +387,28 @@ hr {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Pequeño efecto “cursor” hacker */
-.hacker-prefix::before {
-    content: "$ ";
-    color: var(--accent-green);
-}
-
-/* ============================
-   LAYOUT HOME (index)
-   ============================ */
-
-.hero-panel {
-    border-radius: 16px;
-    border: 1px solid rgba(0, 255, 136, 0.35);
-    background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.16), rgba(5, 8, 20, 0.95));
-    box-shadow: 0 0 28px rgba(0, 255, 136, 0.28);
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ============================
-   IMÁGENES GPU
+   COSAS PEQUEÑAS
    ============================ */
 
-.gpu-image {
-    border-radius: 10px;
-    border: 1px solid rgba(0, 255, 136, 0.2);
-    background: radial-gradient(circle at center, rgba(0, 224, 255, 0.12), transparent 60%);
-    padding: 6px;
+/* Para mensajes de error / éxito en formularios */
+.text-error {
+    color: #f97373;
+    font-size: 0.8rem;
 }
 
-/* ============================
-   CONTENEDORES GENERALES
-   ============================ */
-
-.container {
-    position: relative;
-    z-index: 1; /* por encima del canvas matrix */
+.text-success-custom {
+    color: var(--accent-green-soft);
+    font-size: 0.8rem;
 }
-
-
 
