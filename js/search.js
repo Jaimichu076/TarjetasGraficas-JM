@@ -1,60 +1,61 @@
-// search.js — Buscador inteligente global
+// search.js — Motor de búsqueda avanzado para GPU Hub
+// Este archivo permite filtrar GPUs por múltiples criterios de forma flexible.
+// Está diseñado para integrarse con gpus.js, pero puede usarse en cualquier página.
 
 document.addEventListener("DOMContentLoaded", () => {
-    const input = document.getElementById("searchInput");
-    const resultsContainer = document.getElementById("searchResults");
 
-    if (!input || !resultsContainer) return;
+    // ============================
+    //   CONFIGURACIÓN BÁSICA
+    // ============================
 
-    input.addEventListener("input", () => {
-        const query = input.value.trim().toLowerCase();
-        if (query.length === 0) {
-            resultsContainer.innerHTML = "";
-            return;
-        }
+    // Si la página no tiene un input de búsqueda, no hacemos nada
+    const searchInput = document.getElementById("searchInput");
+    if (!searchInput) return;
 
-        const results = gpuData.filter(gpu => {
-            return (
-                gpu.name.toLowerCase().includes(query) ||
-                gpu.brand.toLowerCase().includes(query) ||
-                gpu.series.toLowerCase().includes(query) ||
-                gpu.vram.toLowerCase().includes(query) ||
-                gpu.tags.some(tag => tag.toLowerCase().includes(query)) ||
-                gpu.performanceScore.toString().includes(query) ||
-                gpu.price.toString().includes(query)
-            );
+    // Si no existe gpuData, no podemos buscar
+    if (!Array.isArray(gpuData)) {
+        console.error("gpuData no está definido o no es un array.");
+        return;
+    }
+
+    // ============================
+    //   EVENTO PRINCIPAL
+    // ============================
+
+    searchInput.addEventListener("input", () => {
+        const term = searchInput.value.trim().toLowerCase();
+        const resultados = buscarGpus(term);
+
+        // Disparamos un evento personalizado para que gpus.js reciba los resultados
+        const event = new CustomEvent("gpuSearchResults", {
+            detail: { resultados }
         });
 
-        renderSearchResults(results);
+        document.dispatchEvent(event);
     });
 
-    function renderSearchResults(list) {
-        resultsContainer.innerHTML = "";
+    // ============================
+    //   FUNCIÓN DE BÚSQUEDA
+    // ============================
 
-        if (list.length === 0) {
-            resultsContainer.innerHTML = `
-                <p class="text-center mt-3">No se encontraron GPUs.</p>
-            `;
-            return;
-        }
+    function buscarGpus(term) {
+        if (!term) return [...gpuData];
 
-        list.forEach(gpu => {
-            const col = document.createElement("div");
-            col.className = "col-md-4";
+        // Dividir en tokens para búsquedas más inteligentes
+        const tokens = term.split(" ").filter(t => t.length > 0);
 
-            col.innerHTML = `
-                <a href="gpu.html?id=${gpu.id}" class="text-decoration-none">
-                    <div class="card p-3 h-100">
-                        <img src="${gpu.image}" class="img-fluid mb-2" alt="${gpu.name}">
-                        <h5>${gpu.name}</h5>
-                        <p class="mb-1"><strong>VRAM:</strong> ${gpu.vram}</p>
-                        <p class="mb-1"><strong>Rendimiento:</strong> ${gpu.performanceScore}/100</p>
-                        <p class="mb-1"><strong>Precio:</strong> ${gpu.price}€</p>
-                    </div>
-                </a>
-            `;
+        return gpuData.filter(gpu => {
+            const texto = `
+                ${gpu.name}
+                ${gpu.vram}
+                ${gpu.price}
+                ${gpu.performanceScore}
+                ${gpu.powerWatts}
+            `.toLowerCase();
 
-            resultsContainer.appendChild(col);
+            // Cada token debe aparecer en el texto
+            return tokens.every(t => texto.includes(t));
         });
     }
+
 });
