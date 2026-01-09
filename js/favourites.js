@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
             col.innerHTML = `
                 <div class="card p-3 h-100 d-flex flex-column justify-content-between">
 
-                    <div class="text-center mb-3">
+                    <div class="gpu-image-wrapper mb-3">
                         <img 
                             src="${gpu.image}" 
                             alt="${gpu.name}" 
