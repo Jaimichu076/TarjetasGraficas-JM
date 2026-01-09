@@ -49,45 +49,58 @@
     <main class="container py-5 fade-in">
 
         <!-- TÍTULO -->
-        <div class="mb-4">
-            <h1 class="hacker-prefix mb-1">Comparador de GPUs</h1>
-            <p class="section-subtitle">Selecciona y compara tarjetas gráficas</p>
+        <div class="mb-4 text-center">
+            <h1 class="hacker-prefix mb-1">Comparador avanzado de GPUs</h1>
+            <p class="section-subtitle">
+                Compara rendimiento, consumo, PSU recomendada y precio en una sola vista.
+            </p>
         </div>
 
-        <!-- SELECTOR Y BOTONES -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-6">
-                <label class="form-label">Selecciona una GPU</label>
-                <select id="gpuSelect" class="form-select">
-                    <!-- compare.js llenará las opciones -->
-                </select>
+        <!-- ACCIONES SUPERIORES -->
+        <div class="d-flex flex-wrap gap-2 mb-3 justify-content-between align-items-center">
+            <div class="text-muted-custom">
+                Añade GPUs al comparador desde el catálogo o desde la ficha individual.
             </div>
+            <button id="clearCompareBtn" class="btn btn-danger btn-sm">
+                Limpiar comparador
+            </button>
+        </div>
 
-            <div class="col-md-6 d-flex align-items-end gap-2">
-                <button id="addGpuBtn" class="btn btn-primary w-100">
-                    Añadir a la comparación
-                </button>
+        <!-- MENSAJE SIN DATOS -->
+        <div 
+            id="emptyCompareMessage" 
+            class="card p-4 mb-4 text-center" 
+            style="display: none;"
+        >
+            <h2 class="mb-2">No hay GPUs en el comparador</h2>
+            <p class="text-muted-custom mb-3">
+                Ve al catálogo y marca las GPUs que quieras comparar.
+            </p>
+            <a href="gpus.html" class="btn btn-primary">
+                Ir al catálogo de GPUs
+            </a>
+        </div>
 
-                <button id="clearBtn" class="btn btn-danger w-100">
-                    Limpiar comparación
-                </button>
+        <!-- TABLA DE COMPARACIÓN -->
+        <div class="card p-3">
+            <div class="table-responsive">
+                <table class="table table-dark table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Modelo</th>
+                            <th>VRAM</th>
+                            <th>Rendimiento</th>
+                            <th>Consumo</th>
+                            <th>PSU recomendada</th>
+                            <th>Precio aprox.</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="compareTableBody">
+                        <!-- compare.js insertará aquí las filas -->
+                    </tbody>
+                </table>
             </div>
-        </div>
-
-        <!-- GPUS SELECCIONADAS -->
-        <h2 class="mb-3 section-subtitle">GPUs seleccionadas</h2>
-
-        <div id="selectedGpus" class="row g-4 mb-5">
-            <!-- compare.js generará tarjetas aquí -->
-        </div>
-
-        <!-- TABLA COMPARATIVA -->
-        <h2 class="mb-3 section-subtitle">Tabla comparativa</h2>
-
-        <div class="table-responsive">
-            <table id="compareTable" class="table table-dark table-striped table-bordered">
-                <!-- compare.js generará la tabla aquí -->
-            </table>
         </div>
 
     </main>
@@ -107,7 +120,6 @@
     </script>
 </body>
 </html>
-
 
 
 
