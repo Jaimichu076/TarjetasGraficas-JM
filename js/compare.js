@@ -1,6 +1,6 @@
-// compare.js — Comparador de GPUs para GPU Hub
-// Rellena el selector, gestiona la lista de comparación y construye
-// tanto las tarjetas como la tabla comparativa.
+// compare.js — Comparador avanzado de GPUs en compare.html
+// Muestra una tabla comparativa de las GPUs añadidas al comparador.
+// Permite eliminar modelos, limpiar la lista y navegar a la ficha individual.
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -8,240 +8,151 @@ document.addEventListener("DOMContentLoaded", () => {
     //   REFERENCIAS A ELEMENTOS
     // ============================
 
-    const gpuSelect = document.getElementById("gpuSelect");
-    const addGpuBtn = document.getElementById("addGpuBtn");
-    const clearBtn = document.getElementById("clearBtn");
-    const selectedGpusContainer = document.getElementById("selectedGpus");
-    const compareTable = document.getElementById("compareTable");
-
-    // Lista de IDs de GPUs seleccionadas para comparar
-    let compareList = [];
+    const compareTableBody = document.getElementById("compareTableBody");
+    const clearCompareBtn  = document.getElementById("clearCompareBtn");
+    const emptyMessage     = document.getElementById("emptyCompareMessage");
 
     // ============================
-    //   INICIALIZACIÓN
+    //   UTILIDADES
     // ============================
 
-    function init() {
-        cargarCompareListDesdeLocalStorage();
-        rellenarSelector();
-        renderizarSeleccionadas();
-        renderizarTabla();
-        configurarEventos();
+    function getCompareList() {
+        return JSON.parse(localStorage.getItem("compareList")) || [];
     }
 
-    // Lee compareList desde localStorage, si existe
-    function cargarCompareListDesdeLocalStorage() {
-        const stored = localStorage.getItem("compareList");
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                if (Array.isArray(parsed)) {
-                    compareList = parsed;
-                }
-            } catch (e) {
-                console.error("Error leyendo compareList desde localStorage:", e);
-                compareList = [];
-            }
-        }
+    function setCompareList(list) {
+        localStorage.setItem("compareList", JSON.stringify(list));
     }
 
-    // Guarda compareList en localStorage
-    function guardarCompareListEnLocalStorage() {
-        localStorage.setItem("compareList", JSON.stringify(compareList));
+    function removeFromCompare(id) {
+        let list = getCompareList();
+        list = list.filter(item => item !== id);
+        setCompareList(list);
+        renderComparador();
     }
 
-    // Rellena el <select> con todas las GPUs
-    function rellenarSelector() {
-        if (!Array.isArray(gpuData)) return;
+    function mostrarMensajeFlotante(texto, tipo = "success") {
+        const mensaje = document.createElement("div");
+        mensaje.textContent = texto;
+        mensaje.className = `alert alert-${tipo} fade-in`;
+        mensaje.style.position = "fixed";
+        mensaje.style.bottom = "20px";
+        mensaje.style.right = "20px";
+        mensaje.style.zIndex = "9999";
+        mensaje.style.minWidth = "240px";
 
-        // Limpiar primero por si acaso
-        gpuSelect.innerHTML = "";
+        document.body.appendChild(mensaje);
 
-        gpuData.forEach(gpu => {
-            const option = document.createElement("option");
-            option.value = gpu.id;
-            option.textContent = gpu.name;
-            gpuSelect.appendChild(option);
-        });
+        setTimeout(() => mensaje.remove(), 2500);
     }
 
     // ============================
-    //   EVENTOS PRINCIPALES
+    //   RENDERIZAR COMPARADOR
     // ============================
 
-    function configurarEventos() {
-        // Añadir GPU seleccionada al comparador
-        addGpuBtn.addEventListener("click", () => {
-            const gpuId = gpuSelect.value;
-            if (!gpuId) return;
+    function renderComparador() {
+        const list = getCompareList();
+        compareTableBody.innerHTML = "";
 
-            if (!compareList.includes(gpuId)) {
-                compareList.push(gpuId);
-                guardarCompareListEnLocalStorage();
-                renderizarSeleccionadas();
-                renderizarTabla();
-            } else {
-                mostrarMensajeTemporal("Esta GPU ya está en la comparación.");
-            }
-        });
-
-        // Limpiar toda la comparación
-        clearBtn.addEventListener("click", () => {
-            compareList = [];
-            guardarCompareListEnLocalStorage();
-            renderizarSeleccionadas();
-            renderizarTabla();
-        });
-    }
-
-    // ============================
-    //   RENDERIZAR TARJETAS
-    // ============================
-
-    function renderizarSeleccionadas() {
-        selectedGpusContainer.innerHTML = "";
-
-        if (compareList.length === 0) {
-            const vacio = document.createElement("p");
-            vacio.className = "text-muted-custom";
-            vacio.textContent = "No hay GPUs seleccionadas para comparar.";
-            selectedGpusContainer.appendChild(vacio);
+        if (list.length === 0) {
+            emptyMessage.style.display = "block";
             return;
         }
 
-        compareList.forEach(id => {
+        emptyMessage.style.display = "none";
+
+        list.forEach(id => {
             const gpu = getGpuById(id);
             if (!gpu) return;
 
-            const col = document.createElement("div");
-            col.className = "col-md-4";
+            const row = document.createElement("tr");
 
-            col.innerHTML = `
-                <div class="card p-3 text-center h-100">
-                    <img 
-                        src="${gpu.image}" 
-                        alt="${gpu.name}" 
-                        class="img-fluid gpu-image mb-2"
-                    />
-                    <h3 class="gpu-card-title mb-1">${gpu.name}</h3>
-                    <p class="gpu-meta mb-1">VRAM: ${gpu.vram}</p>
-                    <p class="gpu-meta mb-1">Rendimiento: ${gpu.performanceScore}/100</p>
-                    <p class="gpu-meta mb-2">Consumo: ${gpu.powerWatts} W</p>
+            row.innerHTML = `
+                <td>
+                    <div class="d-flex align-items-center gap-3">
+                        <img 
+                            src="${gpu.image}" 
+                            alt="${gpu.name}" 
+                            class="img-fluid"
+                            style="max-width: 80px; cursor: pointer;"
+                            data-open-id="${gpu.id}"
+                        />
+                        <strong style="cursor: pointer;" data-open-id="${gpu.id}">
+                            ${gpu.name}
+                        </strong>
+                    </div>
+                </td>
+
+                <td>${gpu.vram}</td>
+                <td>${gpu.performanceScore}/100</td>
+                <td>${gpu.powerWatts} W</td>
+                <td>${gpu.recommendedPsu} W</td>
+                <td>${gpu.price} €</td>
+
+                <td>
                     <button 
-                        class="btn btn-danger btn-sm mt-auto"
+                        class="btn btn-danger btn-sm"
                         data-remove-id="${gpu.id}"
                     >
-                        Quitar de la comparación
+                        Quitar
                     </button>
-                </div>
+                </td>
             `;
 
-            selectedGpusContainer.appendChild(col);
+            compareTableBody.appendChild(row);
         });
 
-        // Añadir eventos a los botones de eliminar
-        const removeButtons = selectedGpusContainer.querySelectorAll("button[data-remove-id]");
+        activarEventos();
+    }
+
+    // ============================
+    //   EVENTOS
+    // ============================
+
+    function activarEventos() {
+        // Abrir ficha de GPU
+        const openButtons = document.querySelectorAll("[data-open-id]");
+        openButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-open-id");
+                window.location.href = `gpu.html?id=${encodeURIComponent(id)}`;
+            });
+        });
+
+        // Quitar GPU del comparador
+        const removeButtons = document.querySelectorAll("[data-remove-id]");
         removeButtons.forEach(btn => {
             btn.addEventListener("click", () => {
                 const id = btn.getAttribute("data-remove-id");
-                eliminarGpuDeComparacion(id);
+                removeFromCompare(id);
+                mostrarMensajeFlotante("GPU eliminada del comparador.");
             });
         });
     }
 
-    function eliminarGpuDeComparacion(id) {
-        compareList = compareList.filter(gpuId => gpuId !== id);
-        guardarCompareListEnLocalStorage();
-        renderizarSeleccionadas();
-        renderizarTabla();
-    }
-
     // ============================
-    //   RENDERIZAR TABLA
+    //   LIMPIAR COMPARADOR
     // ============================
 
-    function renderizarTabla() {
-        if (compareList.length === 0) {
-            compareTable.innerHTML = `
-                <tbody>
-                    <tr>
-                        <td class="text-muted-custom">
-                            No hay GPUs seleccionadas. Añade alguna usando el selector superior.
-                        </td>
-                    </tr>
-                </tbody>
-            `;
-            return;
-        }
+    if (clearCompareBtn) {
+        clearCompareBtn.addEventListener("click", () => {
+            const list = getCompareList();
+            if (list.length === 0) {
+                mostrarMensajeFlotante("No hay GPUs en el comparador.", "danger");
+                return;
+            }
 
-        const headers = [
-            "Nombre",
-            "VRAM",
-            "Rendimiento (0-100)",
-            "Precio (€)",
-            "Consumo (W)",
-            "PSU recomendada (W)"
-        ];
-
-        let html = "<thead><tr>";
-        headers.forEach(titulo => {
-            html += `<th>${titulo}</th>`;
+            setCompareList([]);
+            renderComparador();
+            mostrarMensajeFlotante("Comparador limpiado.");
         });
-        html += "</tr></thead><tbody>";
-
-        compareList.forEach(id => {
-            const gpu = getGpuById(id);
-            if (!gpu) return;
-
-            html += `
-                <tr>
-                    <td>${gpu.name}</td>
-                    <td>${gpu.vram}</td>
-                    <td>${gpu.performanceScore}</td>
-                    <td>${gpu.price}</td>
-                    <td>${gpu.powerWatts}</td>
-                    <td>${gpu.recommendedPsu}</td>
-                </tr>
-            `;
-        });
-
-        html += "</tbody>";
-
-        compareTable.innerHTML = html;
     }
 
     // ============================
-    //   MENSAJE TEMPORAL
+    //   INICIO
     // ============================
 
-    function mostrarMensajeTemporal(texto) {
-        // Pequeño mensaje arriba de la tabla
-        const mensaje = document.createElement("div");
-        mensaje.className = "alert alert-warning mt-3 fade-in";
-        mensaje.textContent = texto;
-
-        // Insertar justo debajo de los controles (debajo del select y botones)
-        const main = document.querySelector("main .container, main") || document.querySelector("main");
-        const referencia = document.querySelector(".row.g-4.mb-5");
-        if (referencia && referencia.parentNode) {
-            referencia.parentNode.insertBefore(mensaje, referencia.nextSibling);
-        } else if (main) {
-            main.appendChild(mensaje);
-        } else {
-            document.body.appendChild(mensaje);
-        }
-
-        setTimeout(() => {
-            mensaje.remove();
-        }, 3000);
-    }
-
-    // ============================
-    //   INICIAR
-    // ============================
-
-    init();
+    renderComparador();
 });
-
 
 
