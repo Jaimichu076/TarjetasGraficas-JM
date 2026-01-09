@@ -1,27 +1,25 @@
 GPU Hub
 
-GPU Hub es una aplicación web front‑end que permite explorar, comparar y gestionar información sobre tarjetas gráficas. Incluye catálogo, buscador avanzado, comparador, sistema de favoritos, foro local y un pequeño sistema de usuarios. Todo funciona sin backend, utilizando únicamente localStorage.
+GPU Hub es una aplicación web front‑end que permite explorar, comparar y gestionar información sobre tarjetas gráficas. Incluye catálogo, buscador avanzado, comparador, sistema de favoritos, foro local y un pequeño sistema de usuarios. Todo funciona únicamente con tecnologías del lado del cliente y utiliza localStorage para almacenar datos.
 
 El proyecto está construido con HTML, CSS, JavaScript y Bootstrap, y utiliza un estilo visual inspirado en un tema “Matrix claro”.
 
 ✨ Características principales
-Catálogo de GPUs con muchos modelos reales.
+Catálogo de GPUs con más de 40 modelos reales.
 
-Buscador dinámico por nombre, VRAM, consumo, precio, etc.
+Buscador dinámico por nombre, VRAM, consumo, precio y más.
 
-Ficha individual de cada GPU.
+Ficha individual con detalles completos de cada GPU.
 
-Sistema de favoritos (añadir, quitar, ver detalles).
+Sistema de favoritos con persistencia local.
 
 Comparador de GPUs con tabla detallada.
 
-Foro local con hilos y respuestas.
+Foro local con hilos y respuestas almacenados en localStorage.
 
-Sistema de usuarios (registro, login, perfil).
+Sistema de usuarios (registro, inicio de sesión y perfil).
 
-Persistencia local mediante localStorage.
-
-Interfaz responsive con Bootstrap.
+Interfaz responsive basada en Bootstrap.
 
 Fondo animado estilo Matrix.
 
@@ -57,76 +55,75 @@ forum.html
 profile.html
 login.html
 register.html
-📦 Tecnologías utilizadas
-HTML5
+🧩 Descripción de los módulos
+data.js
+Contiene la base de datos local con todas las GPUs y sus especificaciones.
 
-CSS3 + Bootstrap 5
+gpus.js
+Renderiza el catálogo, gestiona el buscador y permite añadir GPUs a favoritos o al comparador.
 
-JavaScript (ES6)
+gpu.js
+Controla la ficha individual de cada GPU según el parámetro id de la URL.
 
-localStorage
+compare.js
+Genera la tabla comparativa y permite eliminar GPUs o limpiar la lista.
 
-Sin frameworks ni backend
+favorites.js
+Gestiona la lista de GPUs favoritas almacenadas en localStorage.
 
-🔧 Funcionamiento general
-Datos
-Toda la información de las GPUs está en data.js, organizada en un array de objetos.
+search.js
+Filtra dinámicamente las GPUs según el texto introducido en el buscador.
 
-Catálogo
-gpus.js se encarga de renderizar las tarjetas y escuchar los eventos del buscador (search.js).
+forum.js
+Implementa un foro básico con hilos y respuestas guardados localmente.
 
-Ficha individual
-gpu.js carga los datos según el parámetro id en la URL.
+auth.js
+Sistema de autenticación local: registro, inicio de sesión y cierre de sesión.
 
-Favoritos
-favorites.js gestiona la lista guardada en localStorage.
+login.js / register.js / profile.js
+Controlan las páginas de login, registro y perfil del usuario.
 
-Comparador
-compare.js muestra una tabla comparativa con las GPUs seleccionadas.
+matrix.js
+Genera el fondo animado estilo Matrix.
 
-Foro
-forum.js permite crear hilos y respuestas, también guardados en localStorage.
+styles.css
+Define el estilo general del proyecto, incluyendo el tema Matrix claro.
 
-Usuarios
-auth.js, login.js, register.js y profile.js manejan el registro, login y perfil del usuario.
-
-Estilo
-styles.css define el tema Matrix claro y personaliza Bootstrap.
-
-Fondo animado
-matrix.js genera el efecto visual del fondo.
-
-🚀 Cómo usarlo
+🚀 Cómo ejecutar el proyecto
 Descarga o clona el repositorio.
 
 Abre index.html en tu navegador.
 
-Navega por el catálogo, añade GPUs a favoritos o al comparador.
+Navega por las distintas secciones:
 
-Regístrate para acceder al perfil y al foro.
+Catálogo de GPUs
 
-Todo se guarda automáticamente en tu navegador.
+Comparador
+
+Favoritos
+
+Foro
+
+Perfil de usuario
+
+Todos los datos se guardan automáticamente en localStorage.
 
 No requiere instalación ni servidor.
 
-📌 Objetivo del proyecto
-El propósito de GPU Hub es demostrar cómo se puede construir una aplicación web completa utilizando únicamente tecnologías front‑end, sin frameworks ni backend. Es ideal para aprender:
+🎯 Objetivo del proyecto
+El propósito de GPU Hub es demostrar cómo se puede construir una aplicación web completa utilizando únicamente tecnologías front‑end, sin frameworks ni backend. Es útil para aprender:
 
 Organización modular de JavaScript
 
-Uso de localStorage
+Uso de localStorage como persistencia
 
 Renderizado dinámico de contenido
 
 Manejo de eventos
 
-Diseño responsive
+Diseño responsive con Bootstrap
 
 Estructuración de un proyecto web real
 
 📄 Licencia
 Este proyecto está distribuido bajo la Licencia MIT.
-Puedes consultar el texto completo aquí:
-
-👉 
-
