@@ -190,12 +190,24 @@ h2 {
     color: var(--text-muted);
 }
 
-/* Imagen de GPU */
+.gpu-image-wrapper {
+  width: 100%;
+  height: 180px;               /* Altura fija para todas las imágenes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #111;      /* Fondo oscuro opcional */
+  overflow: hidden;
+  border-radius: 6px;
+}
+
 .gpu-image {
-    border-radius: 10px;
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    background: radial-gradient(circle at center, rgba(0, 255, 106, 0.18), transparent 60%);
-    padding: 4px;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;         /* Ajusta sin recortar ni deformar */
+  display: block;
+}
+
 }
 
 /* ============================
