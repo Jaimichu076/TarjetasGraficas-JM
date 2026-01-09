@@ -15,7 +15,7 @@ const gpuData = [
         price: 1999,
         powerWatts: 450,
         recommendedPsu: 850,
-        image: "img/gpus/rtx4090.jpg"
+        image: "img/gpus/rtx4090.png"
     },
     {
         id: "rtx4080",
