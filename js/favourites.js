@@ -1,212 +1,32 @@
-// favorites.js — Gestión y visualización de GPUs favoritas en favorites.html
+// favorites.js — Gestión de GPUs favoritas en favorites.html
+// Renderiza la lista, permite eliminar y limpiar favoritos.
 
 document.addEventListener("DOMContentLoaded", () => {
 
     // ============================
-    //   REFERENCIAS A ELEMENTOS
+    //   REFERENCIAS
     // ============================
 
-    const favoritesListContainer = document.getElementById("favoritesList");
+    const favoritesList = document.getElementById("favoritesList");
+    const emptyMessage = document.getElementById("emptyFavoritesMessage");
     const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
 
-    // Lista de IDs de GPUs favoritas
-    let favorites = [];
-
     // ============================
-    //   INICIALIZACIÓN
+    //   UTILIDADES
     // ============================
 
-    function init() {
-        cargarFavoritesDesdeLocalStorage();
-        renderizarFavoritos();
-        configurarEventos();
+    function getFavorites() {
+        return JSON.parse(localStorage.getItem("favorites")) || [];
     }
 
-    // Carga el array de IDs de localStorage
-    function cargarFavoritesDesdeLocalStorage() {
-        const stored = localStorage.getItem("favorites");
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored);
-                if (Array.isArray(parsed)) {
-                    favorites = parsed;
-                } else {
-                    favorites = [];
-                }
-            } catch (e) {
-                console.error("Error leyendo favoritos desde localStorage:", e);
-                favorites = [];
-            }
-        } else {
-            favorites = [];
-        }
+    function setFavorites(list) {
+        localStorage.setItem("favorites", JSON.stringify(list));
     }
 
-    // Guarda la lista de favoritos en localStorage
-    function guardarFavoritesEnLocalStorage() {
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-    }
-
-    // ============================
-    //   EVENTOS
-    // ============================
-
-    function configurarEventos() {
-        if (clearFavoritesBtn) {
-            clearFavoritesBtn.addEventListener("click", () => {
-                if (favorites.length === 0) {
-                    mostrarMensajeFlotante("No hay favoritos que limpiar.");
-                    return;
-                }
-
-                favorites = [];
-                guardarFavoritesEnLocalStorage();
-                renderizarFavoritos();
-                mostrarMensajeFlotante("Se han eliminado todos los favoritos.");
-            });
-        }
-    }
-
-    // ============================
-    //   RENDERIZAR FAVORITOS
-    // ============================
-
-    function renderizarFavoritos() {
-        favoritesListContainer.innerHTML = "";
-
-        if (favorites.length === 0) {
-            const vacio = document.createElement("div");
-            vacio.className = "col-12";
-
-            vacio.innerHTML = `
-                <div class="card p-4 text-center">
-                    <h2 class="mb-2">Sin favoritos</h2>
-                    <p class="text-muted-custom mb-3">
-                        Aún no has marcado ninguna GPU como favorita.
-                        Ve al catálogo y añade las tarjetas que quieras.
-                    </p>
-                    <a href="gpus.html" class="btn btn-primary">
-                        Ir al catálogo de GPUs
-                    </a>
-                </div>
-            `;
-
-            favoritesListContainer.appendChild(vacio);
-            return;
-        }
-
-        favorites.forEach(id => {
-            const gpu = getGpuById(id);
-            if (!gpu) return;
-
-            const col = document.createElement("div");
-            col.className = "col-md-4 col-lg-3";
-
-            col.innerHTML = `
-                <div class="card p-3 h-100 d-flex flex-column">
-                    <div class="mb-2 text-center">
-                        <img 
-                            src="${gpu.image}" 
-                            alt="${gpu.name}" 
-                            class="img-fluid gpu-image"
-                            style="cursor: pointer;"
-                            data-gpu-id="${gpu.id}"
-                        />
-                    </div>
-
-                    <h3 
-                        class="gpu-card-title mb-1"
-                        style="cursor: pointer;"
-                        data-gpu-id="${gpu.id}"
-                    >
-                        ${gpu.name}
-                    </h3>
-
-                    <p class="gpu-meta mb-1">VRAM: ${gpu.vram}</p>
-                    <p class="gpu-meta mb-1">Rendimiento: ${gpu.performanceScore}/100</p>
-                    <p class="gpu-meta mb-2">Precio aprox.: ${gpu.price} €</p>
-
-                    <div class="mt-auto d-flex flex-wrap gap-2">
-                        <button 
-                            class="btn btn-secondary btn-sm flex-fill"
-                            data-open-id="${gpu.id}"
-                        >
-                            Ver ficha
-                        </button>
-                        <button 
-                            class="btn btn-danger btn-sm flex-fill"
-                            data-remove-id="${gpu.id}"
-                        >
-                            Quitar de favoritos
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            favoritesListContainer.appendChild(col);
-        });
-
-        activarEventosTarjetas();
-    }
-
-    // ============================
-    //   EVENTOS EN TARJETAS
-    // ============================
-
-    function activarEventosTarjetas() {
-        // Click en imagen o título para ir a gpu.html
-        const infoClickables = favoritesListContainer.querySelectorAll("[data-gpu-id]");
-        infoClickables.forEach(el => {
-            el.addEventListener("click", () => {
-                const id = el.getAttribute("data-gpu-id");
-                if (id) {
-                    window.location.href = `gpu.html?id=${encodeURIComponent(id)}`;
-                }
-            });
-        });
-
-        // Botón "Ver ficha"
-        const openButtons = favoritesListContainer.querySelectorAll("button[data-open-id]");
-        openButtons.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const id = btn.getAttribute("data-open-id");
-                if (id) {
-                    window.location.href = `gpu.html?id=${encodeURIComponent(id)}`;
-                }
-            });
-        });
-
-        // Botón "Quitar de favoritos"
-        const removeButtons = favoritesListContainer.querySelectorAll("button[data-remove-id]");
-        removeButtons.forEach(btn => {
-            btn.addEventListener("click", () => {
-                const id = btn.getAttribute("data-remove-id");
-                if (id) {
-                    eliminarDeFavoritos(id);
-                }
-            });
-        });
-    }
-
-    // ============================
-    //   ELIMINAR FAVORITOS
-    // ============================
-
-    function eliminarDeFavoritos(id) {
-        favorites = favorites.filter(favId => favId !== id);
-        guardarFavoritesEnLocalStorage();
-        renderizarFavoritos();
-        mostrarMensajeFlotante("GPU eliminada de favoritos.");
-    }
-
-    // ============================
-    //   MENSAJE FLOTANTE
-    // ============================
-
-    function mostrarMensajeFlotante(texto) {
+    function mostrarMensajeFlotante(texto, tipo = "success") {
         const mensaje = document.createElement("div");
         mensaje.textContent = texto;
-        mensaje.className = "alert alert-success fade-in";
+        mensaje.className = `alert alert-${tipo} fade-in`;
         mensaje.style.position = "fixed";
         mensaje.style.bottom = "20px";
         mensaje.style.right = "20px";
@@ -215,14 +35,127 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.body.appendChild(mensaje);
 
-        setTimeout(() => {
-            mensaje.remove();
-        }, 2500);
+        setTimeout(() => mensaje.remove(), 2500);
+    }
+
+    // ============================
+    //   RENDERIZAR FAVORITOS
+    // ============================
+
+    function renderFavorites() {
+        const favs = getFavorites();
+        favoritesList.innerHTML = "";
+
+        if (favs.length === 0) {
+            emptyMessage.style.display = "block";
+            return;
+        }
+
+        emptyMessage.style.display = "none";
+
+        favs.forEach(id => {
+            const gpu = getGpuById(id);
+            if (!gpu) return;
+
+            const col = document.createElement("div");
+            col.className = "col-12 col-md-6 col-lg-4";
+
+            col.innerHTML = `
+                <div class="card p-3 h-100 d-flex flex-column justify-content-between">
+
+                    <div class="text-center mb-3">
+                        <img 
+                            src="${gpu.image}" 
+                            alt="${gpu.name}" 
+                            class="gpu-image"
+                            style="cursor: pointer;"
+                            data-open-id="${gpu.id}"
+                        />
+                    </div>
+
+                    <h3 class="mb-2" style="cursor: pointer;" data-open-id="${gpu.id}">
+                        ${gpu.name}
+                    </h3>
+
+                    <p class="gpu-meta mb-1"><strong>VRAM:</strong> ${gpu.vram}</p>
+                    <p class="gpu-meta mb-1"><strong>Rendimiento:</strong> ${gpu.performanceScore}/100</p>
+                    <p class="gpu-meta mb-1"><strong>Consumo:</strong> ${gpu.powerWatts} W</p>
+                    <p class="gpu-meta mb-3"><strong>Precio:</strong> ${gpu.price} €</p>
+
+                    <div class="d-flex flex-wrap gap-2 mt-auto">
+                        <button 
+                            class="btn btn-danger flex-fill"
+                            data-remove-id="${gpu.id}"
+                        >
+                            Quitar
+                        </button>
+
+                        <button 
+                            class="btn btn-secondary flex-fill"
+                            data-open-id="${gpu.id}"
+                        >
+                            Ver ficha
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            favoritesList.appendChild(col);
+        });
+
+        activarEventos();
+    }
+
+    // ============================
+    //   EVENTOS
+    // ============================
+
+    function activarEventos() {
+        // Abrir ficha individual
+        const openButtons = document.querySelectorAll("[data-open-id]");
+        openButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-open-id");
+                window.location.href = `gpu.html?id=${encodeURIComponent(id)}`;
+            });
+        });
+
+        // Quitar GPU de favoritos
+        const removeButtons = document.querySelectorAll("[data-remove-id]");
+        removeButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-remove-id");
+                let favs = getFavorites();
+                favs = favs.filter(item => item !== id);
+                setFavorites(favs);
+                renderFavorites();
+                mostrarMensajeFlotante("GPU eliminada de favoritos.");
+            });
+        });
+    }
+
+    // ============================
+    //   LIMPIAR FAVORITOS
+    // ============================
+
+    if (clearFavoritesBtn) {
+        clearFavoritesBtn.addEventListener("click", () => {
+            const favs = getFavorites();
+            if (favs.length === 0) {
+                mostrarMensajeFlotante("No hay GPUs en favoritos.", "danger");
+                return;
+            }
+
+            setFavorites([]);
+            renderFavorites();
+            mostrarMensajeFlotante("Favoritos limpiados.");
+        });
     }
 
     // ============================
     //   INICIO
     // ============================
 
-    init();
+    renderFavorites();
 });
+
