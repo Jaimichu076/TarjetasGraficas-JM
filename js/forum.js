@@ -1,7 +1,7 @@
-// forum.js — Foro técnico local para GPU Hub
-// Gestiona hilos, respuestas y usuarios usando localStorage.
-// No hay backend: todo es 100% local en el navegador.
+// js/forum.js - Foro técnico con Firebase
+
 import { auth, db } from "./firebase.js";
+import { onUserChange } from "./auth.js";
 import {
   ref,
   push,
@@ -9,242 +9,203 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  const newThreadForm = document.getElementById("newThreadForm");
+  const threadsList = document.getElementById("threadsList");
+  const threadMessage = document.getElementById("threadMessage");
 
-    // ============================
-    //   UTILIDADES GENERALES
-    // ============================
+  let currentUser = null;
 
-    
-    function getSessionUser() {
-        return localStorage.getItem("sessionUser");
-    }
+  onUserChange((user) => {
+    currentUser = user;
+  });
 
-    function getThreads() {
-        const stored = localStorage.getItem("threads");
-        if (!stored) return [];
-        try {
-            const parsed = JSON.parse(stored);
-            return Array.isArray(parsed) ? parsed : [];
-        } catch {
-            return [];
-        }
-    }
+  function mostrarError(texto) {
+    if (!threadMessage) return;
+    threadMessage.textContent = texto;
+    threadMessage.style.display = "block";
+  }
 
-    function saveThreads(threads) {
-        localStorage.setItem("threads", JSON.stringify(threads));
-    }
+  function limpiarError() {
+    if (!threadMessage) return;
+    threadMessage.style.display = "none";
+    threadMessage.textContent = "";
+  }
 
-    function formatDate(dateString) {
-        const d = new Date(dateString);
-        return d.toLocaleString("es-ES", {
-            dateStyle: "short",
-            timeStyle: "short"
+  function formatDate(ts) {
+    if (!ts) return "";
+    const d = new Date(ts);
+    return d.toLocaleString("es-ES", {
+      dateStyle: "short",
+      timeStyle: "short"
+    });
+  }
+
+  // Crear nuevo hilo
+  if (newThreadForm) {
+    newThreadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      limpiarError();
+
+      if (!currentUser) {
+        mostrarError("Debes iniciar sesión para publicar un hilo.");
+        return;
+      }
+
+      const titleInput = document.getElementById("threadTitle");
+      const contentInput = document.getElementById("threadContent");
+
+      const title = titleInput.value.trim();
+      const content = contentInput.value.trim();
+
+      if (!title || !content) {
+        mostrarError("Debes completar todos los campos.");
+        return;
+      }
+
+      try {
+        await push(ref(db, "hilos"), {
+          title,
+          content,
+          authorUid: currentUser.uid,
+          authorEmail: currentUser.email,
+          createdAt: Date.now()
         });
-    }
-
-    // ============================
-    //   ELEMENTOS DEL DOM
-    // ============================
-
-    const newThreadForm = document.getElementById("newThreadForm");
-    const threadsList = document.getElementById("threadsList");
-    const threadMessage = document.getElementById("threadMessage");
-
-    // ============================
-    //   INICIALIZACIÓN
-    // ============================
-
-    function init() {
-        renderThreads();
-        configurarEventos();
-    }
-
-    // ============================
-    //   EVENTOS
-    // ============================
-
-    function configurarEventos() {
-        if (newThreadForm) {
-            newThreadForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                crearNuevoHilo();
-            });
-        }
-    }
-
-    // ============================
-    //   CREAR NUEVO HILO
-    // ============================
-
-    function crearNuevoHilo() {
-        const user = getSessionUser();
-
-        if (!user) {
-            mostrarError("Debes iniciar sesión para publicar un hilo.");
-            return;
-        }
-
-        const title = document.getElementById("threadTitle").value.trim();
-        const content = document.getElementById("threadContent").value.trim();
-
-        if (!title || !content) {
-            mostrarError("Debes completar todos los campos.");
-            return;
-        }
-
-        const threads = getThreads();
-
-        const newThread = {
-            id: crypto.randomUUID(),
-            title,
-            content,
-            author: user,
-            createdAt: new Date().toISOString(),
-            replies: []
-        };
-
-        threads.unshift(newThread);
-        saveThreads(threads);
 
         newThreadForm.reset();
-        threadMessage.style.display = "none";
+        limpiarError();
+      } catch (err) {
+        console.error(err);
+        mostrarError("Error al crear el hilo: " + err.message);
+      }
+    });
+  }
 
-        renderThreads();
+  // Escuchar hilos en tiempo real
+  onValue(ref(db, "hilos"), (snapshot) => {
+    const data = snapshot.val();
+    renderThreads(data);
+  });
+
+  function renderThreads(hilos) {
+    threadsList.innerHTML = "";
+
+    if (!hilos) {
+      const empty = document.createElement("div");
+      empty.className = "card p-4 text-center";
+      empty.innerHTML = `
+        <h2 class="mb-2">No hay hilos aún</h2>
+        <p class="text-muted-custom mb-0">
+          Sé el primero en crear un hilo usando el formulario superior.
+        </p>
+      `;
+      threadsList.appendChild(empty);
+      return;
     }
 
-    // ============================
-    //   MOSTRAR HILOS
-    // ============================
+    const entries = Object.entries(hilos); // [ [id, hilo], ... ]
+    // Más recientes primero
+    entries.sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
 
-    function renderThreads() {
-        threadsList.innerHTML = "";
+    entries.forEach(([id, thread]) => {
+      const div = document.createElement("div");
+      div.className = "card p-4";
 
-        const threads = getThreads();
+      const createdAtText = formatDate(thread.createdAt);
 
-        if (threads.length === 0) {
-            const empty = document.createElement("div");
-            empty.className = "card p-4 text-center";
-            empty.innerHTML = `
-                <h2 class="mb-2">No hay hilos aún</h2>
-                <p class="text-muted-custom mb-0">
-                    Sé el primero en crear un hilo usando el formulario superior.
-                </p>
-            `;
-            threadsList.appendChild(empty);
-            return;
+      div.innerHTML = `
+        <h3 class="mb-2">${thread.title}</h3>
+        <p class="gpu-meta mb-3">${thread.content}</p>
+        <p class="text-muted-custom mb-2" style="font-size: 0.85rem;">
+          Publicado por <strong>${thread.authorEmail || "Desconocido"}</strong>
+          · ${createdAtText}
+        </p>
+        <hr />
+        <h4 class="mb-2">Respuestas</h4>
+        <div class="d-flex flex-column gap-2 mb-3" id="replies-${id}">
+          <!-- Respuestas se inyectan aquí -->
+        </div>
+        <form class="replyForm" data-thread-id="${id}">
+          <textarea
+            class="form-control mb-2"
+            rows="2"
+            placeholder="Escribe una respuesta..."
+            required
+          ></textarea>
+          <button class="btn btn-secondary btn-sm">Responder</button>
+        </form>
+      `;
+
+      threadsList.appendChild(div);
+
+      // Escuchar respuestas de cada hilo
+      listenToReplies(id);
+    });
+
+    activarFormulariosRespuesta();
+  }
+
+  function listenToReplies(threadId) {
+    const repliesContainer = document.getElementById(`replies-${threadId}`);
+    if (!repliesContainer) return;
+
+    onValue(ref(db, `hilos/${threadId}/replies`), (snap) => {
+      const replies = snap.val();
+      repliesContainer.innerHTML = "";
+
+      if (!replies) {
+        repliesContainer.innerHTML = `
+          <p class="text-muted-custom mb-0">No hay respuestas aún.</p>
+        `;
+        return;
+      }
+
+      const list = Object.values(replies);
+      list.forEach((r) => {
+        const p = document.createElement("div");
+        p.className = "card p-2";
+        p.innerHTML = `
+          <p class="mb-1">${r.content}</p>
+          <p class="text-muted-custom mb-0" style="font-size: 0.75rem;">
+            ${r.authorEmail} · ${formatDate(r.createdAt)}
+          </p>
+        `;
+        repliesContainer.appendChild(p);
+      });
+    });
+  }
+
+  function activarFormulariosRespuesta() {
+    const forms = document.querySelectorAll(".replyForm");
+    forms.forEach((form) => {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        if (!currentUser) {
+          alert("Debes iniciar sesión para responder.");
+          return;
         }
 
-        threads.forEach(thread => {
-            const div = document.createElement("div");
-            div.className = "card p-4";
+        const threadId = form.getAttribute("data-thread-id");
+        const textarea = form.querySelector("textarea");
+        const content = textarea.value.trim();
+        if (!content) return;
 
-            div.innerHTML = `
-                <h3 class="mb-2">${thread.title}</h3>
-                <p class="gpu-meta mb-3">${thread.content}</p>
+        try {
+          await push(ref(db, `hilos/${threadId}/replies`), {
+            content,
+            authorUid: currentUser.uid,
+            authorEmail: currentUser.email,
+            createdAt: Date.now()
+          });
 
-                <p class="text-muted-custom mb-2" style="font-size: 0.85rem;">
-                    Publicado por <strong>${thread.author}</strong> · ${formatDate(thread.createdAt)}
-                </p>
-
-                <hr />
-
-                <h4 class="mb-2">Respuestas</h4>
-                <div class="d-flex flex-column gap-2 mb-3" id="replies-${thread.id}">
-                    ${renderRespuestas(thread.replies)}
-                </div>
-
-                <form class="replyForm" data-thread-id="${thread.id}">
-                    <textarea 
-                        class="form-control mb-2" 
-                        rows="2" 
-                        placeholder="Escribe una respuesta..."
-                        required
-                    ></textarea>
-                    <button class="btn btn-secondary btn-sm">Responder</button>
-                </form>
-            `;
-
-            threadsList.appendChild(div);
-        });
-
-        activarFormulariosRespuesta();
-    }
-
-    // ============================
-    //   RENDERIZAR RESPUESTAS
-    // ============================
-
-    function renderRespuestas(replies) {
-        if (!replies || replies.length === 0) {
-            return `<p class="text-muted-custom mb-0">No hay respuestas aún.</p>`;
+          textarea.value = "";
+        } catch (err) {
+          console.error(err);
+          alert("Error al enviar la respuesta: " + err.message);
         }
-
-        return replies.map(r => `
-            <div class="card p-2">
-                <p class="mb-1">${r.content}</p>
-                <p class="text-muted-custom mb-0" style="font-size: 0.75rem;">
-                    ${r.author} · ${formatDate(r.createdAt)}
-                </p>
-            </div>
-        `).join("");
-    }
-
-    // ============================
-    //   FORMULARIOS DE RESPUESTA
-    // ============================
-
-    function activarFormulariosRespuesta() {
-        const forms = document.querySelectorAll(".replyForm");
-
-        forms.forEach(form => {
-            form.addEventListener("submit", (e) => {
-                e.preventDefault();
-
-                const user = getSessionUser();
-                if (!user) {
-                    alert("Debes iniciar sesión para responder.");
-                    return;
-                }
-
-                const threadId = form.getAttribute("data-thread-id");
-                const textarea = form.querySelector("textarea");
-                const content = textarea.value.trim();
-
-                if (!content) return;
-
-                const threads = getThreads();
-                const thread = threads.find(t => t.id === threadId);
-                if (!thread) return;
-
-                const reply = {
-                    content,
-                    author: user,
-                    createdAt: new Date().toISOString()
-                };
-
-                thread.replies.push(reply);
-                saveThreads(threads);
-
-                textarea.value = "";
-
-                renderThreads();
-            });
-        });
-    }
-
-    // ============================
-    //   MENSAJES DE ERROR
-    // ============================
-
-    function mostrarError(texto) {
-        threadMessage.textContent = texto;
-        threadMessage.style.display = "block";
-    }
-
-    // ============================
-    //   INICIO
-    // ============================
-
-    init();
+      });
+    });
+  }
 });
+
 

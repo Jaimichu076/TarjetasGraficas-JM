@@ -56,45 +56,45 @@
 
         <!-- FORMULARIO -->
         <div class="card p-4">
-            <form id="loginForm">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Usuario</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="username" 
-                        placeholder="Tu nombre de usuario"
-                        required
-                    />
-                </div>
+  <form id="loginForm">
+    <div class="mb-3">
+      <label for="loginEmail" class="form-label">Correo electrónico</label>
+      <input
+        type="email"
+        class="form-control"
+        id="loginEmail"
+        placeholder="ejemplo@correo.com"
+        required
+      />
+    </div>
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Contraseña</label>
-                    <input 
-                        type="password" 
-                        class="form-control" 
-                        id="password" 
-                        placeholder="Tu contraseña"
-                        required
-                    />
-                </div>
+    <div class="mb-3">
+      <label for="loginPassword" class="form-label">Contraseña</label>
+      <input
+        type="password"
+        class="form-control"
+        id="loginPassword"
+        required
+      />
+    </div>
 
-                <div id="loginMessage" class="text-error mb-3" style="display: none;"></div>
+    <div id="loginMessage" class="text-error mb-3" style="display: none;"></div>
 
-                <button type="submit" class="btn btn-primary w-100">
-                    Entrar
-                </button>
-            </form>
+    <button type="submit" class="btn btn-primary w-100">
+      Iniciar sesión
+    </button>
+  </form>
 
-            <hr class="my-4" />
+  <hr class="my-4" />
 
-            <p class="text-muted-custom text-center mb-2">
-                ¿No tienes cuenta?
-            </p>
-            <a href="register.html" class="btn btn-secondary w-100">
-                Registrarse
-            </a>
-        </div>
+  <p class="text-muted-custom text-center mb-2">
+    ¿No tienes cuenta?
+  </p>
+  <a href="register.html" class="btn btn-secondary w-100">
+    Crear cuenta
+  </a>
+</div>
+
 
     </main>
 
