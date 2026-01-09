@@ -1,6 +1,8 @@
-// matrix.js — Fondo Matrix más hacker y brillante
+// matrix.js — Fondo Matrix estilo GPU Hub
+// Lluvia de caracteres verde/cian, discreta pero con vibe hacker clara.
 
 document.addEventListener("DOMContentLoaded", () => {
+    // Crear el canvas y añadirlo al body
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -9,61 +11,67 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.style.left = "0";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
-    canvas.style.zIndex = "-1";
-    canvas.style.pointerEvents = "none";
+    canvas.style.zIndex = "-1";          // Siempre detrás del contenido
+    canvas.style.pointerEvents = "none"; // No bloquea clics ni scroll
+
     document.body.appendChild(canvas);
 
+    // Ajuste inicial de tamaño
     function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        resetColumns();
     }
-    resizeCanvas();
+
     window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-    const chars = "01█▓▒░";
-    let fontSize = 18;
-    let columns = Math.floor(window.innerWidth / fontSize);
-    let drops = Array(columns).fill(1);
+    // Caracteres a mostrar (estilo terminal/Matrix)
+    const characters = "01[]{}<>/\\=+-|";
+    let fontSize = 16;
+    let columns = 0;
+    let drops = [];
 
-    function resetDrops() {
-        columns = Math.floor(window.innerWidth / fontSize);
+    // Recalcular columnas y drops cuando cambia el tamaño
+    function resetColumns() {
+        fontSize = 16; // Puedes tocar esto si quieres más o menos densidad
+        columns = Math.floor(canvas.width / fontSize);
         drops = Array(columns).fill(1);
     }
 
-    window.addEventListener("resize", resetDrops);
-
-    function draw() {
-        // Fondo semitransparente para una estela más visible
-        ctx.fillStyle = "rgba(2, 4, 10, 0.25)";
+    // Dibujar un frame de la animación
+    function drawFrame() {
+        // Fondo semitransparente para efecto de estela
+        // Color se coordina con el fondo del CSS (oscuro pero no negro puro)
+        ctx.fillStyle = "rgba(2, 6, 23, 0.22)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, "#00ff88");
-        gradient.addColorStop(0.5, "#00e0ff");
-        gradient.addColorStop(1, "#ff00c8");
+        // Degradado vertical para mezclar verde y cian
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, "#00ff6a");   // Verde Matrix
+        gradient.addColorStop(0.5, "#27e2ff"); // Cian
+        gradient.addColorStop(1, "#00ff6a");   // Vuelve a verde
+
         ctx.fillStyle = gradient;
         ctx.font = fontSize + "px monospace";
 
         for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
+            const char = characters.charAt(Math.floor(Math.random() * characters.length));
             const x = i * fontSize;
             const y = drops[i] * fontSize;
 
-            ctx.fillText(text, x, y);
+            ctx.fillText(char, x, y);
 
-            // Reinicio aleatorio
-            if (y > canvas.height && Math.random() > 0.96) {
+            // Si pasa del fondo, a veces resetea la columna para que no sea uniforme
+            if (y > canvas.height && Math.random() > 0.965) {
                 drops[i] = 0;
             }
 
             drops[i]++;
         }
 
-        requestAnimationFrame(draw);
+        requestAnimationFrame(drawFrame);
     }
 
-    draw();
+    drawFrame();
 });
-
-
-
