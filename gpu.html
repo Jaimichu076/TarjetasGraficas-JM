@@ -1,32 +1,40 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPU Hub — Detalles de GPU</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GPU Hub — Detalle de GPU</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link 
+        rel="stylesheet" 
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
 
     <!-- Estilos globales -->
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
-
     <!-- Fondo Matrix -->
     <script src="js/matrix.js" defer></script>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark px-3">
-        <a class="navbar-brand" href="index.html">GPU Hub</a>
+        <a class="navbar-brand" href="index.html">GPU HUB</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navMenu"
+        >
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navMenu">
             <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
                 <li class="nav-item"><a class="nav-link" href="compare.html">Comparar</a></li>
                 <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
@@ -38,22 +46,115 @@
     </nav>
 
     <!-- CONTENIDO PRINCIPAL -->
-    <main class="container py-5">
+    <main class="container py-5 fade-in">
 
-        <div id="gpuContent">
+        <!-- TÍTULO -->
+        <div class="mb-4">
+            <h1 class="hacker-prefix mb-1" id="gpuName">Cargando...</h1>
+            <p class="section-subtitle">Ficha técnica completa</p>
+        </div>
 
-            <!-- Se rellena dinámicamente con gpu.js -->
+        <!-- CONTENIDO GPU -->
+        <div class="row g-4">
 
-            <div class="text-center">
-                <p>Cargando datos de la GPU...</p>
+            <!-- IMAGEN -->
+            <div class="col-md-5">
+                <div class="card p-3 text-center">
+                    <img 
+                        id="gpuImage" 
+                        src="" 
+                        alt="Imagen GPU" 
+                        class="img-fluid gpu-image mb-3"
+                    />
+                    <p class="gpu-meta mb-1">
+                        <strong>VRAM:</strong> <span id="gpuVram">-</span>
+                    </p>
+                    <p class="gpu-meta mb-1">
+                        <strong>Rendimiento:</strong> <span id="gpuScore">-</span>/100
+                    </p>
+                    <p class="gpu-meta mb-1">
+                        <strong>Consumo:</strong> <span id="gpuWatts">-</span> W
+                    </p>
+                    <p class="gpu-meta mb-1">
+                        <strong>PSU recomendada:</strong> <span id="gpuPsu">-</span> W
+                    </p>
+                </div>
             </div>
 
+            <!-- ESPECIFICACIONES Y ACCIONES -->
+            <div class="col-md-7">
+                <div class="card p-4 h-100">
+
+                    <h2 class="mb-3">Especificaciones</h2>
+
+                    <table class="table table-dark table-striped mb-4">
+                        <tbody>
+                            <tr>
+                                <th>Nombre</th>
+                                <td id="specName">-</td>
+                            </tr>
+                            <tr>
+                                <th>VRAM</th>
+                                <td id="specVram">-</td>
+                            </tr>
+                            <tr>
+                                <th>Rendimiento</th>
+                                <td id="specScore">-</td>
+                            </tr>
+                            <tr>
+                                <th>Precio</th>
+                                <td id="specPrice">-</td>
+                            </tr>
+                            <tr>
+                                <th>Consumo</th>
+                                <td id="specWatts">-</td>
+                            </tr>
+                            <tr>
+                                <th>PSU recomendada</th>
+                                <td id="specPsu">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="mb-3">Acciones</h2>
+
+                    <div class="d-flex flex-wrap gap-2">
+                        <button id="addToFavoritesBtn" class="btn btn-primary flex-fill">
+                            Añadir a favoritos
+                        </button>
+
+                        <button id="addToCompareBtn" class="btn btn-secondary flex-fill">
+                            Añadir al comparador
+                        </button>
+
+                        <a href="gpus.html" class="btn btn-danger flex-fill">
+                            Volver al catálogo
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FPS (opcional, si quieres añadirlos más adelante) -->
+        <div class="mt-5">
+            <h2 class="mb-3">Rendimiento en juegos (FPS)</h2>
+            <p class="gpu-meta mb-3">
+                Esta sección se puede completar más adelante si quieres añadir datos de FPS por juego.
+            </p>
+
+            <div class="card p-3">
+                <p class="text-muted-custom mb-0">
+                    No hay datos de FPS disponibles para esta GPU.
+                </p>
+            </div>
         </div>
 
     </main>
 
     <!-- FOOTER -->
-    <footer class="py-3 text-center">
+    <footer class="py-3">
         GPU Hub © 2026 — Todos los derechos reservados
     </footer>
 
@@ -62,8 +163,10 @@
     <script src="js/gpu.js"></script>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script 
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
 </body>
 </html>
+
 
