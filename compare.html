@@ -1,98 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPU Hub — Comparar GPUs</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPU Hub — Comparar GPUs</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-
-    <!-- Estilos globales -->
-    <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
+  <script src="js/matrix.js" defer></script>
 
-    <!-- Fondo Matrix -->
-    <script src="js/matrix.js" defer></script>
+  <nav class="navbar navbar-expand-lg navbar-dark px-3">
+    <a class="navbar-brand" href="index.html">GPU HUB</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
+        <li class="nav-item"><a class="nav-link active" href="compare.html">Comparar</a></li>
+        <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
+        <li class="nav-item"><a class="nav-link" href="forum.html">Foro</a></li>
+        <li class="nav-item"><a class="nav-link" href="profile.html">Perfil</a></li>
+        <li class="nav-item"><a class="nav-link" href="login.html">Entrar</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark px-3">
-        <a class="navbar-brand" href="index.html">GPU Hub</a>
+  <main class="container py-5 fade-in">
+    <h1 class="text-center mb-4 hacker-prefix">Comparar GPUs</h1>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <div class="row g-4 mb-5">
+      <div class="col-md-6">
+        <label class="form-label">Selecciona las GPUs a comparar</label>
+        <select id="gpuSelect" class="form-select">
+          <!-- compare.js llenará las opciones -->
+        </select>
+      </div>
+      <div class="col-md-6 d-flex align-items-end gap-2">
+        <button id="addGpuBtn" class="btn btn-primary w-100">Añadir a la comparación</button>
+        <button id="clearBtn" class="btn btn-danger w-100">Limpiar comparación</button>
+      </div>
+    </div>
 
-        <div class="collapse navbar-collapse" id="navMenu">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="gpus.html">GPUs</a></li>
-                <li class="nav-item"><a class="nav-link" href="compare.html">Comparar</a></li>
-                <li class="nav-item"><a class="nav-link" href="favorites.html">Favoritos</a></li>
-                <li class="nav-item"><a class="nav-link" href="forum.html">Foro</a></li>
-                <li class="nav-item"><a class="nav-link" href="profile.html">Perfil</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html">Entrar</a></li>
-            </ul>
-        </div>
-    </nav>
+    <h4 class="mb-3 section-subtitle">GPUs seleccionadas</h4>
+    <div id="selectedGpus" class="row g-3 mb-5">
+      <!-- compare.js renderiza tarjetas aquí -->
+    </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="container py-5">
+    <h4 class="mb-3 section-subtitle">Tabla comparativa</h4>
+    <div class="table-responsive">
+      <table id="compareTable" class="table table-dark table-striped table-bordered">
+        <!-- compare.js genera la tabla aquí -->
+      </table>
+    </div>
+  </main>
 
-        <h1 class="text-center mb-4">Comparar GPUs</h1>
+  <footer class="py-3 text-center">
+    GPU Hub © 2026 — Todos los derechos reservados
+  </footer>
 
-        <!-- SELECCIÓN DE GPUS -->
-        <section class="mb-4">
-            <h4 class="mb-3">Selecciona las GPUs a comparar</h4>
-
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <select id="gpuSelector" class="form-select">
-                        <option value="">Selecciona una GPU...</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <button id="addGpuBtn" class="btn btn-primary w-100">Añadir a la comparación</button>
-                </div>
-
-                <div class="col-md-3">
-                    <button id="clearCompareBtn" class="btn btn-danger w-100">Limpiar comparación</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- LISTA DE GPUS SELECCIONADAS -->
-        <section class="mb-4">
-            <h4 class="mb-3">GPUs seleccionadas</h4>
-            <div id="selectedGpus" class="d-flex flex-wrap gap-3"></div>
-        </section>
-
-        <hr class="my-5">
-
-        <!-- TABLA DE COMPARACIÓN -->
-        <section>
-            <h3 class="mb-3">Tabla comparativa</h3>
-            <div id="compareTableContainer" class="table-responsive">
-                <!-- compare.js generará la tabla aquí -->
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="py-3 text-center">
-        GPU Hub © 2026 — Todos los derechos reservados
-    </footer>
-
-    <!-- Scripts -->
-    <script src="js/data.js"></script>
-    <script src="js/compare.js"></script>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="js/data.js"></script>
+  <script src="js/compare.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
 
