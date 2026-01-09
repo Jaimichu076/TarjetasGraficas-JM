@@ -1,15 +1,7 @@
-// matrix.js — Fondo Matrix estilo GPU Hub (versión estable)
-// Lluvia de caracteres verde/cian, suave, clara y siempre visible.
+// matrix.js — Fondo Matrix funcional y estable
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    // ============================
-    //   CREAR CANVAS
-    // ============================
-
     const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
     canvas.id = "matrixCanvas";
     canvas.style.position = "fixed";
     canvas.style.top = "0";
@@ -18,72 +10,55 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.style.height = "100%";
     canvas.style.zIndex = "-1";
     canvas.style.pointerEvents = "none";
-
     document.body.prepend(canvas);
 
-    // ============================
-    //   AJUSTAR TAMAÑO
-    // ============================
+    const ctx = canvas.getContext("2d");
+    let fontSize = 18;
+    let columns = 0;
+    let drops = [];
 
-    function ajustarTamaño() {
+    function resizeCanvas() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        inicializarColumnas();
+        columns = Math.floor(canvas.width / fontSize);
+        drops = Array(columns).fill(1);
     }
 
-    window.addEventListener("resize", ajustarTamaño);
-    ajustarTamaño();
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
 
-    // ============================
-    //   CONFIGURACIÓN MATRIX
-    // ============================
+    const chars = "01[]{}<>/\\=+-|";
 
-    const caracteres = "01[]{}<>/\\=+-|";
-    let tamañoFuente = 18;
-    let columnas = 0;
-    let gotas = [];
-
-    function inicializarColumnas() {
-        columnas = Math.floor(canvas.width / tamañoFuente);
-        gotas = Array(columnas).fill(1);
-    }
-
-    // ============================
-    //   DIBUJAR FRAME
-    // ============================
-
-    function dibujar() {
-        // Fondo semitransparente para estela suave
+    function draw() {
         ctx.fillStyle = "rgba(2, 6, 23, 0.25)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Degradado Matrix verde/cian
-        const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        grad.addColorStop(0, "#00ff6a");
-        grad.addColorStop(0.5, "#27e2ff");
-        grad.addColorStop(1, "#00ff6a");
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+        gradient.addColorStop(0, "#00ff6a");
+        gradient.addColorStop(0.5, "#27e2ff");
+        gradient.addColorStop(1, "#00ff6a");
 
-        ctx.fillStyle = grad;
-        ctx.font = tamañoFuente + "px monospace";
+        ctx.fillStyle = gradient;
+        ctx.font = fontSize + "px monospace";
 
-        for (let i = 0; i < columnas; i++) {
-            const char = caracteres[Math.floor(Math.random() * caracteres.length)];
-            const x = i * tamañoFuente;
-            const y = gotas[i] * tamañoFuente;
+        for (let i = 0; i < columns; i++) {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            const x = i * fontSize;
+            const y = drops[i] * fontSize;
 
             ctx.fillText(char, x, y);
 
-            // Reinicio aleatorio para efecto natural
             if (y > canvas.height && Math.random() > 0.965) {
-                gotas[i] = 0;
+                drops[i] = 0;
             }
 
-            gotas[i]++;
+            drops[i]++;
         }
 
-        requestAnimationFrame(dibujar);
+        requestAnimationFrame(draw);
     }
 
-    dibujar();
+    draw();
 });
+
 
