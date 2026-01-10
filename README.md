@@ -1,129 +1,145 @@
-GPU Hub
+GPU Hub — TarjetasGraficas-JM
 
-GPU Hub es una aplicación web front‑end que permite explorar, comparar y gestionar información sobre tarjetas gráficas. Incluye catálogo, buscador avanzado, comparador, sistema de favoritos, foro local y un pequeño sistema de usuarios. Todo funciona únicamente con tecnologías del lado del cliente y utiliza localStorage para almacenar datos.
+🧠 Descripción general
 
-El proyecto está construido con HTML, CSS, JavaScript y Bootstrap, y utiliza un estilo visual inspirado en un tema “Matrix claro”.
+Este proyecto es un panel técnico para explorar, comparar y gestionar información sobre tarjetas gráficas (GPUs). Está pensado para gente que disfruta el hardware, gamers que buscan lo mejor y creadores que quieren tener todo bajo control sin depender de servidores externos.
 
-✨ Características principales
-Catálogo de GPUs con más de 40 modelos reales.
+Al principio todo funcionaba solo en el navegador, pero ahora usamos Firebase para que todo sea en tiempo real, con usuarios que pueden registrarse, tener perfiles y un foro para charlar.
 
-Buscador dinámico por nombre, VRAM, consumo, precio y más.
+⚙️ Tecnologías usadas
 
-Ficha individual con detalles completos de cada GPU.
+HTML, CSS, JS — la base del proyecto
 
-Sistema de favoritos con persistencia local.
+Bootstrap 5.3 — para que se vea bien en cualquier pantalla
 
-Comparador de GPUs con tabla detallada.
+Firebase Realtime Database — guarda usuarios, hilos y respuestas
 
-Foro local con hilos y respuestas almacenados en localStorage.
+Firebase Authentication — para registro, login y mantener la sesión
 
-Sistema de usuarios (registro, inicio de sesión y perfil).
+LocalStorage — guarda favoritos y datos locales
 
-Interfaz responsive basada en Bootstrap.
+Matrix.js — fondo animado estilo hacker
 
-Fondo animado estilo Matrix.
+🧩 Cómo está organizado el proyecto
 
-🗂️ Estructura del proyecto
-Código
-/css
-   styles.css
+📁 css/
+    styles.css
+📁 img/
+    gpus/
+📁 js/
+    auth.js
+    compare.js
+    data.js
+    favourites.js
+    firebase.js
+    forum.js
+    gpu.js
+    gpus.js
+    matrix.js
+    profile.js
+    ranking.js
+    search.js
+📄 index.html
+📄 login.html
+📄 register.html
+📄 profile.html
+📄 forum.html
+📄 gpus.html
+📄 compare.html
+📄 favorites.html
+📄 ranking.html
+📄 gpu.html
+📄 README.md
 
-/js
-   data.js
-   gpus.js
-   gpu.js
-   compare.js
-   favorites.js
-   search.js
-   forum.js
-   auth.js
-   login.js
-   register.js
-   profile.js
-   matrix.js
+🔐 Sistema de usuarios
 
-/img
-   /gpus
-      (imágenes de las GPUs)
+Los usuarios pueden registrarse y entrar con Firebase Authentication
 
-index.html
-gpus.html
-gpu.html
-compare.html
-favorites.html
-forum.html
-profile.html
-login.html
-register.html
-🧩 Descripción de los módulos
-data.js
-Contiene la base de datos local con todas las GPUs y sus especificaciones.
+Al registrarse, se guarda su nombre, email y fecha en usuarios/{uid}
 
-gpus.js
-Renderiza el catálogo, gestiona el buscador y permite añadir GPUs a favoritos o al comparador.
+En el perfil se ven los datos del usuario y se puede cerrar sesión
 
-gpu.js
-Controla la ficha individual de cada GPU según el parámetro id de la URL.
+La sesión se mantiene aunque cambies de página
 
-compare.js
-Genera la tabla comparativa y permite eliminar GPUs o limpiar la lista.
+Archivos importantes:
 
-favorites.js
-Gestiona la lista de GPUs favoritas almacenadas en localStorage.
+auth.js — registro, login, logout y control de sesión
 
-search.js
-Filtra dinámicamente las GPUs según el texto introducido en el buscador.
+profile.js — muestra nombre y email del usuario
 
-forum.js
-Implementa un foro básico con hilos y respuestas guardados localmente.
+💬 Foro técnico
 
-auth.js
-Sistema de autenticación local: registro, inicio de sesión y cierre de sesión.
+Los temas se guardan en hilos/ con título, contenido, autor y fecha
 
-login.js / register.js / profile.js
-Controlan las páginas de login, registro y perfil del usuario.
+Las respuestas se guardan en hilos/{id}/replies
 
-matrix.js
-Genera el fondo animado estilo Matrix.
+Todo se actualiza en tiempo real con onValue()
 
-styles.css
-Define el estilo general del proyecto, incluyendo el tema Matrix claro.
+Solo los usuarios registrados pueden publicar o responder
 
-🚀 Cómo ejecutar el proyecto
-Descarga o clona el repositorio.
+Archivos importantes:
 
-Abre index.html en tu navegador.
+forum.js — toda la lógica del foro con Firebase
 
-Navega por las distintas secciones:
+forum.html — formulario, lista de temas y respuestas
 
-Catálogo de GPUs
+📊 Catálogo de GPUs
 
-Comparador
+Los datos están en data.js (local)
 
-Favoritos
+Puedes explorar, comparar y marcar favoritos
 
-Foro
+Los favoritos se guardan en localStorage
 
-Perfil de usuario
+Archivos importantes:
 
-Todos los datos se guardan automáticamente en localStorage.
+gpus.js, gpu.js, compare.js, favourites.js
 
-No requiere instalación ni servidor.
+gpus.html, gpu.html, compare.html, favorites.html
 
-🎯 Objetivo del proyecto
-El propósito de GPU Hub es demostrar cómo se puede construir una aplicación web completa utilizando únicamente tecnologías front‑end, sin frameworks ni backend. Es útil para aprender:
+🎨 Estilo y experiencia
 
-Organización modular de JavaScript
+Fondo animado tipo Matrix (matrix.js) con velocidad ajustable
 
-Uso de localStorage como persistencia
+Diseño oscuro y técnico, con letra monoespaciada
 
-Renderizado dinámico de contenido
+Animaciones suaves y estructura modular
 
-Manejo de eventos
+🔒 Reglas de seguridad en Firebase
 
-Diseño responsive con Bootstrap
+{
+  "rules": {
+    ".read": true,
+    "hilos": {
+      ".write": "auth != null"
+    },
+    "usuarios": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    }
+  }
+}
 
-Estructuración de un proyecto web real
+🧪 Pruebas hechas
 
-📄 Licencia
-Este proyecto está distribuido bajo la Licencia MIT.
+Registro y login funcionan sin problemas
+
+Crear y leer temas en tiempo real
+
+Respuestas sincronizadas entre usuarios
+
+Ver perfil con datos reales
+
+Mantener sesión entre páginas
+
+Catálogo y favoritos funcionan localmente
+
+🧑‍💻 Cómo se hizo
+
+Todo el código está escrito a mano, con ayuda de documentación oficial y pruebas locales. La IA solo se usó para revisar y mejorar un poco. El diseño, la lógica y la integración con Firebase los hice yo.
+
+📌 Créditos y licencia
+
+Este proyecto es para aprender y uso personal. Los datos de GPUs son ficticios o hechos a mano. El código tiene licencia MIT.
