@@ -94,20 +94,26 @@
                             </p>
                             <p class="mb-2">
                                 <strong>Modo de trabajo:</strong>
-                                <span class="text-muted-custom">100% local, sin backend</span>
+                                <span class="text-muted-custom">Conexión Firebase activa · Base de datos en tiempo real</span>
                             </p>
                             <p class="mb-2">
                                 <strong>Última actualización:</strong>
-                                <span class="text-muted-custom">2026</span>
+                                <span class="text-muted-custom" id="lastUpdate">2026</span>
                             </p>
 
                             <hr class="my-3" />
 
                             <p class="mb-1 text-muted-custom" style="font-size: 0.8rem;">
-                                Los datos se cargan desde un archivo local
-                                <code>data.js</code> y tus acciones (favoritos, foro, usuario)
-                                se guardan en el <strong>localStorage</strong> del navegador.
+                                Los datos de GPUs se cargan desde <code>data.js</code>, mientras que tus acciones (foro, perfil, sesión)
+                                se gestionan mediante <strong>Firebase Realtime Database</strong>.
                             </p>
+
+                            <p class="mb-2">
+                                <strong>Sesión activa:</strong>
+                                <span id="userStatus" class="text-muted-custom">No iniciada</span>
+                            </p>
+
+
                         </div>
                     </div>
                 </div>
@@ -222,6 +228,34 @@
             }
         });
     </script>
+
+    <script>
+    const updateEl = document.getElementById("lastUpdate");
+    if (updateEl) {
+        const now = new Date();
+        updateEl.textContent = now.toLocaleDateString("es-ES", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+    }
+    </script>
+
+    <script type="module">
+        import { auth } from "./js/firebase.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+        const userStatus = document.getElementById("userStatus");
+
+        onAuthStateChanged(auth, (user) => {
+            if (user && userStatus) {
+                userStatus.textContent = user.email;
+            } else if (userStatus) {
+                userStatus.textContent = "No iniciada";
+            }
+        });
+    </script>
+
 
     <!-- Bootstrap JS -->
     <script 
