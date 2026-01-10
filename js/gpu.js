@@ -1,6 +1,13 @@
 // gpu.js — Página de detalle de una GPU concreta en gpu.html
-// Lee el parámetro ?id=..., busca la GPU en gpuData y rellena la ficha.
-// Integra: favoritos, comparador y navegación básica.
+// Ahora integra Firebase para favoritos por usuario.
+
+import { auth, db } from "./firebase.js";
+import { onUserChange } from "./auth.js";
+import {
+    ref,
+    get,
+    set
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -21,6 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const addFavBtn      = document.getElementById("addToFavoritesBtn");
     const addCompareBtn  = document.getElementById("addToCompareBtn");
     const backToListBtn  = document.getElementById("backToListBtn");
+
+    let currentUser = null;
 
     // ============================
     //   UTILIDADES
@@ -43,25 +52,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.body.appendChild(mensaje);
 
-        setTimeout(() => {
-            mensaje.remove();
-        }, 2500);
+        setTimeout(() => mensaje.remove(), 2500);
     }
 
-    function getFavorites() {
-        return JSON.parse(localStorage.getItem("favorites")) || [];
-    }
-
-    function setFavorites(list) {
-        localStorage.setItem("favorites", JSON.stringify(list));
-    }
-
+    // Comparador sigue siendo local
     function getCompareList() {
         return JSON.parse(localStorage.getItem("compareList")) || [];
     }
 
     function setCompareList(list) {
         localStorage.setItem("compareList", JSON.stringify(list));
+    }
+
+    // ============================
+    //   FAVORITOS (Firebase)
+    // ============================
+
+    async function addToFavorites(gpuId) {
+        if (!currentUser) {
+            mostrarMensajeFlotante("Debes iniciar sesión para guardar favoritos.", "danger");
+            return;
+        }
+
+        const favRef = ref(db, `usuarios/${currentUser.uid}/favoritos`);
+        const snap = await get(favRef);
+        let favs = snap.val() || [];
+
+        if (favs.includes(gpuId)) {
+            mostrarMensajeFlotante("Esta GPU ya está en tus favoritos.");
+            return;
+        }
+
+        favs.push(gpuId);
+        await set(favRef, favs);
+
+        mostrarMensajeFlotante("GPU añadida a favoritos.");
     }
 
     // ============================
@@ -95,31 +120,26 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================
 
     function rellenarFicha(gpu) {
-        if (gpuTitle)  gpuTitle.textContent  = gpu.name;
-        if (gpuName)   gpuName.textContent   = gpu.name;
-        if (gpuVram)   gpuVram.textContent   = gpu.vram;
-        if (gpuPerf)   gpuPerf.textContent   = gpu.performanceScore + "/100";
-        if (gpuPrice)  gpuPrice.textContent  = gpu.price + " €";
-        if (gpuPower)  gpuPower.textContent  = gpu.powerWatts + " W";
-        if (gpuPsu)    gpuPsu.textContent    = gpu.recommendedPsu + " W o más";
+        gpuTitle.textContent = gpu.name;
+        gpuName.textContent = gpu.name;
+        gpuVram.textContent = gpu.vram;
+        gpuPerf.textContent = gpu.performanceScore + "/100";
+        gpuPrice.textContent = gpu.price + " €";
+        gpuPower.textContent = gpu.powerWatts + " W";
+        gpuPsu.textContent = gpu.recommendedPsu + " W o más";
 
-        if (gpuImage) {
-            gpuImage.src = gpu.image;
-            gpuImage.alt = gpu.name;
-        }
+        gpuImage.src = gpu.image;
+        gpuImage.alt = gpu.name;
 
-        // Si quieres añadir specs extra, podrías usar un objeto gpu.specs y renderizarlo aquí
-        if (gpuExtraSpecs) {
-            gpuExtraSpecs.innerHTML = `
-                <p class="gpu-meta mb-1">ID interno: ${gpu.id}</p>
-                <p class="gpu-meta mb-1">VRAM: ${gpu.vram}</p>
-                <p class="gpu-meta mb-1">Consumo estimado: ${gpu.powerWatts} W</p>
-                <p class="gpu-meta mb-1">PSU recomendada: ${gpu.recommendedPsu} W</p>
-                <p class="text-muted-custom mb-0">
-                    Puedes usar esta ficha como base y ampliarla con más campos cuando quieras.
-                </p>
-            `;
-        }
+        gpuExtraSpecs.innerHTML = `
+            <p class="gpu-meta mb-1">ID interno: ${gpu.id}</p>
+            <p class="gpu-meta mb-1">VRAM: ${gpu.vram}</p>
+            <p class="gpu-meta mb-1">Consumo estimado: ${gpu.powerWatts} W</p>
+            <p class="gpu-meta mb-1">PSU recomendada: ${gpu.recommendedPsu} W</p>
+            <p class="text-muted-custom mb-0">
+                Puedes ampliar esta ficha con más datos cuando quieras.
+            </p>
+        `;
     }
 
     // ============================
@@ -127,19 +147,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================
 
     function configurarEventos(gpu) {
+
+        // FAVORITOS (Firebase)
         if (addFavBtn) {
             addFavBtn.addEventListener("click", () => {
-                let favorites = getFavorites();
-                if (!favorites.includes(gpu.id)) {
-                    favorites.push(gpu.id);
-                    setFavorites(favorites);
-                    mostrarMensajeFlotante("GPU añadida a favoritos.");
-                } else {
-                    mostrarMensajeFlotante("Esta GPU ya está en tus favoritos.");
-                }
+                addToFavorites(gpu.id);
             });
         }
 
+        // COMPARADOR (localStorage)
         if (addCompareBtn) {
             addCompareBtn.addEventListener("click", () => {
                 let compareList = getCompareList();
@@ -153,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
+        // VOLVER
         if (backToListBtn) {
             backToListBtn.addEventListener("click", () => {
                 window.location.href = "gpus.html";
@@ -165,11 +182,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================
 
     function mostrarError(msg) {
-        if (gpuTitle) gpuTitle.textContent = "Error";
-        if (gpuName)  gpuName.textContent  = msg;
-
+        gpuTitle.textContent = "Error";
+        gpuName.textContent = msg;
         mostrarMensajeFlotante(msg, "danger");
     }
+
+    // ============================
+    //   SESIÓN
+    // ============================
+
+    onUserChange((user) => {
+        currentUser = user;
+    });
 
     // ============================
     //   INICIO
@@ -177,6 +201,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     init();
 });
-
-
-
