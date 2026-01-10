@@ -1,27 +1,26 @@
-// favorites.js — Gestión de GPUs favoritas en favorites.html
-// Renderiza la lista, permite eliminar y limpiar favoritos.
+// favorites.js — Favoritos sincronizados por usuario usando Firebase
+
+import { auth, db } from "./firebase.js";
+import { onUserChange } from "./auth.js";
+import {
+    ref,
+    get,
+    set,
+    onValue
+} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    // ============================
-    //   REFERENCIAS
-    // ============================
 
     const favoritesList = document.getElementById("favoritesList");
     const emptyMessage = document.getElementById("emptyFavoritesMessage");
     const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
 
+    let currentUser = null;
+    let favoritos = [];
+
     // ============================
     //   UTILIDADES
     // ============================
-
-    function getFavorites() {
-        return JSON.parse(localStorage.getItem("favorites")) || [];
-    }
-
-    function setFavorites(list) {
-        localStorage.setItem("favorites", JSON.stringify(list));
-    }
 
     function mostrarMensajeFlotante(texto, tipo = "success") {
         const mensaje = document.createElement("div");
@@ -34,8 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
         mensaje.style.minWidth = "240px";
 
         document.body.appendChild(mensaje);
-
         setTimeout(() => mensaje.remove(), 2500);
+    }
+
+    function guardarFavoritosEnFirebase() {
+        if (!currentUser) return;
+        set(ref(db, `usuarios/${currentUser.uid}/favoritos`), favoritos);
+    }
+
+    function cargarFavoritosDesdeFirebase() {
+        if (!currentUser) return;
+
+        onValue(ref(db, `usuarios/${currentUser.uid}/favoritos`), (snap) => {
+            favoritos = snap.val() || [];
+            renderFavorites();
+        });
     }
 
     // ============================
@@ -43,17 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // ============================
 
     function renderFavorites() {
-        const favs = getFavorites();
         favoritesList.innerHTML = "";
 
-        if (favs.length === 0) {
+        if (!favoritos || favoritos.length === 0) {
             emptyMessage.style.display = "block";
             return;
         }
 
         emptyMessage.style.display = "none";
 
-        favs.forEach(id => {
+        favoritos.forEach(id => {
             const gpu = getGpuById(id);
             if (!gpu) return;
 
@@ -125,10 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
         removeButtons.forEach(btn => {
             btn.addEventListener("click", () => {
                 const id = btn.getAttribute("data-remove-id");
-                let favs = getFavorites();
-                favs = favs.filter(item => item !== id);
-                setFavorites(favs);
+
+                favoritos = favoritos.filter(item => item !== id);
+                guardarFavoritosEnFirebase();
                 renderFavorites();
+
                 mostrarMensajeFlotante("GPU eliminada de favoritos.");
             });
         });
@@ -140,14 +152,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (clearFavoritesBtn) {
         clearFavoritesBtn.addEventListener("click", () => {
-            const favs = getFavorites();
-            if (favs.length === 0) {
+            if (!favoritos || favoritos.length === 0) {
                 mostrarMensajeFlotante("No hay GPUs en favoritos.", "danger");
                 return;
             }
 
-            setFavorites([]);
+            favoritos = [];
+            guardarFavoritosEnFirebase();
             renderFavorites();
+
             mostrarMensajeFlotante("Favoritos limpiados.");
         });
     }
@@ -156,6 +169,21 @@ document.addEventListener("DOMContentLoaded", () => {
     //   INICIO
     // ============================
 
-    renderFavorites();
+    onUserChange((user) => {
+        currentUser = user;
+
+        if (!user) {
+            emptyMessage.style.display = "block";
+            emptyMessage.innerHTML = `
+                <h2 class="mb-2">Inicia sesión para ver tus favoritos</h2>
+                <a href="login.html" class="btn btn-primary mt-3">Iniciar sesión</a>
+            `;
+            favoritesList.innerHTML = "";
+            return;
+        }
+
+        cargarFavoritosDesdeFirebase();
+    });
 });
+
 
