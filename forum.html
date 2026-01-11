@@ -10,7 +10,6 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     />
-
     <!-- Estilos globales -->
     <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -28,6 +27,9 @@
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navMenu"
+            aria-controls="navMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
         >
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -47,8 +49,6 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="container py-5 fade-in" style="max-width: 900px;">
-
-        <!-- TÍTULO -->
         <div class="mb-4 text-center">
             <h1 class="hacker-prefix mb-1">Foro técnico</h1>
             <p class="section-subtitle">Comparte dudas, ideas y configuraciones</p>
@@ -81,19 +81,6 @@
                     ></textarea>
                 </div>
 
-                <div class="mb-3">
-                    <label for="threadImage" class="form-label">Imagen opcional</label>
-                    <input
-                        type="file"
-                        id="threadImage"
-                        class="form-control"
-                        accept="image/*"
-                    />
-                    <div class="form-text text-muted-custom">
-                        Puedes adjuntar una captura, benchmark o configuración (opcional).
-                    </div>
-                </div>
-
                 <div id="threadMessage" class="text-error mb-3" style="display: none;"></div>
 
                 <button type="submit" class="btn btn-primary w-100">
@@ -109,7 +96,6 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="py-3">
         GPU Hub © 2026 — Todos los derechos reservados
     </footer>
@@ -118,12 +104,13 @@
     <script type="module" src="js/firebase.js"></script>
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/forum.js"></script>
-
-    <!-- Bootstrap JS -->
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
 </body>
 </html>
+
+
+
 
 

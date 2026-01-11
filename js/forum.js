@@ -1,6 +1,6 @@
-// js/forum.js — Foro con imágenes y avatares
+// js/forum.js — Foro simple sin imágenes ni avatar
 
-import { auth, db, storage } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import { onUserChange } from "./auth.js";
 import {
     ref,
@@ -9,11 +9,6 @@ import {
     onValue,
     get
 } from "https://www.gstatic.com/firebasejs/12.7.0/firebase-database.js";
-import {
-    ref as storageRef,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.7.0/firebase-storage.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const newThreadForm = document.getElementById("newThreadForm");
@@ -22,138 +17,125 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let currentUser = null;
 
-    onUserChange((user) => currentUser = user);
+    onUserChange((user) => {
+        currentUser = user;
+    });
 
-    function mostrarError(text) {
-        threadMessage.textContent = text;
-        threadMessage.style.display = "block";
+    function mostrarError(texto) {
+        if (!threadMessage) return;
+        threadMessage.textContent = texto;
+        threadMessage.style.display = texto ? "block" : "none";
     }
 
     function limpiarError() {
-        threadMessage.style.display = "none";
-        threadMessage.textContent = "";
+        mostrarError("");
     }
 
     function formatDate(ts) {
+        if (!ts) return "";
         return new Date(ts).toLocaleString("es-ES", {
             dateStyle: "short",
             timeStyle: "short"
         });
     }
 
-    // Crear hilo
-    newThreadForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        limpiarError();
+    /* CREAR HILO */
+    if (newThreadForm) {
+        newThreadForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            limpiarError();
 
-        if (!currentUser) {
-            mostrarError("Debes iniciar sesión.");
-            return;
-        }
-
-        const title = document.getElementById("threadTitle").value.trim();
-        const content = document.getElementById("threadContent").value.trim();
-        const file = document.getElementById("threadImage").files[0];
-
-        if (!title || !content) {
-            mostrarError("Completa todos los campos.");
-            return;
-        }
-
-        // Validación de imagen
-        let imageUrl = null;
-
-        if (file) {
-            const validTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/gif"];
-            if (!validTypes.includes(file.type)) {
-                mostrarError("Formato no válido. Usa PNG, JPG, WEBP o GIF.");
+            if (!currentUser) {
+                mostrarError("Debes iniciar sesión para publicar un hilo.");
                 return;
             }
 
-            if (file.size > 10 * 1024 * 1024) {
-                mostrarError("La imagen supera los 10MB.");
+            const title = document.getElementById("threadTitle").value.trim();
+            const content = document.getElementById("threadContent").value.trim();
+
+            if (!title || !content) {
+                mostrarError("Debes completar todos los campos.");
                 return;
             }
-        }
 
-        try {
-            const userSnap = await get(ref(db, "usuarios/" + currentUser.uid));
-            const userData = userSnap.val() || {};
+            try {
+                const userSnap = await get(ref(db, "usuarios/" + currentUser.uid));
+                const userData = userSnap.val() || {};
 
-            const newRef = push(ref(db, "hilos"));
-            const newKey = newRef.key;
+                await push(ref(db, "hilos"), {
+                    title,
+                    content,
+                    authorUid: currentUser.uid,
+                    authorEmail: currentUser.email,
+                    authorName: userData.nombre || null,
+                    createdAt: Date.now()
+                });
 
-            if (file) {
-                const path = `foro/hilos/${newKey}-${file.name}`;
-                const fileRef = storageRef(storage, path);
-                await uploadBytes(fileRef, file);
-                imageUrl = await getDownloadURL(fileRef);
+                newThreadForm.reset();
+            } catch (err) {
+                console.error(err);
+                mostrarError("Error al crear el hilo.");
             }
+        });
+    }
 
-            await set(newRef, {
-                title,
-                content,
-                imageUrl,
-                authorUid: currentUser.uid,
-                authorEmail: currentUser.email,
-                authorName: userData.nombre || null,
-                authorAvatar: userData.avatar || "img/default-avatar.png",
-                createdAt: Date.now()
-            });
-
-            newThreadForm.reset();
-        } catch (err) {
-            console.error(err);
-            mostrarError("Error al publicar el hilo.");
-        }
-    });
-
-    // Mostrar hilos
-    onValue(ref(db, "hilos"), (snap) => {
-        const data = snap.val();
+    /* ESCUCHAR HILOS */
+    onValue(ref(db, "hilos"), (snapshot) => {
+        const data = snapshot.val();
         renderThreads(data);
     });
 
     function renderThreads(hilos) {
+        if (!threadsList) return;
         threadsList.innerHTML = "";
 
         if (!hilos) {
-            threadsList.innerHTML = `
-                <div class="card p-4 text-center">
-                    <h2>No hay hilos aún</h2>
-                </div>`;
+            const empty = document.createElement("div");
+            empty.className = "card p-4 text-center";
+            empty.innerHTML = `
+                <h2 class="mb-2">No hay hilos aún</h2>
+                <p class="text-muted-custom mb-0">
+                    Sé el primero en crear un hilo usando el formulario superior.
+                </p>
+            `;
+            threadsList.appendChild(empty);
             return;
         }
 
-        const entries = Object.entries(hilos).sort((a, b) => b[1].createdAt - a[1].createdAt);
+        const entries = Object.entries(hilos);
+        entries.sort((a, b) => (b[1].createdAt || 0) - (a[1].createdAt || 0));
 
         entries.forEach(([id, thread]) => {
             const div = document.createElement("div");
             div.className = "card p-4";
 
+            const createdAtText = formatDate(thread.createdAt);
+            const authorLabel = thread.authorName
+                ? `${thread.authorName} (${thread.authorEmail || "Desconocido"})`
+                : (thread.authorEmail || "Desconocido");
+
             div.innerHTML = `
-                <h3>${thread.title}</h3>
-                <p class="gpu-meta">${thread.content}</p>
+                <h3 class="mb-2">${thread.title}</h3>
+                <p class="gpu-meta mb-3">${thread.content}</p>
 
-                ${thread.imageUrl ? `
-                    <img src="${thread.imageUrl}" class="forum-thread-image" />
-                ` : ""}
+                <p class="text-muted-custom mb-2" style="font-size: 0.85rem;">
+                    Publicado por <strong>${authorLabel}</strong> · ${createdAtText}
+                </p>
 
-                <div class="forum-author mt-3">
-                    <img src="${thread.authorAvatar}" class="forum-avatar" />
-                    <div>
-                        <strong>${thread.authorName || thread.authorEmail}</strong><br>
-                        <span class="text-muted-custom">${formatDate(thread.createdAt)}</span>
-                    </div>
+                <hr class="mt-3" />
+
+                <h4 class="mb-2">Respuestas</h4>
+                <div class="d-flex flex-column gap-2 mb-3" id="replies-${id}">
+                    <!-- Respuestas se inyectan aquí -->
                 </div>
 
-                <hr>
-
-                <h4>Respuestas</h4>
-                <div id="replies-${id}" class="d-flex flex-column gap-2 mb-3"></div>
-
                 <form class="replyForm" data-thread-id="${id}">
-                    <textarea class="form-control mb-2" rows="2" required></textarea>
+                    <textarea
+                        class="form-control mb-2"
+                        rows="2"
+                        placeholder="Escribe una respuesta..."
+                        required
+                    ></textarea>
                     <button class="btn btn-secondary btn-sm">Responder</button>
                 </form>
             `;
@@ -166,58 +148,74 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function listenToReplies(threadId) {
-        const container = document.getElementById(`replies-${threadId}`);
+        const repliesContainer = document.getElementById(`replies-${threadId}`);
+        if (!repliesContainer) return;
 
         onValue(ref(db, `hilos/${threadId}/replies`), (snap) => {
             const replies = snap.val();
-            container.innerHTML = "";
+            repliesContainer.innerHTML = "";
 
             if (!replies) {
-                container.innerHTML = `<p class="text-muted-custom">No hay respuestas.</p>`;
+                repliesContainer.innerHTML = `
+                    <p class="text-muted-custom mb-0">No hay respuestas aún.</p>
+                `;
                 return;
             }
 
-            Object.values(replies).forEach((r) => {
-                const div = document.createElement("div");
-                div.className = "card p-2";
-                div.innerHTML = `
-                    <p>${r.content}</p>
-                    <p class="text-muted-custom" style="font-size: 0.75rem;">
+            const list = Object.values(replies);
+            list.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+
+            list.forEach((r) => {
+                const p = document.createElement("div");
+                p.className = "card p-2";
+                p.innerHTML = `
+                    <p class="mb-1">${r.content}</p>
+                    <p class="text-muted-custom mb-0" style="font-size: 0.75rem;">
                         ${r.authorEmail} · ${formatDate(r.createdAt)}
                     </p>
                 `;
-                container.appendChild(div);
+                repliesContainer.appendChild(p);
             });
         });
     }
 
     function activarFormulariosRespuesta() {
-        document.querySelectorAll(".replyForm").forEach((form) => {
+        const forms = document.querySelectorAll(".replyForm");
+        forms.forEach((form) => {
             form.addEventListener("submit", async (e) => {
                 e.preventDefault();
 
                 if (!currentUser) {
-                    alert("Debes iniciar sesión.");
+                    alert("Debes iniciar sesión para responder.");
                     return;
                 }
 
-                const threadId = form.dataset.threadId;
-                const content = form.querySelector("textarea").value.trim();
-
+                const threadId = form.getAttribute("data-thread-id");
+                const textarea = form.querySelector("textarea");
+                const content = textarea.value.trim();
                 if (!content) return;
 
-                await push(ref(db, `hilos/${threadId}/replies`), {
-                    content,
-                    authorUid: currentUser.uid,
-                    authorEmail: currentUser.email,
-                    createdAt: Date.now()
-                });
-
-                form.querySelector("textarea").value = "";
+                try {
+                    await push(ref(db, `hilos/${threadId}/replies`), {
+                        content,
+                        authorUid: currentUser.uid,
+                        authorEmail: currentUser.email,
+                        createdAt: Date.now()
+                    });
+                    textarea.value = "";
+                } catch (err) {
+                    console.error("Error al enviar respuesta:", err);
+                    alert("Error al enviar la respuesta.");
+                }
             });
         });
     }
 });
+
+
+
+
+
 
 
 
