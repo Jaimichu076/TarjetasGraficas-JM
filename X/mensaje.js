@@ -1,10 +1,8 @@
-// X/mensaje.js — Pantalla azul realista sin QR
-
 document.addEventListener("DOMContentLoaded", () => {
   const progressEl = document.getElementById("bsodProgress");
   const soundEl = document.getElementById("bsodSound");
 
-  // Reproducir sonido fuerte al inicio
+  // Reproducir sonido fuerte al instante
   try {
     soundEl.volume = 1.0;
     soundEl.play().catch(() => {});
@@ -28,5 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, stepMs);
 });
+
 
 
