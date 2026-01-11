@@ -6,8 +6,8 @@
     <title>GPU Hub — Foro técnico</title>
 
     <!-- Bootstrap -->
-    <link 
-        rel="stylesheet" 
+    <link
+        rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     />
 
@@ -23,10 +23,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark px-3">
         <a class="navbar-brand" href="index.html">GPU HUB</a>
 
-        <button 
-            class="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="collapse" 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
             data-bs-target="#navMenu"
         >
             <span class="navbar-toggler-icon"></span>
@@ -61,10 +61,10 @@
             <form id="newThreadForm">
                 <div class="mb-3">
                     <label for="threadTitle" class="form-label">Título del hilo</label>
-                    <input 
-                        type="text" 
-                        class="form-control" 
-                        id="threadTitle" 
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="threadTitle"
                         placeholder="Ej: ¿Qué PSU necesito para una RTX 4080?"
                         required
                     />
@@ -72,13 +72,26 @@
 
                 <div class="mb-3">
                     <label for="threadContent" class="form-label">Contenido</label>
-                    <textarea 
-                        class="form-control" 
-                        id="threadContent" 
+                    <textarea
+                        class="form-control"
+                        id="threadContent"
                         rows="4"
                         placeholder="Describe tu duda, idea o configuración..."
                         required
                     ></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="threadImage" class="form-label">Imagen opcional</label>
+                    <input
+                        type="file"
+                        id="threadImage"
+                        class="form-control"
+                        accept="image/*"
+                    />
+                    <div class="form-text text-muted-custom">
+                        Puedes adjuntar una captura, benchmark o configuración (opcional).
+                    </div>
                 </div>
 
                 <div id="threadMessage" class="text-error mb-3" style="display: none;"></div>
@@ -91,11 +104,9 @@
 
         <!-- LISTA DE HILOS -->
         <h2 class="mb-3 section-subtitle">Hilos recientes</h2>
-
         <div id="threadsList" class="d-flex flex-column gap-3">
             <!-- forum.js generará aquí los hilos -->
         </div>
-
     </main>
 
     <!-- FOOTER -->
@@ -109,9 +120,10 @@
     <script type="module" src="js/forum.js"></script>
 
     <!-- Bootstrap JS -->
-    <script 
+    <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
 </body>
 </html>
+
 

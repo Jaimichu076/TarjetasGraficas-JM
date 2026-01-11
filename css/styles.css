@@ -424,3 +424,52 @@ hr {
     font-size: 0.8rem;
 }
 
+/* ============================
+AVATARES Y FORO CON IMÁGENES
+============================ */
+
+.forum-author {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.forum-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border-neon);
+}
+
+.forum-thread-image {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    border: 1px solid var(--border-soft);
+}
+
+.profile-avatar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-avatar-img {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--accent-green-soft);
+    box-shadow: var(--shadow-neon);
+}
+
+.profile-avatar-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+

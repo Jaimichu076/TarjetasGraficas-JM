@@ -6,8 +6,8 @@
     <title>GPU Hub — Perfil</title>
 
     <!-- Bootstrap -->
-    <link 
-        rel="stylesheet" 
+    <link
+        rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
     />
 
@@ -23,10 +23,10 @@
     <nav class="navbar navbar-expand-lg navbar-dark px-3">
         <a class="navbar-brand" href="index.html">GPU HUB</a>
 
-        <button 
-            class="navbar-toggler" 
-            type="button" 
-            data-bs-toggle="collapse" 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
             data-bs-target="#navMenu"
         >
             <span class="navbar-toggler-icon"></span>
@@ -51,12 +51,37 @@
         <!-- TÍTULO -->
         <div class="mb-4 text-center">
             <h1 class="hacker-prefix mb-1">Tu perfil</h1>
-            <p class="section-subtitle">Información de tu cuenta local</p>
+            <p class="section-subtitle">Información de tu cuenta</p>
         </div>
 
         <!-- TARJETA DE PERFIL -->
-        <div class="card p-4">
+        <div class="card p-4 mb-4">
             <h2 class="mb-3">Datos del usuario</h2>
+
+            <div class="profile-avatar-wrapper">
+                <img
+                    id="profileAvatarImg"
+                    src="img/default-avatar.png"
+                    alt="Avatar"
+                    class="profile-avatar-img"
+                />
+                <form id="avatarForm" class="w-100">
+                    <label for="avatarInput" class="form-label">Cambiar foto de perfil</label>
+                    <input
+                        type="file"
+                        id="avatarInput"
+                        class="form-control mb-2"
+                        accept="image/*"
+                    />
+                    <button type="submit" class="btn btn-primary w-100">
+                        Guardar nueva foto
+                    </button>
+                    <div id="avatarMessage" class="text-error mt-2" style="display: none;"></div>
+                </form>
+                <p class="profile-avatar-hint">
+                    La imagen se guardará vinculada a tu cuenta y se mostrará en el foro.
+                </p>
+            </div>
 
             <table class="table table-dark table-striped mb-4">
                 <tbody>
@@ -75,7 +100,6 @@
                 <button id="logoutBtn" class="btn btn-danger flex-fill">
                     Cerrar sesión
                 </button>
-
                 <a href="index.html" class="btn btn-secondary flex-fill">
                     Volver al inicio
                 </a>
@@ -86,14 +110,12 @@
         <div class="card p-4 mt-4">
             <h2 class="mb-3">Información del sistema</h2>
             <p class="text-muted-custom mb-1">
-                Este perfil se almacena de forma local en tu navegador mediante 
-                <strong>localStorage</strong>.
+                Tu perfil se gestiona mediante Firebase Auth y Realtime Database.
             </p>
             <p class="text-muted-custom mb-0">
-                No se envía ningún dato a servidores externos.
+                Los datos de la cuenta y el avatar se sincronizan entre dispositivos.
             </p>
         </div>
-
     </main>
 
     <!-- FOOTER -->
@@ -106,11 +128,11 @@
     <script type="module" src="js/auth.js"></script>
     <script type="module" src="js/profile.js"></script>
 
-
     <!-- Bootstrap JS -->
-    <script 
+    <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
 </body>
 </html>
+
 
