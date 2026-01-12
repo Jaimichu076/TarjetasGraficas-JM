@@ -390,7 +390,7 @@ const gpuData = [
     },
 
     // ============================
-    //   FUNCIÓN AUXILIAR
+    //   SUPERPOTENTES E HIPERPOTENTES
     // ============================
 
     {
@@ -401,7 +401,7 @@ const gpuData = [
         price: 2999,
         powerWatts: 250,
         recommendedPsu: 650,
-        image: "img/gpus/rtxtitanv.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/rtxtitanv.png"
     },
     {
         id: "rtx_titan_rtx",
@@ -411,7 +411,7 @@ const gpuData = [
         price: 2499,
         powerWatts: 280,
         recommendedPsu: 650,
-        image: "img/gpus/rtxtitanrtx.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/rtxtitanrtx.png"
     },
     {
         id: "quadro_rtx_8000",
@@ -421,7 +421,7 @@ const gpuData = [
         price: 5999,
         powerWatts: 295,
         recommendedPsu: 750,
-        image: "img/gpus/quadrortx8000.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/quadrortx8000.png"
     },
     {
         id: "quadro_rtx_6000",
@@ -431,7 +431,7 @@ const gpuData = [
         price: 3999,
         powerWatts: 295,
         recommendedPsu: 750,
-        image: "img/gpus/quadrortx6000.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/quadrortx6000.png"
     },
     {
         id: "rtx_a6000",
@@ -441,7 +441,7 @@ const gpuData = [
         price: 4999,
         powerWatts: 300,
         recommendedPsu: 750,
-        image: "img/gpus/rtxa6000.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/rtxa6000.png"
     },
     {
         id: "rtx_a5000",
@@ -451,7 +451,7 @@ const gpuData = [
         price: 2499,
         powerWatts: 230,
         recommendedPsu: 650,
-        image: "img/gpus/rtxa5000.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/rtxa5000.png"
     },
     {
         id: "h100_pcie",
@@ -461,7 +461,7 @@ const gpuData = [
         price: 30000,
         powerWatts: 350,
         recommendedPsu: 1000,
-        image: "img/gpus/h100pcie.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/h100pcie.png"
     },
     {
         id: "a100_pcie",
@@ -471,7 +471,7 @@ const gpuData = [
         price: 15000,
         powerWatts: 250,
         recommendedPsu: 850,
-        image: "img/gpus/a100pcie.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/a100pcie.png"
     },
     {
         id: "amd_instinct_mi250",
@@ -481,7 +481,7 @@ const gpuData = [
         price: 18000,
         powerWatts: 500,
         recommendedPsu: 1200,
-        image: "img/gpus/mi250.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/mi250.png"
     },
     {
         id: "radeon_pro_w6800",
@@ -491,7 +491,7 @@ const gpuData = [
         price: 2499,
         powerWatts: 250,
         recommendedPsu: 650,
-        image: "img/gpus/radeonprow6800.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/radeonprow6800.png"
     },
     {
         id: "radeon_pro_vii",
@@ -501,7 +501,7 @@ const gpuData = [
         price: 1899,
         powerWatts: 250,
         recommendedPsu: 650,
-        image: "img/gpus/radeonprovii.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/radeonprovii.png"
     },
     {
         id: "amd_instinct_mi100",
@@ -511,7 +511,7 @@ const gpuData = [
         price: 12000,
         powerWatts: 300,
         recommendedPsu: 850,
-        image: "img/gpus/mi100.png"
+        image: "img/SUPERPOTENTES E HIPERPOTENTES/mi100.png"
     },
 
     // ============================
@@ -601,7 +601,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd770.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd770.png"
     },
     {
         id: "intel_uhd_750",
@@ -611,7 +611,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd750.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd750.png"
     },
     {
         id: "intel_uhd_730",
@@ -621,7 +621,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd730.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd730.png"
     },
     {
         id: "intel_uhd_710",
@@ -631,7 +631,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd710.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd710.png"
     },
     {
         id: "intel_uhd_630",
@@ -641,7 +641,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd630.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd630.png"
     },
     {
         id: "intel_uhd_620",
@@ -651,7 +651,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd620.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd620.png"
     },
     {
         id: "intel_uhd_605",
@@ -661,7 +661,7 @@ const gpuData = [
         price: 0,
         powerWatts: 15,
         recommendedPsu: 300,
-        image: "img/gpus/inteluhd605.png"
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd605.png"
     },
 
     // ============================
