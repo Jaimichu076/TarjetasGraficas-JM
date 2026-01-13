@@ -10,8 +10,8 @@ const gpuData = [
     {
         id: "rtx5090matrixplatinum",
         name: "NVIDIA GeForce RTX 5090 Matrix Platinum Edition",
-        vram: "32 GB GDDR7",
-        performanceScore: 100,
+        vram: "48 GB GDDR7",
+        performanceScore: 110,
         price: 2999,
         powerWatts: 450,
         recommendedPsu: 750,
@@ -36,6 +36,69 @@ const gpuData = [
         powerWatts: 285,
         recommendedPsu: 750,
         image: "img/EDICIONES ESPECIALES/rtx4070wow.png"
+    },
+    
+    { id: "rtx3070spiderman", 
+        name: "NVIDIA GeForce RTX 3070 Spider-Man Edition", 
+        vram: "8 GB GDDR6", 
+        performanceScore: 78, 
+        price: 699, 
+        powerWatts: 220, 
+        recommendedPsu: 650, 
+        image: "img/EDICIONES ESPECIALES/rtx3070spiderman.png" }, 
+    
+    { 
+        id: "rtx3080eva01", 
+        name: "NVIDIA GeForce RTX 3080 Evangelion EVA-01 Edition", 
+        vram: "10 GB GDDR6X", 
+        performanceScore: 88, 
+        price: 899, 
+        powerWatts: 320, 
+        recommendedPsu: 750, 
+        image: "img/EDICIONES ESPECIALES/rtx3080eva01.png" }, 
+    
+    { 
+        id: "rtx4090eva02", 
+        name: "NVIDIA GeForce RTX 4090 Evangelion EVA-02 Edition", 
+        vram: "24 GB GDDR6X", 
+        performanceScore: 105, 
+        price: 1799, 
+        powerWatts: 450, 
+        recommendedPsu: 850, 
+        image: "img/EDICIONES ESPECIALES/rtx4090eva02.png" 
+    }, 
+
+    { 
+        id: "rtx4090neptune", 
+        name: "NVIDIA GeForce RTX 4090 Neptune Edition", 
+        vram: "24 GB GDDR6X", 
+        performanceScore: 108, 
+        price: 1899, 
+        powerWatts: 480, 
+        recommendedPsu: 850, 
+        image: "img/EDICIONES ESPECIALES/rtx4090neptune.png" 
+    }, 
+    
+    { 
+        id: "rx7900xtxhellhoundspectral", 
+        name: "AMD Radeon RX 7900 XTX Hellhound Edition", 
+        vram: "24 GB GDDR6", 
+        performanceScore: 95, 
+        price: 999, 
+        powerWatts: 355, 
+        recommendedPsu: 750, 
+        image: "img/EDICIONES ESPECIALES/rx7900xtxhellhoundspectral.png" 
+    }, 
+    
+    { 
+        id: "rx9070xtmonsterhunter", 
+        name: "AMD Radeon RX 9070 XT Monster Hunter Edition", 
+        vram: "32 GB GDDR6", 
+        performanceScore: 102, 
+        price: 1299, 
+        powerWatts: 390, 
+        recommendedPsu: 800, 
+        image: "img/EDICIONES ESPECIALES/rx9070xtmonsterhunter.png" 
     },
 
     // ============================
@@ -635,81 +698,6 @@ const gpuData = [
     },
 
     // ============================
-    //   INTEL INTEGRATED GRAPHICS
-    // ============================
-
-    {
-        id: "intel_uhd_770",
-        name: "Intel UHD Graphics 770",
-        vram: "Compartida",
-        performanceScore: 20,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd770.png"
-    },
-    {
-        id: "intel_uhd_750",
-        name: "Intel UHD Graphics 750",
-        vram: "Compartida",
-        performanceScore: 14,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd750.png"
-    },
-    {
-        id: "intel_uhd_730",
-        name: "Intel UHD Graphics 730",
-        vram: "Compartida",
-        performanceScore: 12,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd730.png"
-    },
-    {
-        id: "intel_uhd_710",
-        name: "Intel UHD Graphics 710",
-        vram: "Compartida",
-        performanceScore: 8,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd710.png"
-    },
-    {
-        id: "intel_uhd_630",
-        name: "Intel UHD Graphics 630",
-        vram: "Compartida",
-        performanceScore: 10,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd630.png"
-    },
-    {
-        id: "intel_uhd_620",
-        name: "Intel UHD Graphics 620",
-        vram: "Compartida",
-        performanceScore: 9,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd620.png"
-    },
-    {
-        id: "intel_uhd_605",
-        name: "Intel UHD Graphics 605",
-        vram: "Compartida",
-        performanceScore: 6,
-        price: 0,
-        powerWatts: 15,
-        recommendedPsu: 300,
-        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd605.png"
-    },
-
-    // ============================
     //   NVIDIA — GTX 1000 / 900 / 700 / 600 / 500 / 400 / 200 / FX
     // ============================
 
@@ -1192,7 +1180,7 @@ const gpuData = [
         price: 499,
         powerWatts: 289,
         recommendedPsu: 650,
-        image: "img/gpus/gtx295.png"
+        image: "img/NVIDIA (2005–2015)/gtx295.png"
     },
     {
         id: "gtx275",
@@ -1202,7 +1190,7 @@ const gpuData = [
         price: 249,
         powerWatts: 219,
         recommendedPsu: 550,
-        image: "img/gpus/gtx275.png"
+        image: "img/NVIDIA (2005–2015)/gtx275.png"
     },
     {
         id: "gtx260core216",
@@ -1212,7 +1200,7 @@ const gpuData = [
         price: 199,
         powerWatts: 182,
         recommendedPsu: 500,
-        image: "img/gpus/gtx260core216.png"
+        image: "img/NVIDIA (2005–2015)/gtx260core216.png"
     },
     {
         id: "gtx250",
@@ -1222,7 +1210,7 @@ const gpuData = [
         price: 149,
         powerWatts: 150,
         recommendedPsu: 450,
-        image: "img/gpus/gts250.png"
+        image: "img/NVIDIA (2005–2015)/gts250.png"
     },
     {
         id: "gtx9800gtx",
@@ -1232,7 +1220,7 @@ const gpuData = [
         price: 299,
         powerWatts: 156,
         recommendedPsu: 450,
-        image: "img/gpus/9800gtx.png"
+        image: "img/NVIDIA (2005–2015)/9800gtx.png"
     },
     {
         id: "gtx9800gt",
@@ -1242,7 +1230,7 @@ const gpuData = [
         price: 199,
         powerWatts: 105,
         recommendedPsu: 400,
-        image: "img/gpus/9800gt.png"
+        image: "img/NVIDIA (2005–2015)/9800gt.png"
     },
     {
         id: "gtx9600gt",
@@ -1252,7 +1240,7 @@ const gpuData = [
         price: 149,
         powerWatts: 95,
         recommendedPsu: 350,
-        image: "img/gpus/9600gt.png"
+        image: "img/NVIDIA (2005–2015)/9600gt.png"
     },
     {
         id: "gtx8800ultra",
@@ -1262,7 +1250,7 @@ const gpuData = [
         price: 599,
         powerWatts: 175,
         recommendedPsu: 500,
-        image: "img/gpus/8800ultra.png"
+        image: "img/NVIDIA (2005–2015)/8800ultra.png"
     },
     {
         id: "gtx8800gtx",
@@ -1272,7 +1260,7 @@ const gpuData = [
         price: 499,
         powerWatts: 155,
         recommendedPsu: 450,
-        image: "img/gpus/8800gtx.png"
+        image: "img/NVIDIA (2005–2015)/8800gtx.png"
     },
     {
         id: "gtx8800gts",
@@ -1282,7 +1270,7 @@ const gpuData = [
         price: 399,
         powerWatts: 145,
         recommendedPsu: 450,
-        image: "img/gpus/8800gts.png"
+        image: "img/NVIDIA (2005–2015)/8800gts.png"
     },
     {
         id: "gtx8600gts",
@@ -1292,7 +1280,7 @@ const gpuData = [
         price: 199,
         powerWatts: 71,
         recommendedPsu: 300,
-        image: "img/gpus/8600gts.png"
+        image: "img/NVIDIA (2005–2015)/8600gts.png"
     },
     {
         id: "gtx7900gtx",
@@ -1302,7 +1290,7 @@ const gpuData = [
         price: 499,
         powerWatts: 84,
         recommendedPsu: 350,
-        image: "img/gpus/7900gtx.png"
+        image: "img/NVIDIA (2005–2015)/7900gtx.png"
     },
     {
         id: "gtx7800gtx",
@@ -1312,7 +1300,7 @@ const gpuData = [
         price: 449,
         powerWatts: 100,
         recommendedPsu: 350,
-        image: "img/gpus/7800gtx.png"
+        image: "img/NVIDIA (2005–2015)/7800gtx.png"
     },
     {
         id: "gtx7600gt",
@@ -1322,7 +1310,7 @@ const gpuData = [
         price: 199,
         powerWatts: 67,
         recommendedPsu: 300,
-        image: "img/gpus/7600gt.png"
+        image: "img/NVIDIA (2005–2015)/7600gt.png"
     },
     {
         id: "gtx7300gt",
@@ -1332,9 +1320,91 @@ const gpuData = [
         price: 99,
         powerWatts: 25,
         recommendedPsu: 250,
-        image: "img/gpus/7300gt.png"
+        image: "img/NVIDIA (2005–2015)/7300gt.png"
     },
+    { id: "geforce256", 
+        name: "NVIDIA GeForce 256", 
+        vram: "32 MB SDR / DDR", 
+        performanceScore: 0.2, 
+        price: 299, 
+        powerWatts: 23, 
+        recommendedPsu: 250, 
+        image: "img/NVIDIA (2005–2015)/geforce256.png" },
 
+    // ============================
+    //   INTEL INTEGRATED GRAPHICS
+    // ============================
+
+    {
+        id: "intel_uhd_770",
+        name: "Intel UHD Graphics 770",
+        vram: "Compartida",
+        performanceScore: 20,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd770.png"
+    },
+    {
+        id: "intel_uhd_750",
+        name: "Intel UHD Graphics 750",
+        vram: "Compartida",
+        performanceScore: 14,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd750.png"
+    },
+    {
+        id: "intel_uhd_730",
+        name: "Intel UHD Graphics 730",
+        vram: "Compartida",
+        performanceScore: 12,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd730.png"
+    },
+    {
+        id: "intel_uhd_710",
+        name: "Intel UHD Graphics 710",
+        vram: "Compartida",
+        performanceScore: 8,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd710.png"
+    },
+    {
+        id: "intel_uhd_630",
+        name: "Intel UHD Graphics 630",
+        vram: "Compartida",
+        performanceScore: 10,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd630.png"
+    },
+    {
+        id: "intel_uhd_620",
+        name: "Intel UHD Graphics 620",
+        vram: "Compartida",
+        performanceScore: 9,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd620.png"
+    },
+    {
+        id: "intel_uhd_605",
+        name: "Intel UHD Graphics 605",
+        vram: "Compartida",
+        performanceScore: 6,
+        price: 0,
+        powerWatts: 15,
+        recommendedPsu: 300,
+        image: "img/INTEL INTEGRATED GRAPHICS/inteluhd605.png"
+    },
 
 ];
 
