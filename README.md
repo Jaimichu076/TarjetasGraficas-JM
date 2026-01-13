@@ -1,145 +1,140 @@
-GPU Hub — TarjetasGraficas-JM
+TarjetasGraficas-JM
+Este proyecto es una página web que sirve para aprender y ver información sobre tarjetas gráficas. Puedes buscar modelos, compararlos, ver cuáles son mejores, guardar tus favoritos y hasta escribir en un pequeño foro.
+Todo funciona con archivos HTML, CSS y JavaScript, que son los lenguajes básicos de las páginas web.
 
-🧠 Descripción general
+Estructura del proyecto
+A continuación se explica para qué sirve cada carpeta y archivo importante.
+La carpeta X no se incluye.
 
-Este proyecto es un panel técnico para explorar, comparar y gestionar información sobre tarjetas gráficas (GPUs). Está pensado para gente que disfruta el hardware, gamers que buscan lo mejor y creadores que quieren tener todo bajo control sin depender de servidores externos.
+Carpeta css/
+Aquí están los archivos que dicen cómo se ve la página.
+Los HTML son como el esqueleto, y los CSS son como la ropa y los colores.
 
-Al principio todo funcionaba solo en el navegador, pero ahora usamos Firebase para que todo sea en tiempo real, con usuarios que pueden registrarse, tener perfiles y un foro para charlar.
+Dentro de esta carpeta se decide:
 
-⚙️ Tecnologías usadas
+qué tamaño tienen los textos
 
-HTML, CSS, JS — la base del proyecto
+qué colores usa la web
 
-Bootstrap 5.3 — para que se vea bien en cualquier pantalla
+cómo se colocan las cosas en la pantalla
 
-Firebase Realtime Database — guarda usuarios, hilos y respuestas
+cómo se ve cada página (por ejemplo, el ranking o el comparador)
 
-Firebase Authentication — para registro, login y mantener la sesión
+Sin estos archivos, la web se vería en blanco y negro y muy desordenada.
 
-LocalStorage — guarda favoritos y datos locales
+Carpeta img/
+Aquí se guardan todas las imágenes que usa la web.
+Por ejemplo:
 
-Matrix.js — fondo animado estilo hacker
+fotos de tarjetas gráficas
 
-🧩 Cómo está organizado el proyecto
+iconos
 
-📁 css/
-    styles.css
-📁 img/
-    gpus/
-📁 js/
-    auth.js
-    compare.js
-    data.js
-    favourites.js
-    firebase.js
-    forum.js
-    gpu.js
-    gpus.js
-    matrix.js
-    profile.js
-    ranking.js
-    search.js
-📄 index.html
-📄 login.html
-📄 register.html
-📄 profile.html
-📄 forum.html
-📄 gpus.html
-📄 compare.html
-📄 favorites.html
-📄 ranking.html
-📄 gpu.html
-📄 README.md
+fondos
 
-🔐 Sistema de usuarios
+logotipos
 
-Los usuarios pueden registrarse y entrar con Firebase Authentication
+Los archivos HTML y JavaScript buscan estas imágenes aquí para mostrarlas en pantalla.
 
-Al registrarse, se guarda su nombre, email y fecha en usuarios/{uid}
+Carpeta js/
+Esta es la carpeta más importante.
+Aquí están los archivos que hacen que la web funcione de verdad.
+Los HTML muestran cosas, pero los JavaScript deciden qué pasa cuando haces clic, buscas algo o entras en una página.
 
-En el perfil se ven los datos del usuario y se puede cerrar sesión
+A continuación se explica cada archivo de forma sencilla:
 
-La sesión se mantiene aunque cambies de página
+auth.js
+Controla el inicio de sesión.
+Comprueba si el usuario existe, si la contraseña es correcta y si debe entrar o salir de su cuenta.
 
-Archivos importantes:
+compare.js
+Permite comparar dos tarjetas gráficas.
+Busca los datos de cada una y los coloca juntos para ver cuál es mejor.
 
-auth.js — registro, login, logout y control de sesión
+data.js
+Guarda o carga la información de todas las tarjetas gráficas.
+Es como una “base de datos” simple dentro del proyecto.
 
-profile.js — muestra nombre y email del usuario
+favorites.js
+Guarda las tarjetas que el usuario marca como favoritas.
+Usa el almacenamiento del navegador para recordar tus elecciones aunque cierres la página.
 
-💬 Foro técnico
+firebase.js
+Contiene la configuración necesaria para conectar la web con Firebase si se usa.
+Sirve para cosas como guardar datos o manejar usuarios.
 
-Los temas se guardan en hilos/ con título, contenido, autor y fecha
+forum.js
+Hace que el foro funcione.
+Permite crear mensajes, leerlos y mostrarlos en pantalla.
 
-Las respuestas se guardan en hilos/{id}/replies
+gpu.js
+Muestra la información de una tarjeta gráfica concreta.
+Cuando entras en una GPU, este archivo decide qué datos enseñar.
 
-Todo se actualiza en tiempo real con onValue()
+gpus.js
+Crea la lista de todas las tarjetas gráficas.
+También puede ordenar o filtrar si es necesario.
 
-Solo los usuarios registrados pueden publicar o responder
+matrix.js
+Genera el efecto visual del fondo con letras cayendo, parecido a la película Matrix.
+Dibuja caracteres en movimiento usando un lienzo.
 
-Archivos importantes:
+profile.js
+Muestra la información del usuario en su perfil.
+También permite cambiar algunos datos.
 
-forum.js — toda la lógica del foro con Firebase
+ranking.js
+Ordena las tarjetas gráficas según su potencia.
+Crea una lista desde la mejor hasta la peor.
 
-forum.html — formulario, lista de temas y respuestas
+search.js
+Hace que la barra de búsqueda funcione.
+Filtra las tarjetas según lo que escribas.
 
-📊 Catálogo de GPUs
+Archivos HTML principales
+Los archivos HTML son las páginas que ves cuando navegas por la web.
+Cada uno muestra una parte distinta del proyecto.
 
-Los datos están en data.js (local)
+index.html: página principal.
 
-Puedes explorar, comparar y marcar favoritos
+gpus.html: lista de todas las tarjetas gráficas.
 
-Los favoritos se guardan en localStorage
+gpu.html: ficha de una tarjeta concreta.
 
-Archivos importantes:
+compare.html: comparador de dos tarjetas.
 
-gpus.js, gpu.js, compare.js, favourites.js
+favorites.html: tarjetas guardadas por el usuario.
 
-gpus.html, gpu.html, compare.html, favorites.html
+ranking.html: ranking de rendimiento.
 
-🎨 Estilo y experiencia
+forum.html: foro de mensajes.
 
-Fondo animado tipo Matrix (matrix.js) con velocidad ajustable
+login.html: página para iniciar sesión.
 
-Diseño oscuro y técnico, con letra monoespaciada
+register.html: página para registrarse.
 
-Animaciones suaves y estructura modular
+profile.html: perfil del usuario.
 
-🔒 Reglas de seguridad en Firebase
+Otros archivos
+firebase.json: archivo que le dice a Firebase cómo debe mostrar la web.
 
-{
-  "rules": {
-    ".read": true,
-    "hilos": {
-      ".write": "auth != null"
-    },
-    "usuarios": {
-      "$uid": {
-        ".read": "auth != null && auth.uid === $uid",
-        ".write": "auth != null && auth.uid === $uid"
-      }
-    }
-  }
-}
+LICENSE: licencia del proyecto.
 
-🧪 Pruebas hechas
+README.md: este documento.
 
-Registro y login funcionan sin problemas
+Objetivo del proyecto
+El objetivo es crear una web clara y fácil de usar donde cualquier persona pueda:
 
-Crear y leer temas en tiempo real
+ver información de tarjetas gráficas
 
-Respuestas sincronizadas entre usuarios
+compararlas
 
-Ver perfil con datos reales
+guardarlas como favoritas
 
-Mantener sesión entre páginas
+consultar un ranking
 
-Catálogo y favoritos funcionan localmente
+escribir en un foro
 
-🧑‍💻 Cómo se hizo
+tener un perfil
 
-Todo el código está escrito a mano, con ayuda de documentación oficial y pruebas locales. La IA solo se usó para revisar y mejorar un poco. El diseño, la lógica y la integración con Firebase los hice yo.
-
-📌 Créditos y licencia
-
-Este proyecto es para aprender y uso personal. Los datos de GPUs son ficticios o hechos a mano. El código tiene licencia MIT.
+Todo está organizado para que sea sencillo de entender y fácil de ampliar en el futuro.
