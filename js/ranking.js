@@ -1,68 +1,65 @@
-// ranking.js
-// Lógica del ranking de GPUs
+// ranking.js — TarjetasGráficas-JM
 
-document.addEventListener("DOMContentLoaded", () => {
-    const rankingType = document.getElementById("ranking-type");
-    const rankingList = document.getElementById("ranking-list");
+const rankingType = document.getElementById("ranking-type");
+const rankingList = document.getElementById("ranking-list");
 
-    // Función para calcular FPS promedio
-    function avgFps(gpu) {
-        return (gpu.fps["1080p"] + gpu.fps["1440p"] + gpu.fps["4K"]) / 3;
+// Función para extraer número de GB desde "32 GB GDDR7"
+function parseVRAM(vramString) {
+    const match = vramString.match(/(\d+)\s*GB/i);
+    return match ? parseInt(match[1]) : 0;
+}
+
+// Función para calcular calidad/precio
+function valueScore(gpu) {
+    if (!gpu.performanceScore || !gpu.price) return 0;
+    return gpu.performanceScore / gpu.price;
+}
+
+// Renderizar tarjetas
+function renderRanking() {
+    const type = rankingType.value;
+    let gpus = [...gpuData];
+
+    switch (type) {
+        case "performance":
+            gpus.sort((a, b) => b.performanceScore - a.performanceScore);
+            break;
+        case "price":
+            gpus.sort((a, b) => a.price - b.price);
+            break;
+        case "value":
+            gpus.sort((a, b) => valueScore(b) - valueScore(a));
+            break;
+        case "vram":
+            gpus.sort((a, b) => parseVRAM(b.vram) - parseVRAM(a.vram));
+            break;
+        case "power":
+            gpus.sort((a, b) => a.powerWatts - b.powerWatts);
+            break;
+        case "psu":
+            gpus.sort((a, b) => a.recommendedPSU - b.recommendedPSU);
+            break;
     }
 
-    // Función para calcular calidad/precio
-    function valueScore(gpu) {
-        return gpu.performance / gpu.price;
-    }
-
-    // Función para mostrar el ranking
-    function renderRanking() {
-        const type = rankingType.value;
-        let sorted = [...gpuData];
-
-        // Ordenar según el criterio
-        if (type === "performance") {
-            sorted.sort((a, b) => b.performance - a.performance);
-        } else if (type === "price") {
-            sorted.sort((a, b) => a.price - b.price);
-        } else if (type === "value") {
-            sorted.sort((a, b) => valueScore(b) - valueScore(a));
-        } else if (type === "fps") {
-            sorted.sort((a, b) => avgFps(b) - avgFps(a));
-        }
-
-        // Limpiar contenedor
-        rankingList.innerHTML = "";
-
-        // Mostrar tarjetas ordenadas
-        sorted.forEach(gpu => {
-            const card = document.createElement("div");
-            card.className = "col-md-4";
-
-            card.innerHTML = `
-                <div class="card shadow-sm h-100">
-                    <img src="${gpu.image}" class="card-img-top" alt="${gpu.name}">
-                    <div class="card-body">
-                        <h5 class="fw-bold">${gpu.name}</h5>
-                        <p class="text-muted small mb-2">${gpu.vram}</p>
-                        <p class="text-muted small mb-2">Rendimiento: ${gpu.performance}</p>
-                        <p class="text-muted small mb-2">Precio: ${gpu.price}€</p>
-                        <p class="text-muted small mb-3">FPS promedio: ${avgFps(gpu).toFixed(0)}</p>
-
-                        <a href="gpu.html?id=${gpu.id}" class="btn btn-outline-primary w-100">
-                            Ver detalles
-                        </a>
-                    </div>
+    rankingList.innerHTML = gpus.map((gpu, i) => `
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card bg-secondary text-light h-100 shadow-sm">
+                <img src="${gpu.image}" class="card-img-top" alt="${gpu.name}">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">${i + 1}. ${gpu.name}</h5>
+                    <p class="card-text small">
+                        <strong>VRAM:</strong> ${gpu.vram}<br>
+                        <strong>Rendimiento:</strong> ${gpu.performanceScore}<br>
+                        <strong>Precio:</strong> ${gpu.price} €<br>
+                        <strong>Consumo:</strong> ${gpu.powerWatts} W<br>
+                        <strong>Fuente recomendada:</strong> ${gpu.recommendedPSU} W
+                    </p>
+                    <a href="gpu.html?id=${gpu.id}" class="btn btn-light w-100">Ver detalles</a>
                 </div>
-            `;
+            </div>
+        </div>
+    `).join("");
+}
 
-            rankingList.appendChild(card);
-        });
-    }
-
-    // Render inicial
-    renderRanking();
-
-    // Actualizar cuando cambie el selector
-    rankingType.addEventListener("change", renderRanking);
-});
+rankingType.addEventListener("change", renderRanking);
+renderRanking();
