@@ -4,6 +4,41 @@
 const gpuData = [
     
     // ============================
+    //   EDICIONES ESPECIALES
+    // ============================
+
+    {
+        id: "rtx5090matrixplatinum",
+        name: "NVIDIA GeForce RTX 5090 Matrix Platinum Edition",
+        vram: "32 GB GDDR7",
+        performanceScore: 100,
+        price: 2999,
+        powerWatts: 450,
+        recommendedPsu: 750,
+        image: "img/EDICIONES ESPECIALES/rtx5090matrixplatinum.png"
+    },
+    {
+        id: "rtx5080miku",
+        name: "NVIDIA GeForce RTX 5080 Hatsune Miku Edition",
+        vram: "24 GB GDDR7",
+        performanceScore: 92,
+        price: 1199,
+        powerWatts: 320,
+        recommendedPsu: 750,
+        image: "img/EDICIONES ESPECIALES/rtx5080miku.png"
+    },
+    {
+        id: "rtx4070wow",
+        name: "NVIDIA GeForce RTX 4070 WoW Edition",
+        vram: "12 GB GDDR6X",
+        performanceScore: 85,
+        price: 899,
+        powerWatts: 285,
+        recommendedPsu: 750,
+        image: "img/EDICIONES ESPECIALES/rtx4070wow.png"
+    },
+
+    // ============================
     //   NVIDIA RTX 50 SERIES
     // ============================
 
@@ -526,7 +561,7 @@ const gpuData = [
         price: 349,
         powerWatts: 225,
         recommendedPsu: 600,
-        image: "img/gpus/intelarca770.png"
+        image: "img/INTEL ARC SERIES/intelarca770.png"
     },
     {
         id: "intel_arc_a750",
@@ -536,7 +571,7 @@ const gpuData = [
         price: 249,
         powerWatts: 225,
         recommendedPsu: 600,
-        image: "img/gpus/intelarca750.png"
+        image: "img/INTEL ARC SERIES/intelarca750.png"
     },
     {
         id: "intel_arc_a580",
@@ -546,7 +581,7 @@ const gpuData = [
         price: 179,
         powerWatts: 185,
         recommendedPsu: 550,
-        image: "img/gpus/intelarca580.png"
+        image: "img/INTEL ARC SERIES/intelarca580.png"
     },
     {
         id: "intel_arc_a380",
@@ -556,7 +591,7 @@ const gpuData = [
         price: 129,
         powerWatts: 75,
         recommendedPsu: 450,
-        image: "img/gpus/intelarca380.png"
+        image: "img/INTEL ARC SERIES/intelarca380.png"
     },
     {
         id: "intel_arc_a310",
@@ -566,7 +601,7 @@ const gpuData = [
         price: 99,
         powerWatts: 75,
         recommendedPsu: 400,
-        image: "img/gpus/intelarca310.png"
+        image: "img/INTEL ARC SERIES/intelarca310.png"
     },
     {
         id: "intel_arc_pro_a60",
@@ -576,7 +611,17 @@ const gpuData = [
         price: 249,
         powerWatts: 130,
         recommendedPsu: 450,
-        image: "img/gpus/intelarcproa60.png"
+        image: "img/INTEL ARC SERIES/intelarcproa60.png"
+    },
+    {
+        id: "intel_arc_pro_a50",
+        name: "Intel Arc Pro A50",
+        vram: "8 GB GDDR6",
+        performanceScore: 41,
+        price: 199,
+        powerWatts: 90,
+        recommendedPsu: 400,
+        image: "img/INTEL ARC SERIES/intelarcproa50.png"
     },
     {
         id: "intel_arc_pro_a40",
@@ -586,7 +631,7 @@ const gpuData = [
         price: 169,
         powerWatts: 75,
         recommendedPsu: 350,
-        image: "img/gpus/intelarcproa40.png"
+        image: "img/INTEL ARC SERIES/intelarcproa40.png"
     },
 
     // ============================
@@ -897,6 +942,16 @@ const gpuData = [
         powerWatts: 204,
         recommendedPsu: 550,
         image: "img/NVIDIA — GTX 1000  900  700  600  500  400  200  FX/gtx285.png"
+    },
+    {
+        id: "gtx260",
+        name: "NVIDIA GeForce GTX 260 SUPER",
+        vram: "1.25 GB GDDR3",
+        performanceScore: 7,
+        price: 299,
+        powerWatts: 182,
+        recommendedPsu: 500,
+        image: "img/NVIDIA — GTX 1000  900  700  600  500  400  200  FX/gtx260oc.png"
     },
     {
         id: "gtx260",
