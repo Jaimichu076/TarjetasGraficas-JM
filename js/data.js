@@ -1,5 +1,5 @@
 // data.js — Base de datos local de GPUs para GPU Hub
-// Contiene 40 GPUs reales con datos coherentes y listos para usar.
+// Contiene 130 GPUs reales con datos coherentes y listos para usar.
 
 const gpuData = [
     
