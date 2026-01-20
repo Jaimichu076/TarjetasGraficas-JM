@@ -185,5 +185,3 @@ document.addEventListener("DOMContentLoaded", () => {
         cargarFavoritosDesdeFirebase();
     });
 });
-
-

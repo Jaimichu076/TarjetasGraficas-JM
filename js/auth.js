@@ -100,7 +100,3 @@ if (logoutBtn) {
 export function onUserChange(callback) {
     onAuthStateChanged(auth, callback);
 }
-
-
-
-
