@@ -616,7 +616,16 @@ const gpuData = [
     //   INTEL ARC SERIES
     // ============================
 
-    
+    {
+        id: "intel_arc_a770",
+        name: "Intel Arc A770",
+        vram: "16 GB GDDR6",
+        performanceScore: 72,
+        price: 349,
+        powerWatts: 225,
+        recommendedPsu: 600,
+        image: "img/INTEL ARC SERIES/intelarca770.png"
+    },
     {
         id: "intel_arc_a750",
         name: "Intel Arc A750",
