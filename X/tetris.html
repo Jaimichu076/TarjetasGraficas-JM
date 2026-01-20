@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zona secreta — DOOM clásico</title>
+  <title>Tetris clásico — Zona secreta</title>
 
   <link rel="stylesheet" href="../css/styles.css" />
   <script src="../js/matrix.js" defer></script>
@@ -36,9 +36,10 @@
       box-shadow: var(--shadow-neon);
       padding: 2rem;
       text-align: center;
+      animation: fadeIn 0.4s ease-out forwards;
     }
 
-    .doom-container {
+    .game-container {
       position: relative;
       width: 100%;
       height: 600px;
@@ -49,7 +50,7 @@
       background: black;
     }
 
-    .doom-frame {
+    .game-frame {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -57,7 +58,7 @@
       border: none;
     }
 
-    .doom-exit {
+    .game-exit {
       position: absolute;
       top: 10px;
       right: 10px;
@@ -74,13 +75,13 @@
       transition: 0.2s ease;
     }
 
-    .doom-exit:hover {
+    .game-exit:hover {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
       box-shadow: 0 0 18px rgba(39,226,255,0.9);
       transform: translateY(-2px);
     }
 
-    .doom-hint {
+    .game-hint {
       margin-top: 1rem;
       font-size: 0.8rem;
       color: var(--text-muted);
@@ -88,13 +89,13 @@
     }
 
     @media (max-width: 768px) {
-      .doom-container {
+      .game-container {
         height: 420px;
       }
     }
 
     @media (max-width: 480px) {
-      .doom-container {
+      .game-container {
         height: 340px;
       }
     }
@@ -104,32 +105,25 @@
 <body>
   <main class="secret-wrapper fade-in">
     <div class="secret-card">
-      <h1 class="hacker-prefix mb-3">Zona secreta</h1>
-      <p class="section-subtitle mb-4">DOOM clásico con sonido</p>
+      <h1 class="hacker-prefix mb-3">Tetris clásico</h1>
+      <p class="section-subtitle mb-4">Rompecabezas atemporal</p>
 
-      <div class="doom-container">
-        <button class="doom-exit" onclick="window.location.href='menusecreto.html'">Salir</button>
+      <div class="game-container">
+        <button class="game-exit" onclick="window.location.href='/menusecreto.html'">Salir</button>
+
         <iframe
-          src="https://archive.org/embed/doom-play"
-          class="doom-frame"
-          allow="autoplay; fullscreen"
+          src="https://www.retrogames.cc/embed/41645-tetris-classic.html"
+          class="game-frame"
+          allowfullscreen
           loading="lazy"
         ></iframe>
       </div>
 
-      <p class="doom-hint">
-        Usa las teclas para moverte. El sonido está activado.  
-        Puedes cerrar el juego en cualquier momento con el botón superior.
+      <p class="game-hint">
+        Coloca las piezas y evita llenar la pantalla. Usa las flechas para girar y mover.
       </p>
     </div>
   </main>
 </body>
 </html>
-
-
-
-
-
-
-
 
